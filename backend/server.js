@@ -64,6 +64,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', auth(passport));
+app.use('/', routes);
 
 // Example route
 app.get('/', function (req, res) {
