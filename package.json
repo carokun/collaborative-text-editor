@@ -33,21 +33,21 @@
     "eslint-plugin-react": "^5.2.2"
   },
   "dependencies": {
-    "body-parser": "^1.17.2",
-    "express": "^4.15.3",
-    "less": "^2.7.2",
-    "less-loader": "^4.0.5",
-    "draft-js": "^0.10.1",
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
     "connect-mongo": "^1.3.2",
+    "css-loader": "^0.28.4",
+    "draft-js": "^0.10.1",
     "express": "^4.15.3",
     "express-session": "^1.15.4",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.5",
     "mongoose": "^4.11.4",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-router-dom": "^4.1.2"
+    "react-router-dom": "^4.1.2",
+    "style-loader": "^0.18.2"
   }
 }

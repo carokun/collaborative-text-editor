@@ -1,23 +1,24 @@
 import React from 'react';
 import axios from 'axios';
+import styles from '../assets/stylesheets/documentlist.less';
 
 class DocumentList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      documents: [];
+      documents: []
     }
   }
   componentDidMount() {
-    axios.get(process.env.DOMAIN + '/documents')
-    .then(documents => {
-      this.setState({
-        documents: documents
-      });
-    })
-    .catch(err => {
-      console.log("ERROR: Cannot retrieve documents using axios request ", err);
-    });
+    // axios.get(process.env.DOMAIN + '/documents')
+    // .then(documents => {
+    //   this.setState({
+    //     documents: documents
+    //   });
+    // })
+    // .catch(err => {
+    //   console.log("ERROR: Cannot retrieve documents using axios request ", err);
+    // });
   }
   render() {
     return (
@@ -27,9 +28,9 @@ class DocumentList extends React.Component {
         <button type="submit">Create Document</button>
         <div>
         {
-          this.state.documents.map((docObject) => {
-            <a href="#">docObject.title</a>
-          });
+          // this.state.documents.map((docObject) => {
+          //   <a href="#">docObject.title</a>
+          // })
         }
         </div>
         <input type="text" placeholder="Enter id of document"/>
