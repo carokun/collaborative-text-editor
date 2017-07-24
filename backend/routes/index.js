@@ -19,5 +19,36 @@ module.exports = function(passport) {
     })
   });
 
+  router.post('/createNewDocument', function(req, res) {
+    const title = req.body.title;
+
+    const newDoc = new Document({
+      owner: req.user._id,
+      title: title,
+      text: ''
+    })
+    newDoc.save()
+    .then(document => {
+      res.json(document)
+    })
+  });
+
+  router.post('/addSharedDocument', function(req, res) {
+    const docID = req.body.docID;
+
+    Document.findById(docID)
+    .then(document => {
+      if (document) {
+        res.json(document)
+        var newDocs = user.documents.slice();
+        newDocs.push(document);
+        user.save()
+      } else {
+        res.json({message: 'failed to add'})
+      }
+    })
+
+  });
+
   return router;
 };
