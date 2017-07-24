@@ -15,7 +15,7 @@ class MyEditor extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={editorBoxStyle}>
         <button onClick={this._onBoldClick.bind(this)}>Bold</button>
         <Editor
           editorState={this.state.editorState}
@@ -25,6 +25,13 @@ class MyEditor extends React.Component {
       </div>
     )
   }
+}
+
+var editorBoxStyle = {
+  borderRadius: 4,
+  borderWidth: 0.5,
+  backgroundColor: '#E9F7FD',
+  height: 200
 }
 
 export default MyEditor;
