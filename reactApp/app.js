@@ -1,5 +1,5 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+// var React = require('react');
+// var ReactDOM = require('react-dom');
 
 /* This can check if your electron app can communicate with your backend */
 // fetch('http://localhost:3000')
@@ -7,5 +7,18 @@ var ReactDOM = require('react-dom');
 // .then(text => console.log(text))
 // .catch(err => {throw err})
 
-ReactDOM.render(<p>React lives!</p>,
-   document.getElementById('root'));
+import React from 'react';
+import ReactDOM from 'react-dom'
+import { BrowserRouter, Route, IndexRoute } from 'react-router-dom';
+import Editor from './components/Editor';
+
+const router = (
+  <BrowserRouter history={history}>
+    <Route path='/' component={Editor} />
+  </BrowserRouter>
+)
+
+ReactDOM.render(
+  router,
+  document.getElementById('root')
+)
