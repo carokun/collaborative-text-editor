@@ -11,10 +11,11 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, IndexRoute } from 'react-router-dom';
 import Editor from './components/Editor';
+import Login from './views/Login';
 
 const router = (
   <BrowserRouter history={history}>
-    <Route path='/' component={Editor} />
+    <Route path='/' component={Login} />
   </BrowserRouter>
 )
 
