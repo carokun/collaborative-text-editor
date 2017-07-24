@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Editor, EditorState} from 'draft-js';
+import {RichUtils, Editor, EditorState} from 'draft-js';
 
 class MyEditor extends React.Component {
   constructor(props) {
@@ -8,10 +8,22 @@ class MyEditor extends React.Component {
     this.state = {editorState: EditorState.createEmpty()};
     this.onChange = (editorState) => this.setState({editorState});
   }
+
+  _onBoldClick() {
+    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
+  }
+
   render() {
     return (
-      <Editor style={{border: '1px solid black'}} editorState={this.state.editorState} onChange={this.onChange} />
-    );
+      <div>
+        <button onClick={this._onBoldClick.bind(this)}>Bold</button>
+        <Editor
+          editorState={this.state.editorState}
+          handleKeyCommand={this.handleKeyCommand}
+          onChange={this.onChange}
+        />
+      </div>
+    )
   }
 }
 
