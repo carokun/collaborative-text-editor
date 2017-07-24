@@ -10,7 +10,7 @@ class MyEditor extends React.Component {
   }
   render() {
     return (
-      <Editor editorState={this.state.editorState} onChange={this.onChange} />
+      <Editor style={{border: '1px solid black'}} editorState={this.state.editorState} onChange={this.onChange} />
     );
   }
 }

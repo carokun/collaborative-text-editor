@@ -10,11 +10,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, IndexRoute } from 'react-router-dom';
-import Editor from './components/Editor';
+import Document from './views/Document';
 
 const router = (
   <BrowserRouter history={history}>
-    <Route path='/' component={Editor} />
+    <Route path='/' component={Document} />
   </BrowserRouter>
 )
 
