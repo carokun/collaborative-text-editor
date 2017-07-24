@@ -11,7 +11,7 @@ module.exports = function(passport) {
     console.log('user', req.user);
     User.findById(userID)
     .then(user => {
-      log(user)
+      console.log(user);
     })
     .catch(err => {
       console.log('err', err);

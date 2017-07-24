@@ -1,6 +1,6 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 
-const bodyParser = require('body-parser');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const mongoose = require('mongoose');
@@ -16,6 +16,8 @@ const connect = process.env.MONGODB_URI;
 mongoose.connect(connect);
 
 const app = express();
+
+app.use(bodyParser.json());
 
 app.use(session(
   {

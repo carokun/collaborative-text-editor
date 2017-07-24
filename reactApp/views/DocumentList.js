@@ -5,7 +5,7 @@ class DocumentList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      documents: [];
+      documents: []
     }
   }
   componentDidMount() {
@@ -28,8 +28,8 @@ class DocumentList extends React.Component {
         <div>
         {
           this.state.documents.map((docObject) => {
-            <a href="#">docObject.title</a>
-          });
+            <a href="#">{docObject.title}</a>
+          })
         }
         </div>
         <input type="text" placeholder="Enter id of document"/>

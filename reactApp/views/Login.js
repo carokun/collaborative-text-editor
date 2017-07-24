@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom'
 
 class Login extends React.Component {
   constructor(props) {
@@ -14,8 +15,10 @@ class Login extends React.Component {
     event.preventDefault();
     axios.post("http://localhost:3000/login", {username: this.state.username, password: this.state.password})
     .then(resp => {
-      if(resp.success) {
-        this.props.navigation.navigate('/documentlist');
+      if(resp.status === 200) {
+        console.log('success', resp);
+      } else {
+        console.log('fail', resp);
       }
     })
     .catch(function (error) {
@@ -40,7 +43,9 @@ class Login extends React.Component {
               <input type="submit" value="Log In"/>
           </div>
           <div>
-              <button onClick={() => this.props.navigation.navigate('/register')}>Register</button>
+            <Link to='/register'>
+              <button>Register</button>
+            </Link>
           </div>
       </form>
     );
