@@ -6,7 +6,7 @@ var Document = models.Document;
 
 module.exports = function(passport) {
 
-  router.post('/documents', function(req, res) {
+  router.get('/documents', function(req, res) {
     console.log('user', req.user);
     var userID = req.user._id;
 
