@@ -13,19 +13,30 @@ class DocumentList extends React.Component {
     axios.get('http://localhost:3000/documents')
     .then(documents => {
       this.setState({
-        documents: documents
+        documents: documents,
+        sharedDocID: '',
+        createDocTitle: ''
       });
     })
     .catch(err => {
       console.log("ERROR: Cannot retrieve documents using axios request ", err);
     });
   }
+
+  addSharedDocument() {
+
+  }
+
+  createNewDocument() {
+    
+  }
+
   render() {
     return (
       <div>
         <h2>Documents Portal</h2>
         <input type="text" placeholder="Enter new document title"/>
-        <button type="submit">Create Document</button>
+        <button type="submit" onClick={() => createNewDocument()}>Create Document</button>
         <div>
         {
           this.state.documents.map((docObject) => {
@@ -34,7 +45,7 @@ class DocumentList extends React.Component {
         }
         </div>
         <input type="text" placeholder="Enter id of document"/>
-        <button type="submit">Add shared document</button>
+        <button type="submit" onClick={() => this.addSharedDocument()}>Add shared document</button>
       </div>
     );
   }
