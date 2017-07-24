@@ -10,12 +10,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, IndexRoute } from 'react-router-dom';
-import Editor from './components/Editor';
+import Document from './views/Document';
 import Login from './views/Login';
+import Register from './views/Register';
+import DocumentList from './views/DocumentList';
 
 const router = (
   <BrowserRouter history={history}>
-    <Route path='/' component={Login} />
+    <Route path='/' component={Document} />
+    <Route path='/login' exact component={Login} />
+    <Route path='/register' exact component={Register} />
+    <Route path='/documentlist' exact component={DocumentList} />
   </BrowserRouter>
 )
 
