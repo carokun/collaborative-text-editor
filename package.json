@@ -33,6 +33,7 @@
     "eslint-plugin-react": "^5.2.2"
   },
   "dependencies": {
+    "draft-js": "^0.10.1",
     "express": "^4.15.3",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
