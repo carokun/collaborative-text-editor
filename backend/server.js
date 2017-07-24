@@ -8,10 +8,21 @@ const User = require('./models/models').User;
 var session = require('express-session');
 
 const auth = require('./routes/auth');
+const routes = require('./routes/index');
+
+const MongoStore = require('connect-mongo/es5')(session);
+
+const connect = process.env.MONGODB_URI;
+mongoose.connect(connect);
 
 const app = express();
 
-app.use(session({ secret: process.env.SECRET }));
+app.use(session(
+  {
+    secret: process.env.SECRET,
+    store: new MongoStore({mongooseConnection: mongoose.connection})
+  }
+));
 
 passport.serializeUser(function(user, done) {
   done(null, user._id);
