@@ -1,56 +1,33 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models/models');
+var User = models.User;
 
 module.exports = function(passport) {
 
-  // GET registration page
-  router.get('/register', function(req, res) {
-    res.render('register');
+  router.post('/login', passport.authenticate('local'), function(req, res) {
+    res.json(user: req.user);
   });
-
-  // POST registration page
-  var validateReq = function(userData) {
-    return (userData.password === userData.passwordRepeat);
-  };
 
   router.post('/register', function(req, res) {
-    // validation step
-    if (!validateReq(req)) {
-      res.render('/register', {
-        error: "Passwords don't match."
-      });
+    var username = req.body.username;
+    var password = req.body.password;
+    var passwordRepeat = req.body.passwordRepeat;
+
+    if (password !== passwordRepeat) {
+      res.json({ success: false, message: 'passwords do not match' });
+    } else {
+      var user = new User({
+        username: username,
+        password: password,
+        documents: []
+      })
+      user.save()
+      .then(user => {
+        res.json(user: user);
+      })
     }
-    var u = new models.User({
-      username: req.body.username,
-      password: req.body.password
-    });
-    u.save(function(err, user) {
-      if (err) {
-        console.log(err);
-        res.status(500).redirect('/register');
-        return;
-      }
-      console.log(user);
-      res.redirect('/login');
-    });
-  });
 
-  // GET Login page
-  router.get('/login', function(req, res) {
-    res.render('login');
-  });
-
-
-  // POST Login page
-  router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.redirect('/');
-  });
-
-  // GET Logout page
-  router.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/login');
   });
 
   return router;

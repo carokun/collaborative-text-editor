@@ -5,10 +5,23 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const mongoose = require('mongoose');
 const User = require('./models/models').User;
+var session = require('express-session');
 
 const auth = require('./routes/auth');
 
 const app = express();
+
+app.use(session({ secret: process.env.SECRET }));
+
+passport.serializeUser(function(user, done) {
+  done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
 
 //ADD LOCALSTRATEGY TO THE PASSPORT MIDDLEWARE
 passport.use(new LocalStrategy(function(username, password, done) {
@@ -35,6 +48,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
 ));
 
 app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', auth(passport));
 
