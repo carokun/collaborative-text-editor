@@ -35,9 +35,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
 ));
 
 app.use(passport.initialize());
-app.use(passport.session());
 
-app.use('/', routes(passport));
 app.use('/', auth(passport));
 
 // Example route
