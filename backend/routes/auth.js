@@ -6,7 +6,7 @@ var User = models.User;
 module.exports = function(passport) {
 
   router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.json(user: req.user);
+    res.json({ success: true, user: req.user });
   });
 
   router.post('/register', function(req, res) {
@@ -24,7 +24,7 @@ module.exports = function(passport) {
       })
       user.save()
       .then(user => {
-        res.json(user: user);
+        res.json({user: user});
       })
     }
 
