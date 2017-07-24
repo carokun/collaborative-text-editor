@@ -17,10 +17,12 @@ import DocumentList from './views/DocumentList';
 
 const router = (
   <BrowserRouter history={history}>
-    <Route path='/' component={Document} />
-    <Route path='/login' exact component={Login} />
-    <Route path='/register' exact component={Register} />
-    <Route path='/documentlist' exact component={DocumentList} />
+    <div>
+      <Route path='/document' exact component={Document} />
+      <Route path='/' component={Login} />
+      <Route path='/register' exact component={Register} />
+      <Route path='/documentlist' exact component={DocumentList} />
+    </div>
   </BrowserRouter>
 )
 
