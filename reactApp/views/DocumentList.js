@@ -9,7 +9,7 @@ class DocumentList extends React.Component {
     }
   }
   componentDidMount() {
-    axios.get(process.env.DOMAIN + '/documents')
+    axios.get('http://localhost:3000/documents')
     .then(documents => {
       this.setState({
         documents: documents
