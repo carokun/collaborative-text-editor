@@ -13,18 +13,19 @@ class Register extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    console.log('dpfdlkfjsdlf', process.env);
-    axios.post("http://localhost:3000/register", {username: this.state.username, password: this.state.password, repeatPassword: password: this.state.repeatPassword})
+    axios.post("http://localhost:3000/register", {username: this.state.username, password: this.state.password, repeatPassword: this.state.repeatPassword})
     .then(resp => {
-      if(resp.success) {
-        this.props.navigation.navigate('/documentlist');
+      if(resp.status === 200) {
+        console.log('success', resp);
+      } else {
+        console.log('fail', resp);
       }
     })
     .catch(function (error) {
       console.log(error);
     });
 
-    this.setState({ username: '', password: '' })
+    this.setState({ username: '', password: '', repeatPassword: '' })
   }
 
   render() {

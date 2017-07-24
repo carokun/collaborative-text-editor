@@ -10,15 +10,15 @@ class DocumentList extends React.Component {
     }
   }
   componentDidMount() {
-    // axios.get(process.env.DOMAIN + '/documents')
-    // .then(documents => {
-    //   this.setState({
-    //     documents: documents
-    //   });
-    // })
-    // .catch(err => {
-    //   console.log("ERROR: Cannot retrieve documents using axios request ", err);
-    // });
+    axios.get('http://localhost:3000/documents')
+    .then(documents => {
+      this.setState({
+        documents: documents
+      });
+    })
+    .catch(err => {
+      console.log("ERROR: Cannot retrieve documents using axios request ", err);
+    });
   }
   render() {
     return (
@@ -28,9 +28,9 @@ class DocumentList extends React.Component {
         <button type="submit">Create Document</button>
         <div>
         {
-          // this.state.documents.map((docObject) => {
-          //   <a href="#">docObject.title</a>
-          // })
+          this.state.documents.map((docObject) => {
+            <a href="#">{docObject.title}</a>
+          })
         }
         </div>
         <input type="text" placeholder="Enter id of document"/>

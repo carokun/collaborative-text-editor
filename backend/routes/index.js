@@ -7,11 +7,12 @@ var Document = models.Document;
 module.exports = function(passport) {
 
   router.post('/documents', function(req, res) {
-    var userID = req.user._id;
     console.log('user', req.user);
+    var userID = req.user._id;
+
     User.findById(userID)
     .then(user => {
-      log(user)
+      res.json(user.documents);
     })
     .catch(err => {
       console.log('err', err);
