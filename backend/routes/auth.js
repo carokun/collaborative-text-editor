@@ -6,15 +6,15 @@ var User = models.User;
 module.exports = function(passport) {
 
   router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.json(user: req.user);
+    res.json({ success: true, user: req.user });
   });
 
   router.post('/register', function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
-    var passwordRepeat = req.body.passwordRepeat;
+    var repeatPassword = req.body.repeatPassword;
 
-    if (password !== passwordRepeat) {
+    if (password !== repeatPassword) {
       res.json({ success: false, message: 'passwords do not match' });
     } else {
       var user = new User({
@@ -24,7 +24,10 @@ module.exports = function(passport) {
       })
       user.save()
       .then(user => {
-        res.json(user: user);
+        res.json({user: user});
+      })
+      .catch(err => {
+        res.json({ success: false, message: 'invalid registration' });
       })
     }
 
