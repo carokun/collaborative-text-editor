@@ -48,7 +48,6 @@ class MyEditor extends React.Component {
         this.setState({editorState: newState})
         this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
       }
-
     };
     this._onHighlight = this._onHighlight.bind(this);
   }
@@ -76,7 +75,7 @@ class MyEditor extends React.Component {
     }
     return null;
   }
-// @caroline this was breaking
+// @this was breaking
   // componentWillMount() {
   //   const self = this;
   //   axios.get('http://localhost:3000/document/' + this.props.id)
@@ -151,11 +150,10 @@ class MyEditor extends React.Component {
       const maxDepth = 4;
       this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
     }
-    ///////////// HIGHLIGHT FUNCTION AKA WTF IS GOING ON ?????? ???/////////////
-  _onHighlight(editorState) {
-      return RichUtils.toggleInlineStyle(editorState, 'highlight');
-  }
 
+  _onHighlight(editorState) {
+     return RichUtils.toggleInlineStyle(editorState, 'highlight');
+ }
 
   handleKeyCommand(command: string): DraftHandleValue {
     if (command === 'myeditor-save') {
