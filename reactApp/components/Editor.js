@@ -1,28 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {RichUtils, Editor, EditorState} from 'draft-js';
+import {RichUtils, Editor, EditorState, DefaultDraftBlockRenderMap} from 'draft-js';
+import { Map } from 'immutable';
 
+import 'draft-js/dist/Draft.css';
+import './myStyle.scss';
 
-const styleMap = {
-  'LEFT_ALIGN': {
-    'display': 'block',
-    'text-align': 'left'
+const blockRenderMap = Map({
+  'align-left': {
+    element: 'div'
   },
-  'CENTER_ALIGN': {
-    'display': 'block',
-    'text-align': 'center'
+  'align-center': {
+    element: 'div'
   },
-  'RIGHT_ALIGN': {
-    'display': 'block',
-    'text-align': 'right'
+  'align-right': {
+    element: 'div'
   }
-}
+});
+
+const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
 class MyEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editorState: EditorState.createEmpty()
+      editorState: EditorState.createEmpty(),
+      align: null,
+      alignment: 'left'
     };
     this.onChange = (editorState) => this.setState({editorState});
   }
@@ -44,20 +48,30 @@ class MyEditor extends React.Component {
   }
 
   _onLeftAlignClick() {
-    console.log(this.state.editorState);
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'LEFT_ALIGN'));
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'align-left'));
   }
 
   _onCenterAlignClick() {
-    console.log(this.state.editorState);
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'CENTER_ALIGN'));
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'align-center'));
   }
 
   _onRightAlignClick() {
-    console.log(this.state.editorState);
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'RIGHT_ALIGN'));
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'align-right'));
   }
 
+  _blockRenderMapFn(contentBlock) {
+    const type = contentBlock.getType();
+    if (type === 'align-left') {
+      return 'align-left';
+    }
+    if (type === 'align-center') {
+      return 'align-center';
+    }
+    if (type === 'align-right') {
+      return 'alignRight';
+    }
+    return null;
+  }
 
   render() {
     return (
@@ -73,7 +87,8 @@ class MyEditor extends React.Component {
           editorState={this.state.editorState}
           handleKeyCommand={this.handleKeyCommand}
           onChange={this.onChange}
-          customStyleMap={styleMap}
+          blockRenderMap={extendedBlockRenderMap}
+          blockStyleFn={this._blockRenderMapFn}
         />
       </div>
     )

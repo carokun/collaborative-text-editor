@@ -14,12 +14,14 @@ import Document from './views/Document';
 import Login from './views/Login';
 import Register from './views/Register';
 import DocumentList from './views/DocumentList';
+import Editor from './components/Editor';
 
+  // <Route path='/' component={Login} />
 const router = (
   <BrowserRouter history={history}>
     <div>
       <Route path='/document' exact component={Document} />
-      <Route path='/' component={Login} />
+      <Route path='/' component={Editor} />
       <Route path='/register' exact component={Register} />
       <Route path='/documentlist' exact component={DocumentList} />
     </div>
