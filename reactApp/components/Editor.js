@@ -12,6 +12,7 @@ const { editorBoxStyle,
 const { hasCommandModifier } = KeyBindingUtil;
 const { myKeyBindingFn } = require('./keyBindingFn');
 import { Map } from 'immutable';
+
 import axios from 'axios';
 import 'draft-js/dist/Draft.css';
 import io from 'socket.io-client'
@@ -43,6 +44,11 @@ class MyEditor extends React.Component {
     this.onChange = (editorState) => {
       this.setState({editorState: editorState})
       this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+
+
+      //when a user highlights something have it come up on everyone else's screen
+      this.state.socket.emit('highlight', editorState.getSelection())
+
     };
   }
 
@@ -87,7 +93,11 @@ class MyEditor extends React.Component {
     this.state.socket.on('connect', () => {
       console.log("connected on the client side");
       this.state.socket.on('documentChange', (currentContent) => {
-        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
+        this.setState({editorState: EditorState.moveSelectionToEnd(EditorState.createWithContent(convertFromRaw(currentContent)))});
+      })
+
+      this.state.socket.on('highlight', (selection) => {
+        //handle user highlighting something here
       })
     })
   }
