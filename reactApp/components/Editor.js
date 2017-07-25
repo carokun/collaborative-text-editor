@@ -163,15 +163,15 @@ class MyEditor extends React.Component {
         <select id="fontSize" onChange={() => this._onFontSizeClick()}>
             {sizes.map(size => (<option value={size}> {size} </option>))}
         </select>
-        <button onClick={this._onClick.bind(this, 'inline', 'BOLD')}>Bold</button>
-        <button onClick={this._onClick.bind(this, 'inline', 'ITALIC')}>Italics</button>
-        <button onClick={this._onClick.bind(this, 'inline', 'CODE')}>Code</button>
-        <button onClick={this._onClick.bind(this, 'inline', 'UNDERLINE')}>Underline</button>
-        <button onClick={this._onClick.bind(this, 'block', 'unordered-list-item')}>UL</button>
-        <button onClick={this._onClick.bind(this, 'block', 'ordered-list-item')}>OL</button>
-        <button onClick={this._onClick.bind(this, 'block', 'align-left')}>align-left</button>
-        <button onClick={this._onClick.bind(this, 'block', 'align-center')}>align-center</button>
-        <button onClick={this._onClick.bind(this, 'block', 'align-right')}>align-right</button>
+        <i className="fa fa-bold" aria-hidden="true" onClick={this._onClick.bind(this, 'inline', 'BOLD')}></i>
+        <i className="fa fa-italic" aria-hidden="true" onClick={this._onClick.bind(this, 'inline', 'ITALIC')}></i>
+        <i className="fa fa-code" aria-hidden="true" onClick={this._onClick.bind(this, 'inline', 'CODE')}></i>
+        <i className="fa fa-underline" aria-hidden="true" onClick={this._onClick.bind(this, 'inline', 'UNDERLINE')}></i>
+        <i className="fa fa-list-ul" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'unordered-list-item')}></i>
+        <i className="fa fa-list-ol" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'ordered-list-item')}></i>
+        <i className="fa fa-align-left" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'align-left')}></i>
+        <i className="fa fa-align-center" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'align-center')}></i>
+        <i className="fa fa-align-right" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'align-right')}></i>
         <Editor
           editorState={this.state.editorState}
           handleKeyCommand={this.handleKeyCommand}
