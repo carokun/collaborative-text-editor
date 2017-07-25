@@ -68,11 +68,14 @@ app.use(passport.session());
 app.use('/', auth(passport));
 app.use('/', routes(passport));
 
+const {sockets} = require('./sockets');
+sockets(io);
+
 // Example route
 app.get('/', function (req, res) {
   res.send('Hello World!')
 })
 
-app.listen(3000, function () {
+server.listen(3000, function () {
   console.log('Backend server for Electron App running on port 3000!')
 })

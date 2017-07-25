@@ -19,6 +19,8 @@ const { editorBoxStyle,
         colors } = require('./stylingConsts');
 const { hasCommandModifier } = KeyBindingUtil;
 const { myKeyBindingFn } = require('./keyBindingFn');
+import io from 'socket.io-client'
+
 const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
 
@@ -26,6 +28,7 @@ class MyEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      socket: io('http://localhost:3000'),
       editorState: EditorState.createEmpty(),
       interval: () => ''
     };
@@ -34,44 +37,22 @@ class MyEditor extends React.Component {
     this._onStyleClick = this._onStyleClick.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
   }
-  componentWillMount() {
-    console.log("DOCUMENT ID", this.props.docId);
+
+
+    this.onChange = (editorState) => {
+      this.setState({editorState: editorState})
+      this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+    };
   }
 
-  _onBoldClick() {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
-  }
+  _onClick(toggleType, style) {
+    console.log('toggleType:', toggleType, 'style:', style);
+    if (toggleType === 'inline') {
+      this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, style));
+    } else {
+      this.onChange(RichUtils.toggleBlockType(this.state.editorState, style));
+    }
 
-  _onItalicClick() {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'ITALIC'));
-  }
-
-  _onCodeClick() {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'CODE'));
-  }
-
-  _onUnderlineClick() {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'UNDERLINE'));
-  }
-
-  _onULClick() {
-    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'unordered-list-item'));
-  }
-
-  _onOLClick() {
-    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'ordered-list-item'));
-  }
-
-  _onLeftAlignClick() {
-    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'align-left'));
-  }
-
-  _onCenterAlignClick() {
-    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'align-center'));
-  }
-
-  _onRightAlignClick() {
-    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'align-right'));
   }
 
   _blockRenderMapFn(contentBlock) {
@@ -99,6 +80,15 @@ class MyEditor extends React.Component {
     .catch(err => {
       console.log("ERROR:", err);
     });
+  }
+
+  componentDidMount() {
+    this.state.socket.on('connect', () => {
+      console.log("connected on the client side");
+      this.state.socket.on('documentChange', (currentContent) => {
+        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
+      })
+    })
   }
 
   componentWillUnmount() {
@@ -161,15 +151,15 @@ class MyEditor extends React.Component {
       return 'handled';
     } else if (command === 'myeditor-bold') {
       console.log('BOLD!!')
-      this._onBoldClick();
+      this._onClick('inline', 'BOLD')
       return 'handled';
     } else if (command === 'myeditor-italic') {
       console.log('ITALIC!!')
-      this._onItalicClick();
+      this._onClick('inline', 'ITALIC')
       return 'handled';
     } else if (command === 'myeditor-underline') {
       console.log('UNDERLINE!!');
-      this._onUnderlineClick();
+      this._onClick('inline', 'UNDERLINE')
       return 'handled';
     }
     return 'not-handled';
@@ -187,15 +177,15 @@ class MyEditor extends React.Component {
         <select id="fontSize" onChange={() => this._onFontSizeClick()}>
             {sizes.map(size => (<option value={size}> {size} </option>))}
         </select>
-        <button onClick={this._onBoldClick.bind(this)}>Bold</button>
-        <button onClick={this._onItalicClick.bind(this)}>Italics</button>
-        <button onClick={this._onCodeClick.bind(this)}>Code</button>
-        <button onClick={this._onUnderlineClick.bind(this)}>Underline</button>
-        <button onClick={this._onLeftAlignClick.bind(this)}>align-left</button>
-        <button onClick={this._onCenterAlignClick.bind(this)}>align-center</button>
-        <button onClick={this._onRightAlignClick.bind(this)}>align-right</button>
-        <button onClick={this._onULClick.bind(this)}>UL</button>
-        <button onClick={this._onOLClick.bind(this)}>OL</button>
+        <button onClick={this._onClick.bind(this, 'inline', 'BOLD')}>Bold</button>
+        <button onClick={this._onClick.bind(this, 'inline', 'ITALIC')}>Italics</button>
+        <button onClick={this._onClick.bind(this, 'inline', 'CODE')}>Code</button>
+        <button onClick={this._onClick.bind(this, 'inline', 'UNDERLINE')}>Underline</button>
+        <button onClick={this._onClick.bind(this, 'block', 'unordered-list-item')}>UL</button>
+        <button onClick={this._onClick.bind(this, 'block', 'ordered-list-item')}>OL</button>
+        <button onClick={this._onClick.bind(this, 'block', 'align-left')}>align-left</button>
+        <button onClick={this._onClick.bind(this, 'block', 'align-center')}>align-center</button>
+        <button onClick={this._onClick.bind(this, 'block', 'align-right')}>align-right</button>
         <Editor
           editorState={this.state.editorState}
           handleKeyCommand={this.handleKeyCommand}
