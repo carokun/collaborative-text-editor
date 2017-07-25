@@ -5,6 +5,7 @@ const colors = ['black', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', '
 const sizes = ['10', '12', '14', '16', '20', '24', '36', '72'];
 
 const styleMap = {
+  highlight: { backgroundColor: "yellow" },
     // fonts
   TimesNewRoman: { fontFamily: "Times New Roman" },
   Courier: { fontFamily: "Courier New" },

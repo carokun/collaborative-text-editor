@@ -36,9 +36,14 @@ class MyEditor extends React.Component {
     this._onStyleClick = this._onStyleClick.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.onChange = (editorState) => {
+      let selectionState = editorState.getSelection();
+      let start = selectionState.getStartOffset();
+      let end = selectionState.getEndOffset();
       this.setState({editorState: editorState})
       this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+      Math.abs(start - end) !== 0 ? this._onHighlight() : null;
     };
+    this._onHighlight = this._onHighlight.bind(this);
   }
 
   _onClick(toggleType, style) {
@@ -64,19 +69,19 @@ class MyEditor extends React.Component {
     }
     return null;
   }
-
-  componentWillMount() {
-    const self = this;
-    axios.get('http://localhost:3000/document/' + this.props.id)
-    .then(resp => {
-      const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
-      self.onChange(parsed);
-      this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
-    })
-    .catch(err => {
-      console.log("ERROR:", err);
-    });
-  }
+// @caroline this was breaking
+  // componentWillMount() {
+  //   const self = this;
+  //   axios.get('http://localhost:3000/document/' + this.props.id)
+  //   .then(resp => {
+  //     const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
+  //     self.onChange(parsed);
+  //     this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
+  //   })
+  //   .catch(err => {
+  //     console.log("ERROR:", err);
+  //   });
+  // }
 
   componentDidMount() {
     this.state.socket.on('connect', () => {
@@ -112,7 +117,6 @@ class MyEditor extends React.Component {
     const nextContentState = arr.reduce((contentState, style) => {
         return Modifier.removeInlineStyle(contentState, selection, style)
       }, editorState.getCurrentContent());
-
     let nextEditorState = EditorState.push(
       editorState,
       nextContentState,
@@ -140,7 +144,20 @@ class MyEditor extends React.Component {
       const maxDepth = 4;
       this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
     }
-
+    ///////////// HIGHLIGHT FUNCTION AKA WTF IS GOING ON ?????? ???/////////////
+    _onHighlight() {
+      const { editorState } = this.state;
+      const selectionState = editorState.getSelection();
+      var anchorKey = selectionState.getAnchorKey();
+      var currentContent = editorState.getCurrentContent();
+      var currentContentBlock = currentContent.getBlockForKey(anchorKey);
+      var start = selectionState.getStartOffset();
+      var end = selectionState.getEndOffset();
+      var selected = currentContentBlock.getText().slice(start, end);
+      this.setState({ editorState: RichUtils.toggleInlineStyle(this.state.editorState, 'highlight')});
+      console.log(start, end, selected)
+    }
+    //////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   handleKeyCommand(command: string): DraftHandleValue {
     if (command === 'myeditor-save') {
       console.log('SAVED!!')
@@ -182,6 +199,7 @@ class MyEditor extends React.Component {
         <i className="fa fa-align-left" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'align-left')}></i>
         <i className="fa fa-align-center" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'align-center')}></i>
         <i className="fa fa-align-right" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'align-right')}></i>
+        <button onClick={this._onHighlight.bind(this)}> highlight! </button>
         <Editor
           editorState={this.state.editorState}
           handleKeyCommand={this.handleKeyCommand}
