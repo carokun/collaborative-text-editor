@@ -16,6 +16,8 @@ const connect = process.env.MONGODB_URI;
 mongoose.connect(connect);
 
 const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
 app.use(bodyParser.json());
 

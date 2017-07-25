@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {RichUtils, Editor, EditorState} from 'draft-js';
+import {RichUtils, Editor, EditorState, convertToRaw, convertFromRaw} from 'draft-js';
+import axios from 'axios';
 
 
 const styleMap = {
@@ -22,7 +23,8 @@ class MyEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editorState: EditorState.createEmpty()
+      editorState: EditorState.createEmpty(),
+      interval: () => ''
     };
     this.onChange = (editorState) => this.setState({editorState});
   }
@@ -61,6 +63,23 @@ class MyEditor extends React.Component {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'RIGHT_ALIGN'));
   }
 
+  componentWillMount() {
+    const self = this;
+    axios.get('http://localhost:3000/document/' + this.props.id)
+    .then(resp => {
+      const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
+      self.onChange(parsed);
+      this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
+    })
+    .catch(err => {
+      console.log("ERROR:", err);
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.interval);
+  }
+
 
   render() {
     return (
@@ -78,7 +97,9 @@ class MyEditor extends React.Component {
           onChange={this.onChange}
           customStyleMap={styleMap}
         />
+        <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
       </div>
+
     )
   }
 }

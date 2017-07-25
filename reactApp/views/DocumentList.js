@@ -14,7 +14,6 @@ class DocumentList extends React.Component {
   componentWillMount() {
     axios.get('http://localhost:3000/documents')
     .then(resp => {
-      console.log(resp);
       this.setState({
         documents: resp.data
       });
@@ -32,24 +31,23 @@ class DocumentList extends React.Component {
       this.setState({ sharedDocID: '' })
       if (resp.status === 200) {
         console.log('success', resp);
-      } else {
-        console.log('fail', resp);
+        var documents = this.state.documents;
+        documents.push(resp.data);
+        this.setState({ createDocTitle: '', documents: documents })
       }
     })
   }
 
   createNewDocument() {
-    console.log('here');
     axios.post('http://localhost:3000/createNewDocument', {
       title: this.state.createDocTitle
     })
     .then(resp => {
       this.setState({ createDocTitle: '' })
       if (resp.status === 200) {
-        console.log('success', resp);
-        this.setState({ createDocTitle: '', documents: resp.data })
-      } else {
-        console.log('fail', resp);
+        var documents = this.state.documents;
+        documents.push(resp.data);
+        this.setState({ createDocTitle: '', documents: documents })
       }
     })
     .catch(err => {
@@ -65,10 +63,8 @@ class DocumentList extends React.Component {
         <button onClick={() => this.createNewDocument()}>Create Document</button>
         <div>
         {
-          this.state.documents.map((docObject) =>{
-            console.log(docObject._id)
-            return <div className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}>{docObject.title}</div>
-            }
+          this.state.documents.map((docObject) =>
+            <div key={docObject._id} className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}>{docObject.title}</div>
           )
         }
         </div>
