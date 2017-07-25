@@ -14,6 +14,7 @@ const { myKeyBindingFn } = require('./keyBindingFn');
 import { Map } from 'immutable';
 import axios from 'axios';
 import 'draft-js/dist/Draft.css';
+import io from 'socket.io-client'
 
 const blockRenderMap = Map({
   'align-left': {
@@ -34,15 +35,15 @@ class MyEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      socket: io('http://localhost:3000'),
       editorState: EditorState.createEmpty(),
       interval: () => ''
     };
-    this.onChange = (editorState) => this.setState({editorState});
-    this._onStyleClick = this._onStyleClick.bind(this);
-    this.handleKeyCommand = this.handleKeyCommand.bind(this);
-  }
-  componentWillMount() {
-    console.log("DOCUMENT ID", this.props.docId);
+
+    this.onChange = (editorState) => {
+      this.setState({editorState: editorState})
+      this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+    };
   }
 
   _onClick(toggleType, style) {
@@ -80,6 +81,15 @@ class MyEditor extends React.Component {
     .catch(err => {
       console.log("ERROR:", err);
     });
+  }
+
+  componentDidMount() {
+    this.state.socket.on('connect', () => {
+      console.log("connected on the client side");
+      this.state.socket.on('documentChange', (currentContent) => {
+        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
+      })
+    })
   }
 
   componentWillUnmount() {
