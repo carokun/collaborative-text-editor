@@ -17,6 +17,7 @@ class Login extends React.Component {
     .then(resp => {
       if(resp.status === 200) {
         console.log('success', resp);
+        this.props.history.push('/documentlist')
       } else {
         console.log('fail', resp);
       }

@@ -18,8 +18,7 @@ class Register extends React.Component {
     .then(resp => {
       if(resp.status === 200) {
         console.log('success', resp);
-        this.props.history.push('/documentlist');
-
+        this.props.history.push('/login')
       } else {
         console.log('fail', resp);
       }
