@@ -59,14 +59,14 @@ class DocumentList extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="document-list-page">
         <h2>Documents Portal</h2>
         <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
         <button onClick={() => this.createNewDocument()}>Create Document</button>
         <div>
         {
           this.state.documents.map((docObject) =>
-            <a href="#">{docObject.title}</a>
+            <div className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}>{docObject.title}</div>
           )
         }
         </div>

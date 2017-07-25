@@ -23,6 +23,7 @@ const router = (
       <Route path='/' exact component={Login} />
       <Route path='/register' exact component={Register} />
       <Route path='/documentlist' exact component={DocumentList} />
+      <Route path='/document/:id' component={DocumentList} />
     </div>
   </HashRouter>
 )
