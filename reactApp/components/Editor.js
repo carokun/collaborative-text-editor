@@ -1,32 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import {RichUtils, Editor, EditorState, convertToRaw, DefaultDraftBlockRenderMap, convertFromRaw, getDefaultKeyBinding,
-KeyBindingUtil,
-Modifier } from 'draft-js';
+import axios from 'axios';
+import 'draft-js/dist/Draft.css';
+import {RichUtils,
+        Editor,
+        EditorState,
+        convertToRaw,
+        DefaultDraftBlockRenderMap,
+        convertFromRaw,
+        getDefaultKeyBinding,
+        KeyBindingUtil,
+        Modifier } from 'draft-js';
 const { editorBoxStyle,
+        blockRenderMap,
         styleMap,
         sizes,
         fonts,
         colors } = require('./stylingConsts');
 const { hasCommandModifier } = KeyBindingUtil;
 const { myKeyBindingFn } = require('./keyBindingFn');
-import { Map } from 'immutable';
-import axios from 'axios';
-import 'draft-js/dist/Draft.css';
-
-const blockRenderMap = Map({
-  'align-left': {
-    element: 'div'
-  },
-  'align-center': {
-    element: 'div'
-  },
-  'align-right': {
-    element: 'div'
-  }
-});
-
 const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
 
@@ -38,6 +30,7 @@ class MyEditor extends React.Component {
       interval: () => ''
     };
     this.onChange = (editorState) => this.setState({editorState});
+    this.onTab = (e) => this._onTab(e);
     this._onStyleClick = this._onStyleClick.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
   }
@@ -157,6 +150,11 @@ class MyEditor extends React.Component {
     this.onChange(nextEditorState);
   }
 
+  _onTab(e) {
+      const maxDepth = 4;
+      this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
+    }
+
   handleKeyCommand(command: string): DraftHandleValue {
     if (command === 'myeditor-save') {
       console.log('SAVED!!')
@@ -205,6 +203,8 @@ class MyEditor extends React.Component {
           onChange={this.onChange}
           blockRenderMap={extendedBlockRenderMap}
           blockStyleFn={this._blockRenderMapFn}
+          customStyleMap={styleMap}
+          onTab={this.onTab}
         />
         <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
       </div>
