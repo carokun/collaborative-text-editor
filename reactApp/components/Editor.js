@@ -32,13 +32,9 @@ class MyEditor extends React.Component {
       editorState: EditorState.createEmpty(),
       interval: () => ''
     };
-    this.onChange = (editorState) => this.setState({editorState});
     this.onTab = (e) => this._onTab(e);
     this._onStyleClick = this._onStyleClick.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
-  }
-
-
     this.onChange = (editorState) => {
       this.setState({editorState: editorState})
       this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
