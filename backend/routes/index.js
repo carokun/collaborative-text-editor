@@ -74,7 +74,8 @@ module.exports = function(passport) {
     Document.findById(docID)
     .then(document => {
       if (document) {
-        let newRevisionHistory = [...document.revisionhistory]
+        // Copies the object of objects while keeping immutability
+        let newRevisionHistory = JSON.parse((JSON.stringify(document.revisionhistory)));
         newRevisionHistory.push(newRevision);
         document.revisionhistory = newRevisionHistory;
         document.text = JSON.stringify(req.body.text);

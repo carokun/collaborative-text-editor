@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {Editor, EditorState, convertToRaw, convertFromRaw} from 'draft-js';
+import moment from 'moment';
 
 
 class RevisionHistory extends React.Component {
@@ -15,6 +16,7 @@ class RevisionHistory extends React.Component {
   componentWillMount() {
     axios.get('http://localhost:3000/document/' + this.props.match.params.docId)
     .then(resp => {
+      console.log("RESPON", resp.data.revisionhistory);
       this.setState({
         revisionhistory: resp.data.revisionhistory
       });
@@ -25,7 +27,7 @@ class RevisionHistory extends React.Component {
   }
 
   modifyEditorDisplay(prevEditorState) {
-    const prevState = EditorState.createWithContent(convertFromRaw(JSON.parse(prevEditorState)));
+    const prevState = EditorState.createWithContent(convertFromRaw(JSON.parse(prevEditorState.revision)));
     this.setState({
       editorState: prevState
     })
@@ -33,7 +35,7 @@ class RevisionHistory extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="revision-history-page">
         <h2>Revision History</h2>
 
         <Editor
@@ -41,13 +43,15 @@ class RevisionHistory extends React.Component {
           readOnly={true}
         />
         <h3>History</h3>
-        <div>
+        <h5>Least Recent</h5>
+        <div className="history-list">
           {
             this.state.revisionhistory.map((prevEditorState) => {
-              return <div onClick={() => this.modifyEditorDisplay(prevEditorState)}>Click me!</div>
+              return <div onClick={() => this.modifyEditorDisplay(prevEditorState)}>{moment(prevEditorState.date).format('MMMM Do YYYY, h:mm:ss a')}</div>
             })
           }
         </div>
+        <h5>Most Recent</h5>
         <button>Restore</button>
         <button onClick={() => this.props.history.push('/document/' + this.props.match.params.docId)}>Return</button>
       </div>

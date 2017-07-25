@@ -29,7 +29,10 @@ class DocumentPage extends React.Component {
       axios.post('http://localhost:3000/saveDocument', {
         text: newState,
         id: this.props.match.params.id,
-        newRevision: JSON.stringify(newState)
+        newRevision: {
+          revision: JSON.stringify(newState),
+          date: new Date()
+        }
       })
       .then(resp => {
         if (resp.status === 200) {
