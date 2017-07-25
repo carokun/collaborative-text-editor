@@ -9,7 +9,8 @@ class RevisionHistory extends React.Component {
     super(props);
     this.state = {
       revisionhistory: [],
-      editorState: EditorState.createEmpty()
+      editorState: EditorState.createEmpty(),
+      title: ""
     }
   }
 
@@ -18,7 +19,8 @@ class RevisionHistory extends React.Component {
     .then(resp => {
       console.log("RESPON", resp.data.revisionhistory);
       this.setState({
-        revisionhistory: resp.data.revisionhistory
+        revisionhistory: resp.data.revisionhistory,
+        title: resp.data.title
       });
     })
     .catch(err => {
@@ -36,12 +38,14 @@ class RevisionHistory extends React.Component {
   render() {
     return (
       <div className="revision-history-page">
-        <h2>Revision History</h2>
+        <h2>"{this.state.title}" Revision History</h2>
+        <h3>View Version</h3>
 
-        <Editor
+        <div className="revision-editor"><Editor
           editorState={this.state.editorState}
           readOnly={true}
         />
+        </div>
         <h3>History</h3>
         <h5>Least Recent</h5>
         <div className="history-list">
@@ -52,8 +56,8 @@ class RevisionHistory extends React.Component {
           }
         </div>
         <h5>Most Recent</h5>
-        <button>Restore</button>
-        <button onClick={() => this.props.history.push('/document/' + this.props.match.params.docId)}>Return</button>
+        <button className="blue-button">Restore</button>
+        <button className="blue-button" onClick={() => this.props.history.push('/document/' + this.props.match.params.docId)}>Return</button>
       </div>
     )
   }
