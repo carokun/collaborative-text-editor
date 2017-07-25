@@ -26,6 +26,9 @@ class MyEditor extends React.Component {
     };
     this.onChange = (editorState) => this.setState({editorState});
   }
+  componentWillMount() {
+    console.log("DOCUMENT ID", this.props.docId);
+  }
 
   _onBoldClick() {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
