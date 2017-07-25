@@ -20,8 +20,9 @@ module.exports = function(passport) {
   });
 
   router.post('/createNewDocument', function(req, res) {
-    const title = req.body.title;
+    console.log('hereeee');
 
+    const title = req.body.title;
     const newDoc = new Document({
       owner: req.user._id,
       title: title,
@@ -29,6 +30,10 @@ module.exports = function(passport) {
     })
     newDoc.save()
     .then(document => {
+      var newDocs = req.user.documents.slice();
+      newDocs.push(document);
+      req.user.documents = newDocs;
+      req.user.save()
       res.json(document)
     })
   });

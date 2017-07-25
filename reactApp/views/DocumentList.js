@@ -10,11 +10,13 @@ class DocumentList extends React.Component {
       createDocTitle: ''
     }
   }
-  componentDidMount() {
+
+  componentWillMount() {
     axios.get('http://localhost:3000/documents')
-    .then(documents => {
+    .then(resp => {
+      console.log(resp);
       this.setState({
-        documents: documents
+        documents: resp.data
       });
     })
     .catch(err => {
@@ -27,44 +29,51 @@ class DocumentList extends React.Component {
       docID: this.state.sharedDocID
     })
     .then(resp => {
+      this.setState({ sharedDocID: '' })
       if (resp.status === 200) {
         console.log('success', resp);
       } else {
         console.log('fail', resp);
       }
     })
-    this.setState({ sharedDocID: '' })
+
   }
 
   createNewDocument() {
+    console.log('here');
     axios.post('http://localhost:3000/createNewDocument', {
       title: this.state.createDocTitle
     })
     .then(resp => {
+      this.setState({ createDocTitle: '' })
       if (resp.status === 200) {
         console.log('success', resp);
+        this.setState({ createDocTitle: '', documents: resp.data })
       } else {
         console.log('fail', resp);
       }
     })
-    this.setState({ createDocTitle: '' })
+    .catch(err => {
+      console.log('err', err);
+    })
+
   }
 
   render() {
     return (
       <div>
         <h2>Documents Portal</h2>
-        <input type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
-        <button type="submit" onClick={() => this.createNewDocument()}>Create Document</button>
+        <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
+        <button onClick={() => this.createNewDocument()}>Create Document</button>
         <div>
         {
-          this.state.documents.map((docObject) => {
+          this.state.documents.map((docObject) =>
             <a href="#">{docObject.title}</a>
-          })
+          )
         }
         </div>
-        <input type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
-        <button type="submit" onClick={() => this.addSharedDocument()}>Add shared document</button>
+        <input value={this.state.sharedDocID} type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
+        <button onClick={() => this.addSharedDocument()}>Add shared document</button>
       </div>
     );
   }
