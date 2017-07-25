@@ -23,13 +23,11 @@ class MyEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      socket: io(),
       editorState: EditorState.createEmpty(),
       interval: () => ''
     };
     this.onChange = (editorState) => this.setState({editorState});
-  }
-  componentWillMount() {
-    console.log("DOCUMENT ID", this.props.docId);
   }
 
   _onBoldClick() {
@@ -74,6 +72,13 @@ class MyEditor extends React.Component {
     .catch(err => {
       console.log("ERROR:", err);
     });
+  }
+
+  componentDidMount() {
+    this.state.socket.on('connect', () => {
+      console.log("connected on the client side");
+      
+    })
   }
 
   componentWillUnmount() {
