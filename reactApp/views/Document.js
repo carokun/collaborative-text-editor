@@ -2,6 +2,8 @@ import React from 'react';
 import MyEditor from '../components/Editor';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Editor, EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+
 
 class DocumentPage extends React.Component {
     constructor(props) {
@@ -26,7 +28,8 @@ class DocumentPage extends React.Component {
     saveDocument(newState) {
       axios.post('http://localhost:3000/saveDocument', {
         text: newState,
-        id: this.props.match.params.id
+        id: this.props.match.params.id,
+        newRevision: JSON.stringify(newState)
       })
       .then(resp => {
         if (resp.status === 200) {
@@ -39,12 +42,11 @@ class DocumentPage extends React.Component {
       });
     }
 
-
     render() {
         return (
             <div className="editor-page">
                 <h2>{this.state.title}</h2>
-                <MyEditor id={this.props.match.params.id} editorState={this.state.editorState} saveDocument={this.saveDocument.bind(this)}/>
+                <MyEditor id={this.props.match.params.id} editorState={this.state.editorState} saveDocument={this.saveDocument.bind(this)} history={this.props.history}/>
                 <button className="blue-button" onClick={() => this.props.history.push('/documentlist')}>Back To Documents</button>
             </div>
         )
