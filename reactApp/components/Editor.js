@@ -31,11 +31,22 @@ class MyEditor extends React.Component {
       this.setState({editorState: editorState})
       this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
 
-
+      let selectionState = editorState.getSelection();
+      let start = selectionState.getStartOffset();
+      let end = selectionState.getEndOffset();
+      console.log(start, end);
+      if (start - end === 0) {
+        this.setState({editorState: editorState})
+        this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+      } else {
+        const newState = this._onHighlight(editorState);
+        this.setState({editorState: newState})
+        this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
+      }
       //when a user highlights something have it come up on everyone else's screen
-      this.state.socket.emit('highlight', editorState.getSelection())
 
     };
+    this._onHighlight = this._onHighlight.bind(this);
   }
 
   _onBoldClick() {
@@ -67,6 +78,11 @@ class MyEditor extends React.Component {
   _onRightAlignClick() {
     console.log(this.state.editorState);
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'RIGHT_ALIGN'));
+  }
+
+  _onHighlight(editorState) {
+      // this.state.socket.emit('highlight', editorState.getSelection())
+      return RichUtils.toggleInlineStyle(editorState, 'highlight');
   }
 
   componentWillMount() {
