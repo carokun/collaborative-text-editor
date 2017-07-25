@@ -196,7 +196,6 @@ class MyEditor extends React.Component {
         <i className="fa fa-align-left" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'align-left')}></i>
         <i className="fa fa-align-center" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'align-center')}></i>
         <i className="fa fa-align-right" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'align-right')}></i>
-        <button onClick={this._onHighlight.bind(this)}> highlight! </button>
         <Editor
           editorState={this.state.editorState}
           handleKeyCommand={this.handleKeyCommand}
