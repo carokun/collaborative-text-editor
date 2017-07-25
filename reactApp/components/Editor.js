@@ -81,7 +81,7 @@ class MyEditor extends React.Component {
     this.state.socket.on('connect', () => {
       console.log("connected on the client side");
       this.state.socket.on('documentChange', (currentContent) => {
-        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
+        this.setState({editorState: EditorState.moveSelectionToEnd(EditorState.createWithContent(convertFromRaw(currentContent)))});
       })
     })
   }
