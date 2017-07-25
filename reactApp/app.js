@@ -14,14 +14,15 @@ import Document from './views/Document';
 import Login from './views/Login';
 import Register from './views/Register';
 import DocumentList from './views/DocumentList';
+import styles from './assets/stylesheets/main.less';
 
 const router = (
   <HashRouter history={history}>
     <div>
-      <Route path='/document/:id' component={Document} />
       <Route path='/' exact component={Login} />
       <Route path='/register' exact component={Register} />
       <Route path='/documentlist' exact component={DocumentList} />
+      <Route path='/document/:id' component={Document} />
     </div>
   </HashRouter>
 )

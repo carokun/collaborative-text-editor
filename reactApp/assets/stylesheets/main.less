@@ -1,0 +1,111 @@
+@eggshell: #F7FAFA;
+@darkblue: #000026;
+@lightgreen: #C1EAAE;
+@pastelblue: #A5CCCC;
+@red: ##CC3026;
+
+body {
+  font-family: 'Avenir Next', sans-serif;
+  background-color: @eggshell;
+  color: @darkblue;
+}
+
+.register-page {
+  .form-style;
+}
+
+.login-page {
+  .form-style;
+}
+
+.editor-page {
+  .button-styles;
+}
+
+.document-list-page {
+  padding: 50px;
+  .list-item {
+    padding: 10px 5px;
+    color: @darkblue;
+    background-color: white;
+    font-weight: bold;
+    margin: 9px 0px;
+    border: 1px solid white;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05), 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 2px;
+  }
+  .list-item:hover {
+    border: 1px solid #ddd;
+  }
+  input {
+    width: 100%;
+    display: inline-block;
+    padding: 8px;
+    border: 1px solid @eggshell - #111;
+    font-size: 16px;
+  }
+  button {
+    width: 100%;
+    padding: 8px 5px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 3px;
+    font-size: 16px;
+    background-color: @pastelblue;
+  }
+}
+
+// Button styles
+.button-styles {
+  .green-button {
+    background-color: @lightgreen;
+  }
+  .blue-button {
+    background-color: @pastelblue;
+  }
+  .red-button {
+    background-color: @red;
+  }
+}
+
+// General style for the login and register page
+.form-style {
+  .button-styles;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+  button {
+    border: none;
+  }
+  form {
+    div {
+      font-size: 16px;
+      width: 400px;
+      label {
+        margin-top: 8px;
+        width: 100%;
+        display: inline-block;
+      }
+      input {
+        width: 100%;
+        display: inline-block;
+        padding: 8px;
+        border: 1px solid @eggshell - #111;
+        font-size: 16px;
+      }
+      input:focus {
+        outline: none;
+        border: 1px solid @eggshell - #444;
+      }
+    }
+  }
+  button {
+    width: 100% + 3px;
+    padding: 8px 5px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+  }
+}
