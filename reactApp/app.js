@@ -14,6 +14,7 @@ import Document from './views/Document';
 import Login from './views/Login';
 import Register from './views/Register';
 import DocumentList from './views/DocumentList';
+import RevisionHistory from './views/RevisionHistory';
 import styles from './assets/stylesheets/main.less';
 
   // <Route path='/' component={Login} />
@@ -24,6 +25,7 @@ const router = (
       <Route path='/' exact component={Login} />
       <Route path='/register' exact component={Register} />
       <Route path='/documentlist' exact component={DocumentList} />
+      <Route path='/revisionhistory/:docId' component={RevisionHistory} />
     </div>
   </HashRouter>
 )

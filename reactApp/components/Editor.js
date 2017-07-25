@@ -202,6 +202,7 @@ class MyEditor extends React.Component {
           customStyleMap={styleMap}
         />
         <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
+        <button onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
       </div>
 
     )
