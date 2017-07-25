@@ -18,8 +18,9 @@ module.exports = {
           }
         }
       },
+      // { test: /\.s?css$/, loader: 'style-loader!css-loader!sass-loader' },
       {
-        test: /\.less$/,
+        test: /\.(s?css|less)$/,
         use: [{
             loader: "style-loader" // creates style nodes from JS strings
         }, {

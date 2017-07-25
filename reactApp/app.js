@@ -16,6 +16,7 @@ import Register from './views/Register';
 import DocumentList from './views/DocumentList';
 import styles from './assets/stylesheets/main.less';
 
+  // <Route path='/' component={Login} />
 const router = (
   <HashRouter history={history}>
     <div>
