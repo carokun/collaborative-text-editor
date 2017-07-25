@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {RichUtils, Editor, EditorState, convertToRaw, convertFromRaw} from 'draft-js';
+import {RichUtils, Editor, EditorState, convertToRaw, convertFromRaw, Modifier} from 'draft-js';
 import axios from 'axios';
 import io from 'socket.io-client'
 
@@ -30,6 +30,11 @@ class MyEditor extends React.Component {
     this.onChange = (editorState) => {
       this.setState({editorState: editorState})
       this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+
+
+      //when a user highlights something have it come up on everyone else's screen
+      this.state.socket.emit('highlight', editorState.getSelection())
+
     };
   }
 
@@ -82,6 +87,10 @@ class MyEditor extends React.Component {
       console.log("connected on the client side");
       this.state.socket.on('documentChange', (currentContent) => {
         this.setState({editorState: EditorState.moveSelectionToEnd(EditorState.createWithContent(convertFromRaw(currentContent)))});
+      })
+
+      this.state.socket.on('highlight', (selection) => {
+        //handle user highlighting something here
       })
     })
   }

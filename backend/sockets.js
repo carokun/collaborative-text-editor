@@ -8,6 +8,12 @@ module.exports = {
           }
           socket.broadcast.emit('documentChange', currentState);
       });
+      socket.on('highlight', selection => {
+          if (!selection) {
+            return socket.emit('errorMessage', 'No document!');
+          }
+          socket.broadcast.emit('highlight', selection);
+      });
     })
   }
 }
