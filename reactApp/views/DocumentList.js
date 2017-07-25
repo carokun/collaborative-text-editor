@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import styles from '../assets/stylesheets/documentlist.less';
 
 class DocumentList extends React.Component {
   constructor(props) {
