@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {RichUtils, Editor, EditorState, convertToRaw, convertFromRaw} from 'draft-js';
+import {RichUtils, Editor, EditorState, convertToRaw, DefaultDraftBlockRenderMap, convertFromRaw} from 'draft-js';
 import { Map } from 'immutable';
 import axios from 'axios';
-
 import 'draft-js/dist/Draft.css';
-import './myStyle.scss';
 
 const blockRenderMap = Map({
   'align-left': {
