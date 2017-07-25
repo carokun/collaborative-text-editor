@@ -23,7 +23,8 @@ class MyEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editorState: EditorState.createEmpty()
+      editorState: EditorState.createEmpty(),
+      interval: () => ''
     };
     this.onChange = (editorState) => this.setState({editorState});
   }
@@ -32,7 +33,6 @@ class MyEditor extends React.Component {
   }
 
   _onBoldClick() {
-    console.log(this.state.editorState);
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
   }
 
@@ -67,13 +67,17 @@ class MyEditor extends React.Component {
     const self = this;
     axios.get('http://localhost:3000/document/' + this.props.id)
     .then(resp => {
-      console.log(resp.data.text);
       const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
       self.onChange(parsed);
+      this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
     })
     .catch(err => {
       console.log("ERROR:", err);
     });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.interval);
   }
 
 

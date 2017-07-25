@@ -76,7 +76,6 @@ module.exports = function(passport) {
         document.text = JSON.stringify(req.body.text);
         document.save()
         .then(doc => {
-          console.log(doc);
           res.json(doc)
         })
       } else {
