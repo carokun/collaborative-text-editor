@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {RichUtils, Editor, EditorState, convertToRaw, convertFromRaw} from 'draft-js';
 import axios from 'axios';
-
+import io from 'socket.io-client'
 
 const styleMap = {
   'LEFT_ALIGN': {
@@ -23,11 +23,14 @@ class MyEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      socket: io(),
+      socket: io('http://localhost:3000'),
       editorState: EditorState.createEmpty(),
       interval: () => ''
     };
-    this.onChange = (editorState) => this.setState({editorState});
+    this.onChange = (editorState) => {
+      this.setState({editorState})
+      this.state.socket.emit('documentChange', convertToRaw(this.state.editorState.getCurrentContent()))
+    };
   }
 
   _onBoldClick() {
@@ -77,7 +80,9 @@ class MyEditor extends React.Component {
   componentDidMount() {
     this.state.socket.on('connect', () => {
       console.log("connected on the client side");
-      
+      this.state.socket.on('documentChange', (currentContent) => {
+        this.onChange(EditorState.createWithContent(convertFromRaw(currentContent)));
+      })
     })
   }
 
