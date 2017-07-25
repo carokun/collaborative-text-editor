@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {RichUtils, Editor, EditorState} from 'draft-js';
+import {RichUtils, Editor, EditorState, convertToRaw, convertFromRaw} from 'draft-js';
 import axios from 'axios';
 
 class MyEditor extends React.Component {
@@ -11,6 +11,7 @@ class MyEditor extends React.Component {
   }
 
   _onBoldClick() {
+    console.log(this.state.editorState);
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
   }
 
@@ -30,9 +31,9 @@ class MyEditor extends React.Component {
     const self = this;
     axios.get('http://localhost:3000/document/' + this.props.id)
     .then(resp => {
-      console.log(this.state.editorState);
-      console.log(JSON.parse(resp.data.text));
-      self.onChange(JSON.parse(resp.data.text));
+      console.log(resp.data.text);
+      const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
+      self.onChange(parsed);
     })
     .catch(err => {
       console.log("ERROR:", err);
@@ -53,7 +54,7 @@ class MyEditor extends React.Component {
             onChange={this.onChange}
           />
         </div>
-        <button onClick={() => this.props.saveDocument(this.state.editorState)}>Save</button>
+        <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
       </div>
 
     )

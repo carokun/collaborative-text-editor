@@ -4,6 +4,7 @@ var models = require('../models/models');
 var User = models.User;
 var Document = models.Document;
 var EditorState = require('draft-js').EditorState;
+var convertToRaw = require('draft-js').convertToRaw;
 
 module.exports = function(passport) {
 
@@ -31,12 +32,12 @@ module.exports = function(passport) {
   });
 
   router.post('/createNewDocument', function(req, res) {
-
+    console.log(JSON.stringify(convertToRaw(EditorState.createEmpty().getCurrentContent())));
     const title = req.body.title;
     const newDoc = new Document({
       owner: req.user._id,
       title: title,
-      text: JSON.stringify(EditorState.createEmpty())
+      text: JSON.stringify(convertToRaw(EditorState.createEmpty().getCurrentContent()))
     })
     newDoc.save()
     .then(document => {
