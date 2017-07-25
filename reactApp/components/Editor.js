@@ -28,8 +28,8 @@ class MyEditor extends React.Component {
       interval: () => ''
     };
     this.onChange = (editorState) => {
-      this.setState({editorState})
-      this.state.socket.emit('documentChange', convertToRaw(this.state.editorState.getCurrentContent()))
+      this.setState({editorState: editorState})
+      this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
     };
   }
 
@@ -81,7 +81,7 @@ class MyEditor extends React.Component {
     this.state.socket.on('connect', () => {
       console.log("connected on the client side");
       this.state.socket.on('documentChange', (currentContent) => {
-        this.onChange(EditorState.createWithContent(convertFromRaw(currentContent)));
+        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
       })
     })
   }
