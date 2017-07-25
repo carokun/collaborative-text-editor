@@ -27,10 +27,7 @@ class MyEditor extends React.Component {
     this.onChange = (editorState) => this.setState({editorState});
   }
   componentWillMount() {
-    console.log("EDITOR PROPS", this.props);
-    console.log(this.props.location.pathname.slice(10));
-
-    var documentId = this.props.location.pathname.slice(10);
+    console.log("DOCUMENT ID", this.props.docId);
   }
 
   _onBoldClick() {

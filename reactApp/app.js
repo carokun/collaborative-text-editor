@@ -19,11 +19,10 @@ import styles from './assets/stylesheets/main.less';
 const router = (
   <HashRouter history={history}>
     <div>
-      <Route path='/document' exact component={Document} />
       <Route path='/' exact component={Login} />
       <Route path='/register' exact component={Register} />
       <Route path='/documentlist' exact component={DocumentList} />
-      <Route path='/document/:id' component={DocumentList} />
+      <Route path='/document/:id' component={Document} />
     </div>
   </HashRouter>
 )

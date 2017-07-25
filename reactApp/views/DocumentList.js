@@ -65,8 +65,10 @@ class DocumentList extends React.Component {
         <button onClick={() => this.createNewDocument()}>Create Document</button>
         <div>
         {
-          this.state.documents.map((docObject) =>
-            <div className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}>{docObject.title}</div>
+          this.state.documents.map((docObject) =>{
+            console.log(docObject._id)
+            return <div className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}>{docObject.title}</div>
+            }
           )
         }
         </div>

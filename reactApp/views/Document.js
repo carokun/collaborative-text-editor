@@ -10,7 +10,7 @@ class Document extends React.Component {
         return (
             <div className="editor-page">
                 <h2>Edit Document</h2>
-                <MyEditor />
+                <MyEditor docId={this.props.location.pathname.slice(10)}/>
                 <Link to='/documentlist'>
                     <button className="blue-button">Register</button>
                 </Link>
