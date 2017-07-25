@@ -39,9 +39,16 @@ class MyEditor extends React.Component {
       let selectionState = editorState.getSelection();
       let start = selectionState.getStartOffset();
       let end = selectionState.getEndOffset();
-      this.setState({editorState: editorState})
-      this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
-      Math.abs(start - end) !== 0 ? this._onHighlight() : null;
+      console.log(start, end);
+      if (start - end === 0) {
+        this.setState({editorState: editorState})
+        this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+      } else {
+        const newState = this._onHighlight(editorState);
+        this.setState({editorState: newState})
+        this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
+      }
+
     };
     this._onHighlight = this._onHighlight.bind(this);
   }
@@ -145,19 +152,11 @@ class MyEditor extends React.Component {
       this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
     }
     ///////////// HIGHLIGHT FUNCTION AKA WTF IS GOING ON ?????? ???/////////////
-    _onHighlight() {
-      const { editorState } = this.state;
-      const selectionState = editorState.getSelection();
-      var anchorKey = selectionState.getAnchorKey();
-      var currentContent = editorState.getCurrentContent();
-      var currentContentBlock = currentContent.getBlockForKey(anchorKey);
-      var start = selectionState.getStartOffset();
-      var end = selectionState.getEndOffset();
-      var selected = currentContentBlock.getText().slice(start, end);
-      this.setState({ editorState: RichUtils.toggleInlineStyle(this.state.editorState, 'highlight')});
-      console.log(start, end, selected)
-    }
-    //////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  _onHighlight(editorState) {
+      return RichUtils.toggleInlineStyle(editorState, 'highlight');
+  }
+
+
   handleKeyCommand(command: string): DraftHandleValue {
     if (command === 'myeditor-save') {
       console.log('SAVED!!')
