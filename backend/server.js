@@ -16,6 +16,8 @@ const connect = process.env.MONGODB_URI;
 mongoose.connect(connect);
 
 const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
 app.use(bodyParser.json());
 
@@ -64,6 +66,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', auth(passport));
+app.use('/', routes(passport));
 
 // Example route
 app.get('/', function (req, res) {

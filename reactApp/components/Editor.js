@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Editor,
-         EditorState,
-         getDefaultKeyBinding,
-         KeyBindingUtil,
-         Modifier,
-         RichUtils } from 'draft-js';
+
+import {RichUtils, Editor, EditorState, convertToRaw, DefaultDraftBlockRenderMap, convertFromRaw, getDefaultKeyBinding,
+KeyBindingUtil,
+Modifier } from 'draft-js';
 const { editorBoxStyle,
         styleMap,
         sizes,
@@ -13,16 +11,38 @@ const { editorBoxStyle,
         colors } = require('./stylingConsts');
 const { hasCommandModifier } = KeyBindingUtil;
 const { myKeyBindingFn } = require('./keyBindingFn');
+import { Map } from 'immutable';
+import axios from 'axios';
+import 'draft-js/dist/Draft.css';
+
+const blockRenderMap = Map({
+  'align-left': {
+    element: 'div'
+  },
+  'align-center': {
+    element: 'div'
+  },
+  'align-right': {
+    element: 'div'
+  }
+});
+
+const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
+
 
 class MyEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       editorState: EditorState.createEmpty(),
+      interval: () => ''
     };
     this.onChange = (editorState) => this.setState({editorState});
     this._onStyleClick = this._onStyleClick.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
+  }
+  componentWillMount() {
+    console.log("DOCUMENT ID", this.props.docId);
   }
 
   _onBoldClick() {
@@ -50,15 +70,46 @@ class MyEditor extends React.Component {
   }
 
   _onLeftAlignClick() {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'LEFT_ALIGN'));
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'align-left'));
   }
 
   _onCenterAlignClick() {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'CENTER_ALIGN'));
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'align-center'));
   }
 
   _onRightAlignClick() {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'RIGHT_ALIGN'));
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, 'align-right'));
+  }
+
+  _blockRenderMapFn(contentBlock) {
+    const type = contentBlock.getType();
+    if (type === 'align-left') {
+      return 'align-left';
+    }
+    if (type === 'align-center') {
+      return 'align-center';
+    }
+    if (type === 'align-right') {
+      return 'alignRight';
+    }
+    return null;
+  }
+
+  componentWillMount() {
+    const self = this;
+    axios.get('http://localhost:3000/document/' + this.props.id)
+    .then(resp => {
+      const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
+      self.onChange(parsed);
+      this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
+    })
+    .catch(err => {
+      console.log("ERROR:", err);
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.interval);
   }
 
   _onFontSizeClick() {
@@ -152,9 +203,12 @@ class MyEditor extends React.Component {
           handleKeyCommand={this.handleKeyCommand}
           keyBindingFn={myKeyBindingFn}
           onChange={this.onChange}
-          customStyleMap={styleMap}
+          blockRenderMap={extendedBlockRenderMap}
+          blockStyleFn={this._blockRenderMapFn}
         />
+        <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
       </div>
+
     )
   }
 }
