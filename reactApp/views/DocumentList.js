@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import styles from '../assets/stylesheets/documentlist.less';
 
 class DocumentList extends React.Component {
   constructor(props) {
@@ -37,7 +36,6 @@ class DocumentList extends React.Component {
         console.log('fail', resp);
       }
     })
-
   }
 
   createNewDocument() {
@@ -57,7 +55,6 @@ class DocumentList extends React.Component {
     .catch(err => {
       console.log('err', err);
     })
-
   }
 
   render() {
