@@ -6,7 +6,6 @@ module.exports = {
           if (!currentState) {
             return socket.emit('errorMessage', 'No document!');
           }
-          console.log('curr', currentState);
           socket.broadcast.emit('documentChange', currentState);
       });
     })
