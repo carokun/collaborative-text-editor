@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {RichUtils, Editor, EditorState, DefaultDraftBlockRenderMap} from 'draft-js';
+import {RichUtils, Editor, EditorState, convertToRaw, convertFromRaw} from 'draft-js';
 import { Map } from 'immutable';
+import axios from 'axios';
 
 import 'draft-js/dist/Draft.css';
 import './myStyle.scss';
@@ -25,10 +26,12 @@ class MyEditor extends React.Component {
     super(props);
     this.state = {
       editorState: EditorState.createEmpty(),
-      align: null,
-      alignment: 'left'
+      interval: () => ''
     };
     this.onChange = (editorState) => this.setState({editorState});
+  }
+  componentWillMount() {
+    console.log("DOCUMENT ID", this.props.docId);
   }
 
   _onBoldClick() {
@@ -73,6 +76,24 @@ class MyEditor extends React.Component {
     return null;
   }
 
+  componentWillMount() {
+    const self = this;
+    axios.get('http://localhost:3000/document/' + this.props.id)
+    .then(resp => {
+      const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
+      self.onChange(parsed);
+      this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
+    })
+    .catch(err => {
+      console.log("ERROR:", err);
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.interval);
+  }
+
+
   render() {
     return (
       <div style={editorBoxStyle}>
@@ -90,7 +111,9 @@ class MyEditor extends React.Component {
           blockRenderMap={extendedBlockRenderMap}
           blockStyleFn={this._blockRenderMapFn}
         />
+        <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
       </div>
+
     )
   }
 }
