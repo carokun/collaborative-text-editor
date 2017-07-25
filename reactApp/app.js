@@ -14,6 +14,7 @@ import Document from './views/Document';
 import Login from './views/Login';
 import Register from './views/Register';
 import DocumentList from './views/DocumentList';
+import styles from './assets/stylesheets/main.less';
 
 const router = (
   <HashRouter history={history}>

@@ -36,7 +36,6 @@ class DocumentList extends React.Component {
         this.setState({ createDocTitle: '', documents: documents })
       }
     })
-
   }
 
   createNewDocument() {
@@ -54,19 +53,18 @@ class DocumentList extends React.Component {
     .catch(err => {
       console.log('err', err);
     })
-
   }
 
   render() {
     return (
-      <div>
+      <div className="document-list-page">
         <h2>Documents Portal</h2>
         <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
         <button onClick={() => this.createNewDocument()}>Create Document</button>
         <div>
         {
           this.state.documents.map((docObject) =>
-            <div key={docObject._id} onClick={() => this.props.history.push('/document/' + docObject._id)}>{docObject.title}</div>
+            <div className="list-item" key={docObject._id} onClick={() => this.props.history.push('/document/' + docObject._id)}>{docObject.title}</div>
           )
         }
         </div>
