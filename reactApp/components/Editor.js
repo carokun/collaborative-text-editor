@@ -47,7 +47,17 @@ class MyEditor extends React.Component {
         this.setState({editorState: editorState})
         this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
       } else {
+        // const newcontent = Modifier.replaceText({
+        //   contentState: editorState.getCurrentContent(),
+        //   rangeToReplace: editorState.getSelection(),
+        //   text: "yo",
+        // })
+        // this.setState({editorState: EditorState.createWithContent(newcontent)})
         this.setState({editorState: editorState})
+        editorState
+        .getCurrentContent()
+        .getBlockMap()
+        .map(block => console.log(block))
         const newState = this._onHighlight(editorState);
         // this.setState({editorState: newState})
         this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
