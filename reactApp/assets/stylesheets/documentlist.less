@@ -1,29 +1,96 @@
+@eggshell: #F7FAFA;
+@darkblue: #00003B;
+@lightgreen: #C1EAAE;
+@pastelblue: #A5CCCC;
+@red: #CC3026;
+@lightgray: #EDEDED;
+@gray: #BCBCBC;
+
+
 .document-list-page {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+  overflow: hidden;
+  padding-bottom: 5vh;
+  height: 93vh;
   flex: auto;
+  .document-list-header {
+    padding: 2vh 3vh 0 3vh;
+    border-bottom: 1px solid #BCBCBC;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    background-color: white;
+    h2 {
+      margin: 20px 0 10px 0;
+    }
+  }
+  .document-list-options {
+    display: flex;
+  }
+  .document-list-options input {
+    flex: 3;
+    height: 20px;
+    border-radius: 5px 0 0 5px;
+  }
+  .document-list-options button {
+    flex: 1;
+    margin: 0;
+    border-radius: 0 5px 5px 0;
+  }
+  .document-header {
+    height: 20%;
+    min-height: 165px;
+  }
+  .list {
+    padding: 0px 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .list-item {
+    color: @darkblue;
+    padding: 10px 15px;
+    background-color: white;
+    border: 1px solid white;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 2px;
+    width: 200px;
+    margin: 5px;
+    height: 200px;
+    font-size: 14px;
+  }
+  .list-item:hover {
+    border: 1px solid #ddd;
+  }
+  .list-header {
+    font-size: 17px;
+    font-weight: bold;
+  }
+  input {
+    width: 100%;
+    display: inline-block;
+    padding: 8px;
+    border: 1px solid @eggshell - #111;
+    font-size: 16px;
+  }
+  button {
+    width: 100%;
+    padding: 8px 5px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 3px;
+    font-size: 16px;
+    background-color: @pastelblue;
+  }
+  button:hover {
+    background-color: @pastelblue - #111;
+  }
+  button:active {
+    background-color: @pastelblue - #222;
+  }
+  input:focus {
+    outline: none;
+    border: 1px solid @eggshell - #444;
+  }
+  button:focus {
+    outline: none;
+  }
 }
-
-.document-header {
-  height: 20%;
-  min-height: 165px;
-}
-
-.document-list {
-  overflow-y: scroll;
-  max-height: 60%;
-  min-height: 60px;
-  border-left: 1px solid gray;
-  border-right: 1px solid gray;
-  border-radius: 3px;
-  padding: 0 20px 0 20px;
-  margin-bottom: 5px;
-}
-
-.document-share {
-  height: 20%;
-  min-height: 150px;
-}
-
-//min page height 375px

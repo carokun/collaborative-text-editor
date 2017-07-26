@@ -62,19 +62,28 @@ class DocumentList extends React.Component {
   render() {
     return (
       <div className="document-list-page">
-        <h2>Documents Portal</h2>
-        <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
-        <button onClick={() => this.createNewDocument()}>Create Document</button>
+        <div className="document-list-header">
+          <h2>Documents</h2>
+          <div className="document-list-options">
+            <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
+            <button onClick={() => this.createNewDocument()}><i className="fa fa-file-text" aria-hidden="true"></i></button>
+            <input value={this.state.sharedDocID} type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
+            <button onClick={() => this.addSharedDocument()}><i className="fa fa-share-square-o" aria-hidden="true"></i></button>
+          </div>
+        </div>
         <div className='list'>
         {
           this.state.documents.map((docObject) => {
-            return (<div key={docObject._id} className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}><div className="list-header">{docObject.title}</div>{convertFromRaw(JSON.parse(docObject.text)).getPlainText()}</div>)
+            return (
+              <div key={docObject._id} className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}>
+                <div className="list-header">{docObject.title}
+                </div>{
+                  convertFromRaw(JSON.parse(docObject.text)).getPlainText().match(/^.{120}\w*/) + ' ...'
+                }
+              </div>
+            )
           })
         }
-        </div>
-        <div className="document-share">
-          <input value={this.state.sharedDocID} type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
-          <button onClick={() => this.addSharedDocument()}>Add shared document</button>
         </div>
       </div>
     );
