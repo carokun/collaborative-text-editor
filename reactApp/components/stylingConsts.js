@@ -1,10 +1,11 @@
 // INLINE STYLING CONSTANTS
-
+import { Map } from 'immutable';
 const fonts = ["TimesNewRoman", "Courier", "Helvetica"];
 const colors = ['black', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
 const sizes = ['10', '12', '14', '16', '20', '24', '36', '72'];
 
 const styleMap = {
+  highlight: { backgroundColor: "yellow" },
     // fonts
   TimesNewRoman: { fontFamily: "Times New Roman" },
   Courier: { fontFamily: "Courier New" },
@@ -29,6 +30,18 @@ const styleMap = {
   72: { fontSize: 72 },
 }
 
+const blockRenderMap = Map({
+  'align-left': {
+    element: 'div'
+  },
+  'align-center': {
+    element: 'div'
+  },
+  'align-right': {
+    element: 'div'
+  }
+});
+
 
 const editorBoxStyle = {
   borderRadius: 4,
@@ -39,6 +52,7 @@ const editorBoxStyle = {
 
 module.exports = {
   editorBoxStyle,
+  blockRenderMap,
   styleMap,
   sizes,
   fonts,
