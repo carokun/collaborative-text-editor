@@ -180,6 +180,7 @@ i {
   border-radius: 2px;
   margin-bottom: 1px;
   background-color: #f4f6f9;
+  flex-grow: 0;
 }
 
 .toolbar-item {
@@ -213,6 +214,15 @@ i {
   margin: 2px;
 }
 
+.toolbar-first {
+  margin-left: 10px;
+}
+
+.toolbar-button {
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
 .document-title {
   font-size: 24px;
   background-color: white;
@@ -226,17 +236,28 @@ i {
   height: 32px;
 }
 
+.document-container {
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+}
+
 .document-editor {
   padding-left: 55px;
   padding-right: 55px;
   padding-top: 40px;
   background-color: #f9f9f9;
-  overflow: scroll;
-  height: 650px;
+  flex-grow: 1;
+  //overflow: scroll;
+  //height: 200%;
 }
 
 .document-id {
   float: right;
+}
+
+.document-footer {
+  flex-grow: 0;
 }
 
 .editor-text {
