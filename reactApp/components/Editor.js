@@ -79,6 +79,7 @@ class MyEditor extends React.Component {
     .catch(err => {
       console.log("ERROR:", err);
     });
+  }
 
   _blockRenderMapFn(contentBlock) {
     const type = contentBlock.getType();
@@ -218,6 +219,7 @@ class MyEditor extends React.Component {
         />
         <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
         <button onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
+        <button className="blue-button" onClick={() => this.props.history.push('/documentlist')}>Back To Documents</button>
       </div>
 
     )

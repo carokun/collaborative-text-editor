@@ -50,7 +50,6 @@ class DocumentPage extends React.Component {
             <div className="editor-page">
                 <h2>{this.state.title}</h2>
                 <MyEditor id={this.props.match.params.id} editorState={this.state.editorState} saveDocument={this.saveDocument.bind(this)} history={this.props.history}/>
-                <button className="blue-button" onClick={() => this.props.history.push('/documentlist')}>Back To Documents</button>
             </div>
         )
     }
