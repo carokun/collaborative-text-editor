@@ -3,8 +3,6 @@
 @lightgreen: #C1EAAE;
 @pastelblue: #A5CCCC;
 @red: #CC3026;
-@lightgray: #EDEDED;
-@gray: #BCBCBC;
 
 body {
   font-family: 'Avenir Next', sans-serif;
@@ -14,24 +12,18 @@ body {
   overflow: hidden;
 }
 
-// REGISTER PAGE
 .register-page {
   .form-style;
-  .button-styles;
 }
 
-// LOGIN PAGE
 .login-page {
   .form-style;
-  .button-styles;
 }
 
-// EDIT DOCUMENT PAGE
 .editor-page {
   background-color: white;
 }
 
-// REVISION HISTORY PAGE STYLING
 .revision-history-page {
   padding: 50px;
   .button-styles;
@@ -67,28 +59,8 @@ body {
     width: 48%;
     margin: 1%;
   }
-  .changes-view {
-    font-size: 14px;
-    background-color: white;
-    padding: 20px 0px;
-    border: 1px solid @eggshell - #111;
-    .added-line {
-      padding: 0px 20px;
-      background-color: @lightgreen + #111;
-      color: @lightgreen - #999;
-    }
-    .removed-line {
-      padding: 0px 20px;
-      background-color: @red + #999;
-      color: @red - #333;
-    }
-    .not-changed-line {
-      padding: 0px 20px;
-    }
-  }
 }
 
-// DOCUMENT PORTAL STYLING
 .document-list-page {
   padding: 50px;
   .list-item {
@@ -122,7 +94,7 @@ body {
   }
 }
 
-// BUTTON STYLES
+// Button styles
 .button-styles {
   .green-button {
     background-color: @lightgreen;
@@ -142,17 +114,18 @@ body {
     font-size: 16px;
     background-color: @pastelblue;
   }
-  button:focus {
-    outline: none;
-  }
 }
 
-// FORM STYLES
+// General style for the login and register page
 .form-style {
+  .button-styles;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 50px;
+  button {
+    border: none;
+  }
   form {
     div {
       font-size: 16px;
@@ -175,6 +148,14 @@ body {
       }
     }
   }
+  button {
+    width: 100% + 3px;
+    padding: 8px 5px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+  }
 }
 
 .align-left div {
@@ -194,23 +175,23 @@ i {
 }
 
 .toolbar {
-  border-top: 1px solid @lightgray;
-  border-bottom: 1px solid @lightgray;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
   border-radius: 2px;
-  background-color: white;
-  text-align: center;
+  margin-bottom: 1px;
+  background-color: #f4f6f9;
 }
 
 .toolbar-item {
-  color: @gray;
   background: none;
   border: none;
-  transition: 0.2s;
-  margin: 10px 0px 5px 0px;
+  margin: 1px;
 }
 
 .toolbar-item:hover {
-  color: @gray - #222;
+  border: 1px solid gray;
+  border-radius: 3px;
+  margin: 0;
 }
 
 .toolbar-item:focus {
@@ -220,15 +201,8 @@ i {
 .toolbar-selector {
   margin: 1px 3px 1px 3px;
   background: white;
-  border-radius: 1px;
-  font-size: 12px;
-  border: 1px solid @lightgray;
-  color: @gray - #666;
-  position: relative;
-}
-
-.toolbar-selector-content:hover {
-  background-color: @pastelblue;
+  border-radius: 0px;
+  border: 1px solid white;
 }
 
 .toolbar-selector:focus {
@@ -236,8 +210,7 @@ i {
 }
 
 .toolbar-divider {
-  margin: 0px 10px;
-  color: @lightgray;
+  margin: 2px;
 }
 
 .toolbar-first {
@@ -256,23 +229,19 @@ i {
 }
 
 .document-return {
+  float: left;
   padding: 13px;
-  background-color: @pastelblue;
-  color: white;
+  background-color: #dbadad;
   height: 32px;
-  transition: 0.3s;
-}
-
-.document-return:hover {
-  background-color: @pastelblue - #222;
 }
 
 .document-editor {
-  background-color: #FDFDFD;
+  padding-left: 55px;
+  padding-right: 55px;
+  padding-top: 40px;
+  background-color: #f9f9f9;
   overflow: scroll;
   height: 650px;
-  display: flex;
-  justify-content: center;
 }
 
 .document-id {
@@ -285,19 +254,14 @@ i {
 
 .editor-text {
   background-color: white;
-  height: 100%;
+  height: 1000px;
 }
 
 .editor-padding {
-  flex: 1;
   padding: 80px;
-  margin: 40px 80px;
   background-color: white;
   border-radius: 4;
   border-width: 0.5;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  height: 1000px;
-  min-width: 250px;
-  max-width: 500px;
-
+  margin-bottom: 15px;
 }

@@ -59,9 +59,11 @@ class DocumentList extends React.Component {
   render() {
     return (
       <div className="document-list-page">
-        <h2>Documents Portal</h2>
-        <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
-        <button onClick={() => this.createNewDocument()}>Create Document</button>
+        <div className="document-header">
+          <h2>Documents Portal</h2>
+          <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
+          <button onClick={() => this.createNewDocument()}>Create Document</button>
+        </div>
         <div className="document-list">
         {
           this.state.documents.map((docObject) =>
@@ -69,8 +71,10 @@ class DocumentList extends React.Component {
           )
         }
         </div>
-        <input value={this.state.sharedDocID} type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
-        <button onClick={() => this.addSharedDocument()}>Add shared document</button>
+        <div className="document-share">
+          <input value={this.state.sharedDocID} type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
+          <button onClick={() => this.addSharedDocument()}>Add shared document</button>
+        </div>
       </div>
     );
   }
