@@ -8,6 +8,8 @@ body {
   font-family: 'Avenir Next', sans-serif;
   background-color: @eggshell;
   color: @darkblue;
+  margin: 0;
+  overflow: hidden;
 }
 
 .register-page {
@@ -19,6 +21,7 @@ body {
 }
 
 .editor-page {
+  background-color: white;
 }
 
 .revision-history-page {
@@ -168,17 +171,80 @@ body {
 }
 
 i {
-  padding: 3px;
-  margin: 3px;
-}
-
-i:hover {
-  border: 1px solid black;
-  border-radius: 3px;
   padding: 2px;
 }
 
-i:focus {
-  width: 100%;
-  height: 100%;
+.toolbar {
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+  border-radius: 2px;
+  margin-bottom: 1px;
+  background-color: #f4f6f9;
+}
+
+.toolbar-item {
+  background: none;
+  border: none;
+  margin: 1px;
+}
+
+.toolbar-item:hover {
+  border: 1px solid gray;
+  border-radius: 3px;
+  margin: 0;
+}
+
+.toolbar-item:focus {
+  outline: none;
+}
+
+.toolbar-selector {
+  margin: 1px 3px 1px 3px;
+  background: white;
+  border-radius: 0px;
+  border: 1px solid white;
+}
+
+.toolbar-selector:focus {
+  outline: none;
+}
+
+.toolbar-divider {
+  margin: 2px;
+}
+
+.document-title {
+  font-size: 24px;
+  background-color: white;
+  padding-left: 75px;
+}
+
+.document-return {
+  float: left;
+  padding: 13px;
+  background-color: #dbadad;
+  height: 32px;
+}
+
+.document-editor {
+  padding-left: 55px;
+  padding-right: 55px;
+  padding-top: 40px;
+  background-color: #f9f9f9;
+  overflow: scroll;
+  height: 650px;
+}
+
+.editor-text {
+  background-color: white;
+  height: 1000px;
+}
+
+.editor-padding {
+  padding: 80px;
+  background-color: white;
+  border-radius: 4;
+  border-width: 0.5;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 15px;
 }

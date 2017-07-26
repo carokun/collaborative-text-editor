@@ -42,16 +42,7 @@ const blockRenderMap = Map({
   }
 });
 
-
-const editorBoxStyle = {
-  borderRadius: 4,
-  borderWidth: 0.5,
-  backgroundColor: '#E9F7FD',
-  height: 200
-};
-
 module.exports = {
-  editorBoxStyle,
   blockRenderMap,
   styleMap,
   sizes,

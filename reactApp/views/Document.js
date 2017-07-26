@@ -9,7 +9,7 @@ class DocumentPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          title: '',
+          title: 'Loading...',
         }
     }
     componentWillMount() {
@@ -47,9 +47,12 @@ class DocumentPage extends React.Component {
     render() {
         return (
             <div className="editor-page">
-                <h2>{this.state.title}</h2>
-                <h4>ID: {this.props.match.params.id}</h4>
-                <MyEditor id={this.props.match.params.id} editorState={this.state.editorState} saveDocument={this.saveDocument.bind(this)} history={this.props.history}/>
+                <span className="fa fa-bars fa-2x document-return" onClick={() => this.props.history.push('/documentlist')}> </span>
+                <span>
+                  <span className="document-title">{this.state.title}</span>
+                  <span className="document-id">{this.props.match.params.id}</span>
+                  <MyEditor id={this.props.match.params.id} editorState={this.state.editorState} saveDocument={this.saveDocument.bind(this)} history={this.props.history}/>
+                </span>
             </div>
         )
     }
