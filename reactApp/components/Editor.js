@@ -112,6 +112,7 @@ class MyEditor extends React.Component {
   componentWillUnmount() {
     console.log('clearing');
     this.state.socket.removeListener('documentChange');
+    clearInterval(this.state.interval);
     this.setState({ interval: () => ''})
   }
 
