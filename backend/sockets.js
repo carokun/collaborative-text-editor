@@ -14,6 +14,12 @@ module.exports = {
           }
           socket.broadcast.emit('highlight', currentState);
       });
+      socket.on('cursor', currentState => {
+        if(!currentState) {
+          return socket.emit('errorMessage', 'No document!');
+        }
+        socket.broadcast.emit('cursor', currentState);
+      })
     })
   }
 }

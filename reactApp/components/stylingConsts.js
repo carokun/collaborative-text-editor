@@ -6,6 +6,7 @@ const sizes = ['10', '12', '14', '16', '20', '24', '36', '72'];
 
 const styleMap = {
   highlight: { backgroundColor: "yellow" },
+  cursor: { borderRight: "thick solid red" },
     // fonts
   TimesNewRoman: { fontFamily: "Times New Roman" },
   Courier: { fontFamily: "Courier New" },
@@ -31,6 +32,9 @@ const styleMap = {
 }
 
 const blockRenderMap = Map({
+  'cursor-block': {
+    element: 'div',
+  },
   'align-left': {
     element: 'div'
   },

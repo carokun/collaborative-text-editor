@@ -10,6 +10,7 @@ import {RichUtils,
         convertFromRaw,
         getDefaultKeyBinding,
         KeyBindingUtil,
+        SelectionState,
         Modifier } from 'draft-js';
 const { blockRenderMap,
         styleMap,
@@ -37,7 +38,7 @@ class MyEditor extends React.Component {
     this.onTab = (e) => this._onTab(e);
     this._onStyleClick = this._onStyleClick.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
-
+    this._onCursor = this._onCursor.bind(this);
     this._onHighlight = this._onHighlight.bind(this);
   }
 
@@ -62,6 +63,9 @@ class MyEditor extends React.Component {
     if (type === 'align-right') {
       return 'alignRight';
     }
+    if (type === 'cursor-block') {
+      return 'cursor-block';
+    }
     return null;
   }
 
@@ -72,9 +76,12 @@ class MyEditor extends React.Component {
       let start = selectionState.getStartOffset();
       let end = selectionState.getEndOffset();
       console.log(start, end);
-      if (start - end === 0) {
-        this.setState({editorState: editorState})
+      if (start === end) {
+        this.setState({ editorState })
         this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+        const cursorState = this._onCursor(editorState);
+        this.state.socket.emit('documentChange', convertToRaw(cursorState.getCurrentContent()))
+        this.state.socket.emit('cursor', convertToRaw(cursorState.getCurrentContent()))
       } else {
         this.setState({editorState: editorState})
         this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
@@ -167,13 +174,29 @@ class MyEditor extends React.Component {
       this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
     }
 
-  _onHighlight(editorState) {
+    _onHighlight(editorState) {
      return RichUtils.toggleInlineStyle(editorState, 'highlight');
+ }
+
+ _onCursor(editorState) {
+   let selectionState = editorState.getSelection();
+   let contentState = editorState.getCurrentContent();
+   let anchorKey = selectionState.getAnchorKey();
+   console.log("anchor key is ", anchorKey)
+   let newSelectionState = SelectionState.createEmpty(anchorKey);
+   let newContentState = Modifier.replaceWithFragment(contentState, newSelectionState, 'cursor-block')
+   let nextEditorState = EditorState.push(
+     editorState,
+     newContentState,
+     'track-cursor'
+   );
+   return nextEditorState;
  }
 
   handleKeyCommand(command: string): DraftHandleValue {
     if (command === 'myeditor-save') {
       console.log('SAVED!!')
+      this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()));
       return 'handled';
     } else if (command === 'myeditor-bold') {
       console.log('BOLD!!')
