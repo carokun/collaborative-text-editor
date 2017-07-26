@@ -2,7 +2,7 @@
 @darkblue: #000026;
 @lightgreen: #C1EAAE;
 @pastelblue: #A5CCCC;
-@red: ##CC3026;
+@red: #CC3026;
 
 body {
   font-family: 'Avenir Next', sans-serif;
@@ -20,6 +20,43 @@ body {
 
 .editor-page {
   .button-styles;
+}
+
+.revision-history-page {
+  padding: 50px;
+  .button-styles;
+  .revision-editor {
+    background-color: white;
+    padding: 40px;
+    border: 1px solid @eggshell - #111;
+    transition: 0.5s;
+    border-radius: 1px;
+  }
+  .revision-editor:hover {
+    border: 1px solid @eggshell - #444;
+  }
+  .history-list {
+    overflow: scroll;
+    height: 30vh;
+    padding: 0px 10px;
+    border: 1px solid  @eggshell - #111;
+  }
+  .history-list div {
+    background-color: @red + #787;
+    color: white;
+    margin-top: 14px;
+    border-radius: 5px;
+    padding: 5px 15px;
+    transition: 1s;
+    text-align: center;
+  }
+  .history-list div:hover {
+    background-color: @red + #9A9;
+  }
+  button {
+    width: 48%;
+    margin: 1%;
+  }
 }
 
 .document-list-page {
@@ -66,6 +103,15 @@ body {
   .red-button {
     background-color: @red;
   }
+  button {
+    width: 100%;
+    padding: 8px 5px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 3px;
+    font-size: 16px;
+    background-color: @pastelblue;
+  }
 }
 
 // General style for the login and register page
@@ -108,4 +154,32 @@ body {
     border: none;
     font-size: 16px;
   }
+}
+
+.align-left div {
+  text-align: left;
+}
+
+.align-center div {
+  text-align: center;
+}
+
+.alignRight div {
+  text-align: right;
+}
+
+i {
+  padding: 3px;
+  margin: 3px;
+}
+
+i:hover {
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 2px;
+}
+
+i:focus {
+  width: 100%;
+  height: 100%;
 }
