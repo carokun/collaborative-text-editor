@@ -16,6 +16,8 @@ import Register from './views/Register';
 import DocumentList from './views/DocumentList';
 import RevisionHistory from './views/RevisionHistory';
 import styles from './assets/stylesheets/main.less';
+import TwitterExample from './views/TwitterExample';
+
 
   // <Route path='/' component={Login} />
 const router = (

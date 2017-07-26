@@ -10,7 +10,8 @@ import {RichUtils,
         convertFromRaw,
         getDefaultKeyBinding,
         KeyBindingUtil,
-        Modifier } from 'draft-js';
+        Modifier,
+        CompositeDecorator } from 'draft-js';
 const { blockRenderMap,
         styleMap,
         sizes,
@@ -32,7 +33,9 @@ class MyEditor extends React.Component {
     this.state = {
       socket: io('http://localhost:3000'),
       editorState: EditorState.createEmpty(),
-      interval: () => ''
+      interval: () => '',
+      searchInput: '',
+      changingRegex: false
     };
     this.onTab = (e) => this._onTab(e);
     this._onStyleClick = this._onStyleClick.bind(this);
@@ -68,6 +71,10 @@ class MyEditor extends React.Component {
 
   componentDidMount() {
     this.onChange = (editorState) => {
+      if (this.state.changingRegex) {
+        this.setState({changingRegex: false});
+        return;
+      }
       let selectionState = editorState.getSelection();
       let start = selectionState.getStartOffset();
       let end = selectionState.getEndOffset();
@@ -82,7 +89,6 @@ class MyEditor extends React.Component {
         this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
         this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()))
       }
-      //when a user highlights something have it come up on everyone else's screen
 
     };
 
@@ -191,10 +197,65 @@ class MyEditor extends React.Component {
     return 'not-handled';
   }
 
+  changeRegex(e) {
+    this.setState({searchInput: e.target.value})
+    const newRegex = new RegExp(e.target.value || 'djkfjskjdfkjasdjkfksdjfaksjdfkjsdfkjsdf', 'g')
+
+    const currentContent = this.state.editorState.getCurrentContent();
+
+
+    const styles = {
+      handle: {
+        color: 'rgba(98, 177, 254, 1.0)',
+        direction: 'ltr',
+        unicodeBidi: 'bidi-override',
+      }
+    };
+
+    const handleStrategy = function(contentBlock, callback, contentState) {
+      findWithRegex(newRegex, contentBlock, callback);
+    }
+
+    const findWithRegex = function(regex, contentBlock, callback) {
+      const text = contentBlock.getText();
+      let matchArr, start;
+      while ((matchArr = regex.exec(text)) !== null) {
+        start = matchArr.index;
+        callback(start, start + matchArr[0].length);
+        console.log(start);
+      }
+    }
+
+    const HandleSpan = (props) => {
+      return (
+        <span
+          style={styles.handle}
+          data-offset-key={props.offsetKey}
+        >
+          {props.children}
+        </span>
+      );
+    };
+
+    const compositeDecorator = new CompositeDecorator([
+      {
+        strategy: handleStrategy,
+        component: HandleSpan,
+      }
+    ]);
+    this.setState({changeRegex: true});
+    this.setState({editorState: EditorState.createWithContent(currentContent, compositeDecorator)});
+  }
+
   render() {
     let counter = 0;
     return (
       <div className="document-container">
+        <input
+          onChange={this.changeRegex.bind(this)}
+          type="text"
+          value={this.state.searchInput}
+        />
         <div className="toolbar">
           <select className="toolbar-selector toolbar-first" id="fontColor" onChange={() => this._onFontColorClick()}>
               {colors.map(color => (<option key={counter++} value={color}> {color} </option>))}
