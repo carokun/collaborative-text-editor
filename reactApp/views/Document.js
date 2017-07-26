@@ -38,7 +38,6 @@ class DocumentPage extends React.Component {
         if (resp.status === 200) {
           console.log('success');
         }
-        console.log(resp);
       })
       .catch(err => {
         console.log("ERROR: Cannot retrieve document using axios request ", err);
@@ -49,8 +48,8 @@ class DocumentPage extends React.Component {
         return (
             <div className="editor-page">
                 <h2>{this.state.title}</h2>
+                <h4>ID: {this.props.match.params.id}</h4>
                 <MyEditor id={this.props.match.params.id} editorState={this.state.editorState} saveDocument={this.saveDocument.bind(this)} history={this.props.history}/>
-                <button className="blue-button" onClick={() => this.props.history.push('/documentlist')}>Back To Documents</button>
             </div>
         )
     }

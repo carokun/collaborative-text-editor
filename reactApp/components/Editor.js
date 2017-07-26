@@ -47,12 +47,25 @@ class MyEditor extends React.Component {
         this.setState({editorState: editorState})
         this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
       } else {
+        // const newcontent = Modifier.replaceText({
+        //   contentState: editorState.getCurrentContent(),
+        //   rangeToReplace: editorState.getSelection(),
+        //   text: "yo",
+        // })
+        // this.setState({editorState: EditorState.createWithContent(newcontent)})
+        this.setState({editorState: editorState})
+        editorState
+        .getCurrentContent()
+        .getBlockMap()
+        .map(block => console.log(block))
         const newState = this._onHighlight(editorState);
-        this.setState({editorState: newState})
+        // this.setState({editorState: newState})
         this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
+        this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()))
+        // this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
       }
       //when a user highlights something have it come up on everyone else's screen
-      this.state.socket.emit('highlight', editorState.getSelection())
+
     };
     this._onHighlight = this._onHighlight.bind(this);
   }
@@ -65,6 +78,20 @@ class MyEditor extends React.Component {
       this.onChange(RichUtils.toggleBlockType(this.state.editorState, style));
     }
 
+  }
+
+
+  componentWillMount() {
+    const self = this;
+    axios.get('http://localhost:3000/document/' + this.props.id)
+    .then(resp => {
+      const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
+      self.onChange(parsed);
+      this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
+    })
+    .catch(err => {
+      console.log("ERROR:", err);
+    });
   }
 
   _blockRenderMapFn(contentBlock) {
@@ -80,29 +107,17 @@ class MyEditor extends React.Component {
     }
     return null;
   }
-// @this was breaking
-  // componentWillMount() {
-  //   const self = this;
-  //   axios.get('http://localhost:3000/document/' + this.props.id)
-  //   .then(resp => {
-  //     const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
-  //     self.onChange(parsed);
-  //     this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
-  //   })
-  //   .catch(err => {
-  //     console.log("ERROR:", err);
-  //   });
-  // }
+
 
   componentDidMount() {
     this.state.socket.on('connect', () => {
       console.log("connected on the client side");
       this.state.socket.on('documentChange', (currentContent) => {
-        this.setState({editorState: EditorState.moveSelectionToEnd(EditorState.createWithContent(convertFromRaw(currentContent)))});
+        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
       })
 
-      this.state.socket.on('highlight', (selection) => {
-        //handle user highlighting something here
+      this.state.socket.on('highlight', (currentContent) => {
+        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
       })
     })
   }
@@ -217,6 +232,7 @@ class MyEditor extends React.Component {
         />
         <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
         <button onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
+        <button className="blue-button" onClick={() => this.props.history.push('/documentlist')}>Back To Documents</button>
       </div>
 
     )
