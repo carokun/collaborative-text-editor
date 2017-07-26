@@ -19,9 +19,8 @@ const { blockRenderMap,
         colors } = require('./stylingConsts');
 const { hasCommandModifier } = KeyBindingUtil;
 const { myKeyBindingFn } = require('./keyBindingFn');
-
 import { Map } from 'immutable';
-
+import copy from 'copy-to-clipboard';
 import io from 'socket.io-client'
 
 const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
@@ -301,7 +300,9 @@ class MyEditor extends React.Component {
           value={this.state.searchInput}
         />
         <div className="toolbar">
-          <select className="toolbar-selector toolbar-first" id="fontColor" onChange={() => this._onFontColorClick()}>
+          <span className="toolbar-item" onClick={copy(this.props.documentId)}><i className="fa fa-clipboard fa-lg" aria-hidden></i></span>
+          <span className="toolbar-divider"> | </span>
+          <select className="toolbar-selector" id="fontColor" onChange={() => this._onFontColorClick()}>
               {colors.map(color => (<option key={counter++} value={color}> {color} </option>))}
           </select>
           <span className="toolbar-divider"> | </span>
