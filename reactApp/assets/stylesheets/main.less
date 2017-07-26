@@ -137,51 +137,6 @@ body {
   }
 }
 
-// DOCUMENT PORTAL STYLING
-.document-list-page {
-  padding: 50px;
-  .list-item {
-    padding: 10px 5px;
-    color: @darkblue;
-    background-color: white;
-    margin: 9px 0px;
-    border: 1px solid white;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05), 0 2px 2px 0 rgba(0, 0, 0, 0.05);
-    border-radius: 2px;
-    width: 45%;
-    height: 60px;
-    font-size: 14px;
-  }
-  .list-header {
-    font-size: 17px;
-    font-weight: bold;
-  }
-  .list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  .list-item:hover {
-    border: 1px solid #ddd;
-  }
-  input {
-    width: 100%;
-    display: inline-block;
-    padding: 8px;
-    border: 1px solid @eggshell - #111;
-    font-size: 16px;
-  }
-  button {
-    width: 100%;
-    padding: 8px 5px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 3px;
-    font-size: 16px;
-    background-color: @pastelblue;
-  }
-}
-
 // BUTTON STYLES
 .button-styles {
   .green-button {
@@ -208,6 +163,15 @@ body {
   .blue-button:hover {
     background-color: @pastelblue - #111;
   }
+  .red-button:hover:active {
+    background-color: @red + #111;
+  }
+  .green-button:active {
+    background-color: @lightgreen - #222;
+  }
+  .blue-button:active {
+    background-color: @pastelblue - #222;
+  }
   button {
     width: 100%;
     padding: 8px 5px;
@@ -224,6 +188,9 @@ body {
   }
   button:focus {
     outline: none;
+  }
+  button:active {
+    background-color: @pastelblue - #222;
   }
 }
 
@@ -266,9 +233,22 @@ body {
 .alignRight div {
   text-align: right;
 }
+.terminal div {
+  background-color: black;
+  color: #23EB32;
+  padding: 2px 6px;
+  margin: 0px 40px;
+  font-family: 'Courier';
+}
+.terminal div::before {
+  content: '~ $ ';
+}
 
 i {
   padding: 2px;
+}
+.code div {
+  font-family: 'Courier';
 }
 
 .searchBar {
