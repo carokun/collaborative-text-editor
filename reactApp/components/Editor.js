@@ -37,35 +37,7 @@ class MyEditor extends React.Component {
     this.onTab = (e) => this._onTab(e);
     this._onStyleClick = this._onStyleClick.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
-    this.onChange = (editorState) => {
-      let selectionState = editorState.getSelection();
-      let start = selectionState.getStartOffset();
-      let end = selectionState.getEndOffset();
-      console.log(start, end);
-      if (start - end === 0) {
-        this.setState({editorState: editorState})
-        this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
-      } else {
-        // const newcontent = Modifier.replaceText({
-        //   contentState: editorState.getCurrentContent(),
-        //   rangeToReplace: editorState.getSelection(),
-        //   text: "yo",
-        // })
-        // this.setState({editorState: EditorState.createWithContent(newcontent)})
-        this.setState({editorState: editorState})
-        editorState
-        .getCurrentContent()
-        .getBlockMap()
-        .map(block => console.log(block))
-        const newState = this._onHighlight(editorState);
-        // this.setState({editorState: newState})
-        this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
-        this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()))
-        // this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
-      }
-      //when a user highlights something have it come up on everyone else's screen
 
-    };
     this._onHighlight = this._onHighlight.bind(this);
   }
 
@@ -77,20 +49,6 @@ class MyEditor extends React.Component {
       this.onChange(RichUtils.toggleBlockType(this.state.editorState, style));
     }
 
-  }
-
-
-  componentWillMount() {
-    const self = this;
-    axios.get('http://localhost:3000/document/' + this.props.id)
-    .then(resp => {
-      const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
-      self.onChange(parsed);
-      this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
-    })
-    .catch(err => {
-      console.log("ERROR:", err);
-    });
   }
 
   _blockRenderMapFn(contentBlock) {
@@ -109,6 +67,36 @@ class MyEditor extends React.Component {
 
 
   componentDidMount() {
+    this.onChange = (editorState) => {
+      let selectionState = editorState.getSelection();
+      let start = selectionState.getStartOffset();
+      let end = selectionState.getEndOffset();
+      console.log(start, end);
+      if (start - end === 0) {
+        this.setState({editorState: editorState})
+        this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+      } else {
+        this.setState({editorState: editorState})
+        this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+        const newState = this._onHighlight(editorState);
+        this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
+        this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()))
+      }
+      //when a user highlights something have it come up on everyone else's screen
+
+    };
+
+    const self = this;
+    axios.get('http://localhost:3000/document/' + this.props.id)
+    .then(resp => {
+      const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
+      self.onChange(parsed);
+      this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
+    })
+    .catch(err => {
+      console.log("ERROR:", err);
+    });
+
     this.state.socket.on('connect', () => {
       console.log("connected on the client side");
       this.state.socket.on('documentChange', (currentContent) => {
@@ -118,11 +106,16 @@ class MyEditor extends React.Component {
       this.state.socket.on('highlight', (currentContent) => {
         this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
       })
+
     })
+
   }
 
   componentWillUnmount() {
+    console.log('clearing');
+    this.state.socket.removeListener('documentChange');
     clearInterval(this.state.interval);
+    // this.setState({ interval: () => ''});
   }
 
   _onFontSizeClick() {
@@ -201,9 +194,9 @@ class MyEditor extends React.Component {
   render() {
     let counter = 0;
     return (
-      <div>
+      <div className="document-container">
         <div className="toolbar">
-          <select className="toolbar-selector" id="fontColor" onChange={() => this._onFontColorClick()}>
+          <select className="toolbar-selector toolbar-first" id="fontColor" onChange={() => this._onFontColorClick()}>
               {colors.map(color => (<option key={counter++} value={color}> {color} </option>))}
           </select>
           <span className="toolbar-divider"> | </span>
@@ -216,7 +209,7 @@ class MyEditor extends React.Component {
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'BOLD')}><i className="fa fa-bold fa-lg" aria-hidden="true"></i></button>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'ITALIC')}><i className="fa fa-italic fa-lg" aria-hidden="true"></i></button>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'UNDERLINE')}><i className="fa fa-underline fa-lg" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'UNDERLINE')}><i className="fa fa-underline fa-lg" aria-hidden="true"></i></button>
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'unordered-list-item')}><i className="fa fa-list-ul fa-lg" aria-hidden="true"></i></button>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'ordered-list-item')}><i className="fa fa-list-ol fa-lg" aria-hidden="true"></i></button>
@@ -226,6 +219,9 @@ class MyEditor extends React.Component {
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-right')}><i className="fa fa-align-right fa-lg" aria-hidden="true"></i></button>
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'CODE')}><i className="fa fa-code fa-lg" aria-hidden="true"></i></button>
+          <span className="toolbar-divider"> | </span>
+          <button className="toolbar-item toolbar-button" onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
+          <button className="toolbar-item toolbar-button" onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
         </div>
         <div className="document-editor">
           <div className="editor-padding">
@@ -243,8 +239,7 @@ class MyEditor extends React.Component {
             </div>
           </div>
         </div>
-        <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
-        <button onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
+        <div className="document-footer">v1.0</div>
       </div>
 
     )
