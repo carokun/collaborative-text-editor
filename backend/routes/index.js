@@ -12,6 +12,8 @@ module.exports = function(passport) {
     var userID = req.user._id;
 
     User.findById(userID)
+    .populate('documents')
+    .exec()
     .then(user => {
       res.json(user.documents);
     })

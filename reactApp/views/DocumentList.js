@@ -1,7 +1,10 @@
 import React from 'react';
 import axios from 'axios';
+import {EditorState, convertFromRaw} from 'draft-js';
+
 import '../assets/stylesheets/documentlist.less';
 import '../assets/stylesheets/editor.less';
+
 class DocumentList extends React.Component {
   constructor(props) {
     super(props);
@@ -59,16 +62,14 @@ class DocumentList extends React.Component {
   render() {
     return (
       <div className="document-list-page">
-        <div className="document-header">
-          <h2>Documents Portal</h2>
-          <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
-          <button onClick={() => this.createNewDocument()}>Create Document</button>
-        </div>
-        <div className="document-list">
+        <h2>Documents Portal</h2>
+        <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
+        <button onClick={() => this.createNewDocument()}>Create Document</button>
+        <div className='list'>
         {
-          this.state.documents.map((docObject) =>
-            <div key={docObject._id} className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}>{docObject.title}</div>
-          )
+          this.state.documents.map((docObject) => {
+            return (<div key={docObject._id} className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}><div className="list-header">{docObject.title}</div>{convertFromRaw(JSON.parse(docObject.text)).getPlainText()}</div>)
+          })
         }
         </div>
         <div className="document-share">

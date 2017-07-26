@@ -114,14 +114,12 @@ class MyEditor extends React.Component {
       })
 
     })
-
   }
 
   componentWillUnmount() {
     console.log('clearing');
     this.state.socket.removeListener('documentChange');
     clearInterval(this.state.interval);
-    // this.setState({ interval: () => ''});
   }
 
   _onFontSizeClick() {
@@ -219,11 +217,13 @@ class MyEditor extends React.Component {
     const findWithRegex = function(regex, contentBlock, callback) {
       const text = contentBlock.getText();
       let matchArr, start;
+
       while ((matchArr = regex.exec(text)) !== null) {
+        console.log(matchArr);
         start = matchArr.index;
         callback(start, start + matchArr[0].length);
-        console.log(start);
       }
+
     }
 
     const HandleSpan = (props) => {
@@ -244,6 +244,46 @@ class MyEditor extends React.Component {
       }
     ]);
     this.setState({changeRegex: true});
+    this.setState({editorState: EditorState.createWithContent(currentContent, compositeDecorator)});
+  }
+
+  trackMouse(start) {
+
+    const currentContent = this.state.editorState.getCurrentContent();
+
+    const styles = {
+      handle: {
+        color: 'rgba(98, 177, 254, 1.0)',
+        direction: 'ltr',
+        unicodeBidi: 'bidi-override',
+      }
+    };
+
+    const handleStrategy = function(contentBlock, callback, contentState) {
+      findWithRegex(contentBlock, callback);
+    }
+
+    const findWithRegex = function(contentBlock, callback) {
+      callback(start, start + 1);
+    }
+
+    const HandleSpan = (props) => {
+      return (
+        <span
+
+          data-offset-key={props.offsetKey}
+        >
+          <span style={styles.handle}>|</span>{props.children}
+        </span>
+      );
+    };
+
+    const compositeDecorator = new CompositeDecorator([
+      {
+        strategy: handleStrategy,
+        component: HandleSpan,
+      }
+    ]);
     this.setState({editorState: EditorState.createWithContent(currentContent, compositeDecorator)});
   }
 
