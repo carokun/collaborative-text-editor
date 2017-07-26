@@ -31,6 +31,35 @@ module.exports = function(passport) {
     })
   });
 
+  router.post('/restore', function(req, res) {
+    Document.findById(req.body.id)
+    .then(doc => {
+      const revisionhistory = doc.revisionhistory;
+      const prevState = req.body.prevState;
+      const newRevisions = [];
+      for (var i = 0; i < revisionhistory.length; i++) {
+        if (revisionhistory[i].revision === prevState) {
+          newRevisions.push(revisionhistory[i]);
+          doc.text = revisionhistory[i].revision;
+          break;
+        } else {
+          newRevisions.push(revisionhistory[i]);
+        }
+      }
+      doc.revisionhistory = newRevisions;
+      doc.save()
+      .then(doc => {
+        res.json(doc);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    })
+    .catch(err => {
+      console.log('revision err', err);
+    })
+  });
+
   router.post('/createNewDocument', function(req, res) {
     console.log(JSON.stringify(convertToRaw(EditorState.createEmpty().getCurrentContent())));
     const title = req.body.title;
