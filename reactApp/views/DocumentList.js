@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-
+import '../assets/stylesheets/documentlist.less';
+import '../assets/stylesheets/editor.less';
 class DocumentList extends React.Component {
   constructor(props) {
     super(props);
@@ -58,18 +59,22 @@ class DocumentList extends React.Component {
   render() {
     return (
       <div className="document-list-page">
-        <h2>Documents Portal</h2>
-        <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
-        <button onClick={() => this.createNewDocument()}>Create Document</button>
-        <div>
+        <div className="document-header">
+          <h2>Documents Portal</h2>
+          <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
+          <button onClick={() => this.createNewDocument()}>Create Document</button>
+        </div>
+        <div className="document-list">
         {
           this.state.documents.map((docObject) =>
             <div key={docObject._id} className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}>{docObject.title}</div>
           )
         }
         </div>
-        <input value={this.state.sharedDocID} type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
-        <button onClick={() => this.addSharedDocument()}>Add shared document</button>
+        <div className="document-share">
+          <input value={this.state.sharedDocID} type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
+          <button onClick={() => this.addSharedDocument()}>Add shared document</button>
+        </div>
       </div>
     );
   }

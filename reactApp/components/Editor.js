@@ -250,8 +250,9 @@ class MyEditor extends React.Component {
   render() {
     let counter = 0;
     return (
-      <div className="document-container">
+      <div className="editor-container">
         <input
+          className="searchBar"
           onChange={this.changeRegex.bind(this)}
           type="text"
           value={this.state.searchInput}
@@ -300,7 +301,7 @@ class MyEditor extends React.Component {
             </div>
           </div>
         </div>
-        <div className="document-footer">v1.0</div>
+        <div className="editor-footer">v1.0</div>
       </div>
 
     )
