@@ -3,7 +3,6 @@ import axios from 'axios';
 import {Editor, EditorState, convertToRaw, convertFromRaw} from 'draft-js';
 import moment from 'moment';
 
-
 class RevisionHistory extends React.Component {
   constructor(props) {
     super(props);
@@ -35,6 +34,16 @@ class RevisionHistory extends React.Component {
     })
   }
 
+  restore() {
+    axios.post('http://localhost:3000/restore', {
+      id: this.props.match.params.docId,
+      prevState: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()))
+    })
+    .then(resp => {
+      console.log('response', resp);
+    })
+  }
+
   render() {
     return (
       <div className="revision-history-page">
@@ -56,7 +65,7 @@ class RevisionHistory extends React.Component {
           }
         </div>
         <h5>Most Recent</h5>
-        <button className="blue-button">Restore</button>
+        <button className="blue-button" onClick={() => this.restore()}>Restore</button>
         <button className="blue-button" onClick={() => this.props.history.push('/document/' + this.props.match.params.docId)}>Return</button>
       </div>
     )
