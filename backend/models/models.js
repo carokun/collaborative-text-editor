@@ -26,6 +26,10 @@ var DocumentSchema = new Schema ({
   },
   text: {
     type: String
+  },
+  revisionhistory: {
+    type: Array,
+    default: []
   }
 });
 

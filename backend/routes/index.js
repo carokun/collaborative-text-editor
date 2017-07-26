@@ -69,13 +69,19 @@ module.exports = function(passport) {
 
   router.post('/saveDocument', function(req, res) {
     const docID = req.body.id;
+    const newRevision = req.body.newRevision;
 
     Document.findById(docID)
     .then(document => {
       if (document) {
+        // Copies the object of objects while keeping immutability
+        let newRevisionHistory = JSON.parse((JSON.stringify(document.revisionhistory)));
+        newRevisionHistory.push(newRevision);
+        document.revisionhistory = newRevisionHistory;
         document.text = JSON.stringify(req.body.text);
         document.save()
         .then(doc => {
+          console.log(doc);
           res.json(doc)
         })
       } else {

@@ -19,6 +19,9 @@ const { editorBoxStyle,
         colors } = require('./stylingConsts');
 const { hasCommandModifier } = KeyBindingUtil;
 const { myKeyBindingFn } = require('./keyBindingFn');
+
+import { Map } from 'immutable';
+
 import io from 'socket.io-client'
 
 const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
@@ -48,6 +51,8 @@ class MyEditor extends React.Component {
         this.setState({editorState: newState})
         this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
       }
+      //when a user highlights something have it come up on everyone else's screen
+      this.state.socket.emit('highlight', editorState.getSelection())
     };
     this._onHighlight = this._onHighlight.bind(this);
   }
@@ -93,7 +98,11 @@ class MyEditor extends React.Component {
     this.state.socket.on('connect', () => {
       console.log("connected on the client side");
       this.state.socket.on('documentChange', (currentContent) => {
-        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
+        this.setState({editorState: EditorState.moveSelectionToEnd(EditorState.createWithContent(convertFromRaw(currentContent)))});
+      })
+
+      this.state.socket.on('highlight', (selection) => {
+        //handle user highlighting something here
       })
     })
   }
@@ -207,6 +216,7 @@ class MyEditor extends React.Component {
           onTab={this.onTab}
         />
         <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
+        <button onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
       </div>
 
     )
