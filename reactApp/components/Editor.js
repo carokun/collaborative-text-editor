@@ -199,18 +199,19 @@ class MyEditor extends React.Component {
   }
 
   render() {
+    let counter = 0;
     return (
       <div>
         <div className="toolbar">
           <select className="toolbar-selector" id="fontColor" onChange={() => this._onFontColorClick()}>
-              {colors.map(color => (<option value={color}> {color} </option>))}
+              {colors.map(color => (<option key={counter++} value={color}> {color} </option>))}
           </select>
           <span className="toolbar-divider"> | </span>
           <select className="toolbar-selector" id="fontStyle" onChange={() => this._onFontStyleClick()}>
-              {fonts.map(font => (<option value={font}> {font} </option>))}
+              {fonts.map(font => (<option key={counter++} value={font}> {font} </option>))}
           </select>
           <select className="toolbar-selector" id="fontSize" onChange={() => this._onFontSizeClick()}>
-              {sizes.map(size => (<option value={size}> {size} </option>))}
+              {sizes.map(size => (<option key={counter++} value={size}> {size} </option>))}
           </select>
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'BOLD')}><i className="fa fa-bold fa-lg" aria-hidden="true"></i></button>
@@ -244,7 +245,6 @@ class MyEditor extends React.Component {
         </div>
         <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
         <button onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
-        <button className="blue-button" onClick={() => this.props.history.push('/documentlist')}>Back To Documents</button>
       </div>
 
     )

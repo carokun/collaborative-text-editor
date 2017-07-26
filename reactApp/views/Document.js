@@ -50,7 +50,7 @@ class DocumentPage extends React.Component {
                 <span className="fa fa-bars fa-2x document-return" onClick={() => this.props.history.push('/documentlist')}> </span>
                 <span>
                   <span className="document-title">{this.state.title}</span>
-                  <span className="document-id">{this.props.match.params.id}</span>
+                  <span className="document-id">{'ID: ' + this.props.match.params.id}</span>
                   <MyEditor id={this.props.match.params.id} editorState={this.state.editorState} saveDocument={this.saveDocument.bind(this)} history={this.props.history}/>
                 </span>
             </div>
