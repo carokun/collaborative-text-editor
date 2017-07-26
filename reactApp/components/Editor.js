@@ -164,24 +164,31 @@ class MyEditor extends React.Component {
   render() {
     return (
       <div style={editorBoxStyle}>
-        <select id="fontColor" onChange={() => this._onFontColorClick()}>
-            {colors.map(color => (<option value={color}> {color} </option>))}
-        </select>
-        <select id="fontStyle" onChange={() => this._onFontStyleClick()}>
-            {fonts.map(font => (<option value={font}> {font} </option>))}
-        </select>
-        <select id="fontSize" onChange={() => this._onFontSizeClick()}>
-            {sizes.map(size => (<option value={size}> {size} </option>))}
-        </select>
-        <i className="fa fa-bold" aria-hidden="true" onClick={this._onClick.bind(this, 'inline', 'BOLD')}></i>
-        <i className="fa fa-italic" aria-hidden="true" onClick={this._onClick.bind(this, 'inline', 'ITALIC')}></i>
-        <i className="fa fa-code" aria-hidden="true" onClick={this._onClick.bind(this, 'inline', 'CODE')}></i>
-        <i className="fa fa-underline" aria-hidden="true" onClick={this._onClick.bind(this, 'inline', 'UNDERLINE')}></i>
-        <i className="fa fa-list-ul" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'unordered-list-item')}></i>
-        <i className="fa fa-list-ol" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'ordered-list-item')}></i>
-        <i className="fa fa-align-left" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'align-left')}></i>
-        <i className="fa fa-align-center" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'align-center')}></i>
-        <i className="fa fa-align-right" aria-hidden="true" onClick={this._onClick.bind(this, 'block', 'align-right')}></i>
+        <div className="toolbar">
+          <select className="toolbar-selector" id="fontColor" onChange={() => this._onFontColorClick()}>
+              {colors.map(color => (<option value={color}> {color} </option>))}
+          </select>
+          <span className="toolbar-divider"> | </span>
+          <select className="toolbar-selector" id="fontStyle" onChange={() => this._onFontStyleClick()}>
+              {fonts.map(font => (<option value={font}> {font} </option>))}
+          </select>
+          <select className="toolbar-selector" id="fontSize" onChange={() => this._onFontSizeClick()}>
+              {sizes.map(size => (<option value={size}> {size} </option>))}
+          </select>
+          <span className="toolbar-divider"> | </span>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'BOLD')}><i className="fa fa-bold" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'ITALIC')}><i className="fa fa-italic" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'UNDERLINE')}><i className="fa fa-underline" aria-hidden="true"></i></button>
+          <span className="toolbar-divider"> | </span>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'unordered-list-item')}><i className="fa fa-list-ul" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'ordered-list-item')}><i className="fa fa-list-ol" aria-hidden="true"></i></button>
+          <span className="toolbar-divider"> | </span>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-left')}><i className="fa fa-align-left" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-center')}><i className="fa fa-align-center" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-right')}><i className="fa fa-align-right" aria-hidden="true"></i></button>
+          <span className="toolbar-divider"> | </span>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'CODE')}><i className="fa fa-code" aria-hidden="true"></i></button>
+        </div>
         <Editor
           editorState={this.state.editorState}
           handleKeyCommand={this.handleKeyCommand}
