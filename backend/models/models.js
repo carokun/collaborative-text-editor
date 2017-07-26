@@ -10,9 +10,12 @@ var UserSchema = new Schema ({
     type: String,
     required: true
   },
-  documents: {
-    type: Array
-  }
+  documents: [
+      {
+        type: Schema.ObjectId,
+        ref: 'Document'
+      }
+  ]
 })
 
 var DocumentSchema = new Schema ({
