@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import {EditorState, convertFromRaw} from 'draft-js';
 
 class DocumentList extends React.Component {
   constructor(props) {
@@ -61,11 +62,11 @@ class DocumentList extends React.Component {
         <h2>Documents Portal</h2>
         <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
         <button onClick={() => this.createNewDocument()}>Create Document</button>
-        <div>
+        <div className='list'>
         {
-          this.state.documents.map((docObject) =>
-            <div key={docObject._id} className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}>{docObject.title}</div>
-          )
+          this.state.documents.map((docObject) => {
+            return (<div key={docObject._id} className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}><div className="list-header">{docObject.title}</div>{convertFromRaw(JSON.parse(docObject.text)).getPlainText()}</div>)
+          })
         }
         </div>
         <input value={this.state.sharedDocID} type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
