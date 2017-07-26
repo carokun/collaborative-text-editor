@@ -177,6 +177,7 @@ class MyEditor extends React.Component {
 
   handleKeyCommand(command: string): DraftHandleValue {
     if (command === 'myeditor-save') {
+      this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))
       console.log('SAVED!!')
       return 'handled';
     } else if (command === 'myeditor-bold') {
