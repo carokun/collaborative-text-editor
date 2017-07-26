@@ -84,10 +84,11 @@ class MyEditor extends React.Component {
       let selectionState = editorState.getSelection();
       let start = selectionState.getStartOffset();
       let end = selectionState.getEndOffset();
-      console.log(start, end);
       if (start - end === 0) {
         this.setState({editorState: editorState})
         this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+        this.state.socket.emit('curser', start);
+        // this.trackMouse(start);
       } else {
         this.setState({editorState: editorState})
         this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
@@ -117,6 +118,14 @@ class MyEditor extends React.Component {
       this.state.socket.on('highlight', (currentContent) => {
         this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
       })
+
+
+      this.state.socket.on('curser', (start) => {
+        console.log('here');
+        this.trackMouse(start);
+        // this.setState({editorState: EditorState.createWithContent(this.state.editorState.getCurrentContent(), compositeDecorator)});
+      })
+
     })
   }
 
@@ -200,6 +209,7 @@ class MyEditor extends React.Component {
   }
 
   changeRegex(e) {
+    const self = this;
     this.setState({searchInput: e.target.value})
     const newRegex = new RegExp(e.target.value || 'djkfjskjdfkjasdjkfksdjfaksjdfkjsdfkjsdf', 'g')
 
@@ -222,11 +232,16 @@ class MyEditor extends React.Component {
       const text = contentBlock.getText();
       let matchArr, start;
 
-      while ((matchArr = regex.exec(text)) !== null) {
-        console.log(matchArr);
-        start = matchArr.index;
-        callback(start, start + matchArr[0].length);
-      }
+      const pos = self.state.editorState.getSelection().getStartOffset();
+      callback(pos, pos + 1);
+
+      // while ((matchArr = regex.exec(text)) !== null) {
+        // console.log(matchArr);
+        // start = matchArr.index;
+        // callback(start, start + matchArr[0].length);
+
+      // }
+
 
     }
 
@@ -251,43 +266,50 @@ class MyEditor extends React.Component {
     this.setState({editorState: EditorState.createWithContent(currentContent, compositeDecorator)});
   }
 
-  trackMouse(start) {
+  trackMouse(pos) {
+    const self = this;
+    const newRegex = new RegExp('test', 'g')
 
     const currentContent = this.state.editorState.getCurrentContent();
 
+
     const styles = {
       handle: {
-        color: 'rgba(98, 177, 254, 1.0)',
+        borderLeft: '1px solid red',
         direction: 'ltr',
         unicodeBidi: 'bidi-override',
       }
     };
 
     const handleStrategy = function(contentBlock, callback, contentState) {
-      findWithRegex(contentBlock, callback);
+      findWithRegex(newRegex, contentBlock, callback);
     }
 
-    const findWithRegex = function(contentBlock, callback) {
-      callback(start, start + 1);
-    }
+    const findWithRegex = function(regex, contentBlock, callback) {
+      const text = contentBlock.getText();
+      let matchArr, start;
 
+      callback(pos, pos + 1);
+
+    }
     const HandleSpan = (props) => {
       return (
         <span
-
+          style={styles.handle}
           data-offset-key={props.offsetKey}
         >
-          <span style={styles.handle}>|</span>{props.children}
+          {props.children}
         </span>
       );
     };
-
     const compositeDecorator = new CompositeDecorator([
       {
         strategy: handleStrategy,
         component: HandleSpan,
       }
     ]);
+    this.setState({changeRegex: true});
+
     this.setState({editorState: EditorState.createWithContent(currentContent, compositeDecorator)});
   }
 
