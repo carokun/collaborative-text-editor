@@ -11,8 +11,7 @@ import {RichUtils,
         getDefaultKeyBinding,
         KeyBindingUtil,
         Modifier } from 'draft-js';
-const { editorBoxStyle,
-        blockRenderMap,
+const { blockRenderMap,
         styleMap,
         sizes,
         fonts,
@@ -186,7 +185,7 @@ class MyEditor extends React.Component {
 
   render() {
     return (
-      <div style={editorBoxStyle}>
+      <div>
         <div className="toolbar">
           <select className="toolbar-selector" id="fontColor" onChange={() => this._onFontColorClick()}>
               {colors.map(color => (<option value={color}> {color} </option>))}
@@ -199,29 +198,35 @@ class MyEditor extends React.Component {
               {sizes.map(size => (<option value={size}> {size} </option>))}
           </select>
           <span className="toolbar-divider"> | </span>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'BOLD')}><i className="fa fa-bold" aria-hidden="true"></i></button>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'ITALIC')}><i className="fa fa-italic" aria-hidden="true"></i></button>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'UNDERLINE')}><i className="fa fa-underline" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'BOLD')}><i className="fa fa-bold fa-lg" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'ITALIC')}><i className="fa fa-italic fa-lg" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'UNDERLINE')}><i className="fa fa-underline fa-lg" aria-hidden="true"></i></button>
           <span className="toolbar-divider"> | </span>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'unordered-list-item')}><i className="fa fa-list-ul" aria-hidden="true"></i></button>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'ordered-list-item')}><i className="fa fa-list-ol" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'unordered-list-item')}><i className="fa fa-list-ul fa-lg" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'ordered-list-item')}><i className="fa fa-list-ol fa-lg" aria-hidden="true"></i></button>
           <span className="toolbar-divider"> | </span>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-left')}><i className="fa fa-align-left" aria-hidden="true"></i></button>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-center')}><i className="fa fa-align-center" aria-hidden="true"></i></button>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-right')}><i className="fa fa-align-right" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-left')}><i className="fa fa-align-left fa-lg" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-center')}><i className="fa fa-align-center fa-lg" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-right')}><i className="fa fa-align-right fa-lg" aria-hidden="true"></i></button>
           <span className="toolbar-divider"> | </span>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'CODE')}><i className="fa fa-code" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'CODE')}><i className="fa fa-code fa-lg" aria-hidden="true"></i></button>
         </div>
-        <Editor
-          editorState={this.state.editorState}
-          handleKeyCommand={this.handleKeyCommand}
-          keyBindingFn={myKeyBindingFn}
-          onChange={this.onChange}
-          blockRenderMap={extendedBlockRenderMap}
-          blockStyleFn={this._blockRenderMapFn}
-          customStyleMap={styleMap}
-          onTab={this.onTab}
-        />
+        <div className="document-editor">
+          <div className="editor-padding">
+            <div className="editor-text">
+              <Editor
+                editorState={this.state.editorState}
+                handleKeyCommand={this.handleKeyCommand}
+                keyBindingFn={myKeyBindingFn}
+                onChange={this.onChange}
+                blockRenderMap={extendedBlockRenderMap}
+                blockStyleFn={this._blockRenderMapFn}
+                customStyleMap={styleMap}
+                onTab={this.onTab}
+              />
+            </div>
+          </div>
+        </div>
         <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
         <button onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
       </div>

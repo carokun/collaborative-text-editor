@@ -9,6 +9,7 @@ body {
   background-color: @eggshell;
   color: @darkblue;
   margin: 0;
+  overflow: hidden;
 }
 
 .register-page {
@@ -20,8 +21,7 @@ body {
 }
 
 .editor-page {
-  .button-styles;
-  background-color: #f4f6f9;
+  background-color: white;
 }
 
 .revision-history-page {
@@ -214,15 +214,37 @@ i {
 }
 
 .document-title {
-  background-color: #f4f6f9;
+  font-size: 24px;
+  background-color: white;
+  padding-left: 75px;
 }
 
 .document-return {
   float: left;
-  padding: 1%;
+  padding: 13px;
   background-color: #dbadad;
+  height: 32px;
 }
 
-.document-return:hover {
-  background-color: #e8e4e8;
+.document-editor {
+  padding-left: 55px;
+  padding-right: 55px;
+  padding-top: 40px;
+  background-color: #f9f9f9;
+  overflow: scroll;
+  height: 650px;
+}
+
+.editor-text {
+  background-color: white;
+  height: 1000px;
+}
+
+.editor-padding {
+  padding: 80px;
+  background-color: white;
+  border-radius: 4;
+  border-width: 0.5;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 15px;
 }
