@@ -8,11 +8,11 @@ module.exports = {
           }
           socket.broadcast.emit('documentChange', currentState);
       });
-      socket.on('highlight', selection => {
-          if (!selection) {
+      socket.on('highlight', currentState => {
+          if (!currentState) {
             return socket.emit('errorMessage', 'No document!');
           }
-          socket.broadcast.emit('highlight', selection);
+          socket.broadcast.emit('highlight', currentState);
       });
     })
   }

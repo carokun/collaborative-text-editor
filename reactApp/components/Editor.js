@@ -47,12 +47,15 @@ class MyEditor extends React.Component {
         this.setState({editorState: editorState})
         this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
       } else {
+        this.setState({editorState: editorState})
         const newState = this._onHighlight(editorState);
-        this.setState({editorState: newState})
+        // this.setState({editorState: newState})
         this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
+        this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()))
+        // this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
       }
       //when a user highlights something have it come up on everyone else's screen
-      this.state.socket.emit('highlight', editorState.getSelection())
+
     };
     this._onHighlight = this._onHighlight.bind(this);
   }
@@ -100,11 +103,11 @@ class MyEditor extends React.Component {
     this.state.socket.on('connect', () => {
       console.log("connected on the client side");
       this.state.socket.on('documentChange', (currentContent) => {
-        this.setState({editorState: EditorState.moveSelectionToEnd(EditorState.createWithContent(convertFromRaw(currentContent)))});
+        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
       })
 
-      this.state.socket.on('highlight', (selection) => {
-        //handle user highlighting something here
+      this.state.socket.on('highlight', (currentContent) => {
+        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
       })
     })
   }

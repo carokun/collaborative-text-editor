@@ -38,7 +38,6 @@ class DocumentPage extends React.Component {
         if (resp.status === 200) {
           console.log('success');
         }
-        console.log(resp);
       })
       .catch(err => {
         console.log("ERROR: Cannot retrieve document using axios request ", err);
