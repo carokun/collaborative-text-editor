@@ -10,8 +10,13 @@ import {RichUtils,
         convertFromRaw,
         getDefaultKeyBinding,
         KeyBindingUtil,
+<<<<<<< HEAD
         SelectionState,
         Modifier } from 'draft-js';
+=======
+        Modifier,
+        CompositeDecorator } from 'draft-js';
+>>>>>>> master
 const { blockRenderMap,
         styleMap,
         sizes,
@@ -33,7 +38,9 @@ class MyEditor extends React.Component {
     this.state = {
       socket: io('http://localhost:3000'),
       editorState: EditorState.createEmpty(),
-      interval: () => ''
+      interval: () => '',
+      searchInput: '',
+      changingRegex: false
     };
     this.onTab = (e) => this._onTab(e);
     this._onStyleClick = this._onStyleClick.bind(this);
@@ -72,6 +79,10 @@ class MyEditor extends React.Component {
 
   componentDidMount() {
     this.onChange = (editorState) => {
+      if (this.state.changingRegex) {
+        this.setState({changingRegex: false});
+        return;
+      }
       let selectionState = editorState.getSelection();
       let start = selectionState.getStartOffset();
       let end = selectionState.getEndOffset();
@@ -89,7 +100,6 @@ class MyEditor extends React.Component {
         this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
         this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()))
       }
-      //when a user highlights something have it come up on everyone else's screen
 
     };
 
@@ -115,14 +125,12 @@ class MyEditor extends React.Component {
       })
 
     })
-
   }
 
   componentWillUnmount() {
     console.log('clearing');
     this.state.socket.removeListener('documentChange');
     clearInterval(this.state.interval);
-    // this.setState({ interval: () => ''});
   }
 
   _onFontSizeClick() {
@@ -214,10 +222,111 @@ class MyEditor extends React.Component {
     return 'not-handled';
   }
 
+  changeRegex(e) {
+    this.setState({searchInput: e.target.value})
+    const newRegex = new RegExp(e.target.value || 'djkfjskjdfkjasdjkfksdjfaksjdfkjsdfkjsdf', 'g')
+
+    const currentContent = this.state.editorState.getCurrentContent();
+
+
+    const styles = {
+      handle: {
+        color: 'rgba(98, 177, 254, 1.0)',
+        direction: 'ltr',
+        unicodeBidi: 'bidi-override',
+      }
+    };
+
+    const handleStrategy = function(contentBlock, callback, contentState) {
+      findWithRegex(newRegex, contentBlock, callback);
+    }
+
+    const findWithRegex = function(regex, contentBlock, callback) {
+      const text = contentBlock.getText();
+      let matchArr, start;
+
+      while ((matchArr = regex.exec(text)) !== null) {
+        console.log(matchArr);
+        start = matchArr.index;
+        callback(start, start + matchArr[0].length);
+      }
+
+    }
+
+    const HandleSpan = (props) => {
+      return (
+        <span
+          style={styles.handle}
+          data-offset-key={props.offsetKey}
+        >
+          {props.children}
+        </span>
+      );
+    };
+
+    const compositeDecorator = new CompositeDecorator([
+      {
+        strategy: handleStrategy,
+        component: HandleSpan,
+      }
+    ]);
+    this.setState({changeRegex: true});
+    this.setState({editorState: EditorState.createWithContent(currentContent, compositeDecorator)});
+  }
+
+  trackMouse(start) {
+
+    const currentContent = this.state.editorState.getCurrentContent();
+
+    const styles = {
+      handle: {
+        color: 'rgba(98, 177, 254, 1.0)',
+        direction: 'ltr',
+        unicodeBidi: 'bidi-override',
+      }
+    };
+
+    const handleStrategy = function(contentBlock, callback, contentState) {
+      findWithRegex(contentBlock, callback);
+    }
+
+    const findWithRegex = function(contentBlock, callback) {
+      callback(start, start + 1);
+    }
+
+    const HandleSpan = (props) => {
+      return (
+        <span
+
+          data-offset-key={props.offsetKey}
+        >
+          <span style={styles.handle}>|</span>{props.children}
+        </span>
+      );
+    };
+
+    const compositeDecorator = new CompositeDecorator([
+      {
+        strategy: handleStrategy,
+        component: HandleSpan,
+      }
+    ]);
+    this.setState({editorState: EditorState.createWithContent(currentContent, compositeDecorator)});
+  }
+
   render() {
     let counter = 0;
     return (
-      <div className="document-container">
+      <div className="editor-container">
+        <span className="fa fa-bars fa-2x document-return" onClick={this.props.documentReturnHandler}> </span>
+        <span className="document-title">{this.props.documentTitle}</span>
+        <span className="document-id">{'ID: ' + this.props.documentId}</span>
+        <input
+          className="searchBar"
+          onChange={this.changeRegex.bind(this)}
+          type="text"
+          value={this.state.searchInput}
+        />
         <div className="toolbar">
           <select className="toolbar-selector toolbar-first" id="fontColor" onChange={() => this._onFontColorClick()}>
               {colors.map(color => (<option key={counter++} value={color}> {color} </option>))}
@@ -262,7 +371,7 @@ class MyEditor extends React.Component {
             </div>
           </div>
         </div>
-        <div className="document-footer">v1.0</div>
+        <div className="editor-footer">-v1.0</div>
       </div>
 
     )

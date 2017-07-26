@@ -1,5 +1,5 @@
 @eggshell: #F7FAFA;
-@darkblue: #000026;
+@darkblue: #00003B;
 @lightgreen: #C1EAAE;
 @pastelblue: #A5CCCC;
 @red: #CC3026;
@@ -11,17 +11,46 @@ body {
   background-color: @eggshell;
   color: @darkblue;
   margin: 0;
-  overflow: hidden;
 }
 
 // REGISTER PAGE
 .register-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  .register-wrapper {
+    border: 4px solid white;
+    position: relative;
+    padding: 20px;
+    width: 400px;
+    height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
   .form-style;
   .button-styles;
 }
 
 // LOGIN PAGE
 .login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  .login-wrapper {
+    border: 4px solid white;
+    position: relative;
+    padding: 20px;
+    width: 400px;
+    height: 310px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
   .form-style;
   .button-styles;
 }
@@ -29,6 +58,26 @@ body {
 // EDIT DOCUMENT PAGE
 .editor-page {
   background-color: white;
+  .document-id {
+    float: right;
+  }
+  .document-title {
+    font-size: 24px;
+    background-color: white;
+    padding-left: 75px;
+  }
+  .document-return {
+    padding: 13px;
+    background-color: @pastelblue;
+    color: white;
+    height: 32px;
+    transition: 0.3s;
+  }
+
+  .document-return:hover {
+    background-color: @pastelblue - #222;
+  }
+
 }
 
 // REVISION HISTORY PAGE STYLING
@@ -95,11 +144,22 @@ body {
     padding: 10px 5px;
     color: @darkblue;
     background-color: white;
-    font-weight: bold;
     margin: 9px 0px;
     border: 1px solid white;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05), 0 2px 2px 0 rgba(0, 0, 0, 0.05);
     border-radius: 2px;
+    width: 45%;
+    height: 60px;
+    font-size: 14px;
+  }
+  .list-header {
+    font-size: 17px;
+    font-weight: bold;
+  }
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
   .list-item:hover {
     border: 1px solid #ddd;
@@ -125,13 +185,28 @@ body {
 // BUTTON STYLES
 .button-styles {
   .green-button {
+    transition: 0.4s;
     background-color: @lightgreen;
+    color: white;
   }
   .blue-button {
+    transition: 0.4s;
     background-color: @pastelblue;
+    color: white;
   }
   .red-button {
-    background-color: @red;
+    transition: 0.4s;
+    background-color: @red + #444;
+    color: white;
+  }
+  .red-button:hover {
+    background-color: @red + #222;
+  }
+  .green-button:hover {
+    background-color: @lightgreen - #111;
+  }
+  .blue-button:hover {
+    background-color: @pastelblue - #111;
   }
   button {
     width: 100%;
@@ -141,6 +216,11 @@ body {
     border-radius: 3px;
     font-size: 16px;
     background-color: @pastelblue;
+    color: white;
+    transition: 0.4s;
+  }
+  button:hover {
+    background-color: @pastelblue - #111;
   }
   button:focus {
     outline: none;
@@ -149,30 +229,28 @@ body {
 
 // FORM STYLES
 .form-style {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 50px;
   form {
-    div {
+    width: 100%;
+    font-size: 16px;
+    width: 400px;
+    p {
+      margin: 8px 0px 0px 0px;
+      width: 100%;
+      display: inline-block;
+    }
+    input {
+      width: 94%;
+      display: inline-block;
+      padding: 8px 3%;
+      border: 1px solid @eggshell - #111;
       font-size: 16px;
-      width: 400px;
-      label {
-        margin-top: 8px;
-        width: 100%;
-        display: inline-block;
-      }
-      input {
-        width: 100%;
-        display: inline-block;
-        padding: 8px;
-        border: 1px solid @eggshell - #111;
-        font-size: 16px;
-      }
-      input:focus {
-        outline: none;
-        border: 1px solid @eggshell - #444;
-      }
+    }
+    input:focus {
+      outline: none;
+      border: 1px solid @eggshell - #444;
+    }
+    button {
+      width: 100%;
     }
   }
 }
@@ -198,111 +276,6 @@ i {
   padding: 2px;
 }
 
-.toolbar {
-  border-top: 1px solid @lightgray;
-  border-bottom: 1px solid @lightgray;
-  border-radius: 2px;
-  background-color: white;
-  text-align: center;
-}
-
-.toolbar-item {
-  color: @gray;
-  background: none;
-  border: none;
-  transition: 0.2s;
-  margin: 10px 0px 5px 0px;
-}
-
-.toolbar-item:hover {
-  color: @gray - #222;
-}
-
-.toolbar-item:focus {
-  outline: none;
-}
-
-.toolbar-selector {
-  margin: 1px 3px 1px 3px;
-  background: white;
-  border-radius: 1px;
-  font-size: 12px;
-  border: 1px solid @lightgray;
-  color: @gray - #666;
-  position: relative;
-}
-
-.toolbar-selector-content:hover {
-  background-color: @pastelblue;
-}
-
-.toolbar-selector:focus {
-  outline: none;
-}
-
-.toolbar-divider {
-  margin: 0px 10px;
-  color: @lightgray;
-}
-
-.toolbar-first {
-  margin-left: 10px;
-}
-
-.toolbar-button {
-  margin-left: 1px;
-  margin-right: 1px;
-}
-
-.document-title {
-  font-size: 24px;
-  background-color: white;
-  padding-left: 75px;
-}
-
-.document-return {
-  padding: 13px;
-  background-color: @pastelblue;
-  color: white;
-  height: 32px;
-  transition: 0.3s;
-}
-
-.document-return:hover {
-  background-color: @pastelblue - #222;
-}
-
-.document-editor {
-  background-color: #FDFDFD;
-  overflow: scroll;
-  height: 650px;
-  display: flex;
-  justify-content: center;
-}
-
-.document-id {
+.searchBar {
   float: right;
-}
-
-.document-footer {
-
-}
-
-.editor-text {
-  background-color: white;
-  height: 100%;
-}
-
-.editor-padding {
-  flex: 1;
-  padding: 80px;
-  margin: 40px 80px;
-  background-color: white;
-  border-radius: 4;
-  border-width: 0.5;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  height: 1000px;
-  min-width: 250px;
-  max-width: 500px;
-
 }
