@@ -62,6 +62,12 @@ class MyEditor extends React.Component {
     if (type === 'align-right') {
       return 'alignRight';
     }
+    if (type === 'terminal') {
+      return 'terminal';
+    }
+    if (type === 'code') {
+      return 'code';
+    }
     return null;
   }
 
@@ -83,7 +89,6 @@ class MyEditor extends React.Component {
         this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()))
       }
       //when a user highlights something have it come up on everyone else's screen
-
     };
 
     const self = this;
@@ -106,7 +111,6 @@ class MyEditor extends React.Component {
       this.state.socket.on('highlight', (currentContent) => {
         this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
       })
-
     })
 
   }
@@ -218,7 +222,8 @@ class MyEditor extends React.Component {
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-center')}><i className="fa fa-align-center fa-lg" aria-hidden="true"></i></button>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-right')}><i className="fa fa-align-right fa-lg" aria-hidden="true"></i></button>
           <span className="toolbar-divider"> | </span>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'CODE')}><i className="fa fa-code fa-lg" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'code')}><i className="fa fa-code fa-lg" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'terminal')}><i className="fa fa-terminal fa-lg" aria-hidden="true"></i></button>
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item toolbar-button" onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
           <button className="toolbar-item toolbar-button" onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
