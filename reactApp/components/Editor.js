@@ -191,9 +191,9 @@ class MyEditor extends React.Component {
   render() {
     let counter = 0;
     return (
-      <div>
+      <div className="document-container">
         <div className="toolbar">
-          <select className="toolbar-selector" id="fontColor" onChange={() => this._onFontColorClick()}>
+          <select className="toolbar-selector toolbar-first" id="fontColor" onChange={() => this._onFontColorClick()}>
               {colors.map(color => (<option key={counter++} value={color}> {color} </option>))}
           </select>
           <span className="toolbar-divider"> | </span>
@@ -216,6 +216,9 @@ class MyEditor extends React.Component {
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-right')}><i className="fa fa-align-right fa-lg" aria-hidden="true"></i></button>
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'CODE')}><i className="fa fa-code fa-lg" aria-hidden="true"></i></button>
+          <span className="toolbar-divider"> | </span>
+          <button className="toolbar-item toolbar-button" onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
+          <button className="toolbar-item toolbar-button" onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
         </div>
         <div className="document-editor">
           <div className="editor-padding">
@@ -233,8 +236,7 @@ class MyEditor extends React.Component {
             </div>
           </div>
         </div>
-        <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
-        <button onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
+        <div className="document-footer">v1.0</div>
       </div>
 
     )
