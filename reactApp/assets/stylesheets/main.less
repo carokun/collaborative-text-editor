@@ -59,6 +59,25 @@ body {
     width: 48%;
     margin: 1%;
   }
+  .changes-view {
+    font-size: 14px;
+    background-color: white;
+    padding: 20px 0px;
+    border: 1px solid @eggshell - #111;
+    .added-line {
+      padding: 0px 20px;
+      background-color: @lightgreen + #111;
+      color: @lightgreen - #999;
+    }
+    .removed-line {
+      padding: 0px 20px;
+      background-color: @red + #999;
+      color: @red - #333;
+    }
+    .not-changed-line {
+      padding: 0px 20px;
+    }
+  }
 }
 
 .document-list-page {
@@ -213,6 +232,15 @@ i {
   margin: 2px;
 }
 
+.toolbar-first {
+  margin-left: 10px;
+}
+
+.toolbar-button {
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
 .document-title {
   font-size: 24px;
   background-color: white;
@@ -237,6 +265,10 @@ i {
 
 .document-id {
   float: right;
+}
+
+.document-footer {
+
 }
 
 .editor-text {
