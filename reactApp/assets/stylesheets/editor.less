@@ -1,0 +1,86 @@
+@eggshell: #F7FAFA;
+@darkblue: #00003B;
+@lightgreen: #C1EAAE;
+@pastelblue: #A5CCCC;
+@red: #CC3026;
+@lightgray: #EDEDED;
+@gray: #BCBCBC;
+
+.editor-container {
+  .toolbar {
+    border-top: 1px solid @lightgray;
+    border-bottom: 1px solid @lightgray;
+    border-radius: 2px;
+    background-color: white;
+    text-align: center;
+    overflow: hidden;
+  }
+  .toolbar-item {
+    color: @gray;
+    background: none;
+    border: none;
+    transition: 0.2s;
+    margin: 10px 0px 5px 0px;
+  }
+  .toolbar-item:hover {
+    color: @gray - #222;
+  }
+  .toolbar-item:focus {
+    outline: none;
+  }
+  .toolbar-selector {
+    margin: 1px 3px 1px 3px;
+    background: white;
+    border-radius: 1px;
+    font-size: 12px;
+    border: 1px solid @lightgray;
+    color: @gray - #666;
+    position: relative;
+  }
+  .toolbar-selector-content:hover {
+    background-color: @pastelblue;
+  }
+  .toolbar-selector:focus {
+    outline: none;
+  }
+  .toolbar-divider {
+    margin: 0px 10px;
+    color: @lightgray;
+  }
+  .toolbar-first {
+    margin-left: 10px;
+  }
+  .toolbar-button {
+    margin-left: 1px;
+    margin-right: 1px;
+  }
+  .document-editor {
+    background-color: #FDFDFD;
+    overflow: scroll;
+    //height: 650px;
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+  }
+  .editor-padding {
+    flex: 1;
+    padding: 80px;
+    margin: 40px 80px;
+    background-color: white;
+    border-radius: 4;
+    border-width: 0.5;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    height: 1000px;
+    min-width: 250px;
+    max-width: 500px;
+  }
+  .editor-text {
+    background-color: white;
+    height: 100%;
+  }
+  .editor-footer {
+    //background-color: red;
+    height: 25px;
+    overflow: hidden;
+  }
+}

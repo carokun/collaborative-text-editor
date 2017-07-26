@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import '../assets/stylesheets/documentlist.less';
-
+import '../assets/stylesheets/editor.less';
 class DocumentList extends React.Component {
   constructor(props) {
     super(props);
