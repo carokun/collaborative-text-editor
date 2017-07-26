@@ -4,7 +4,7 @@
 @pastelblue: #A5CCCC;
 @red: #CC3026;
 @lightgray: #EDEDED;
-@gray: #BCBCBC;
+@gray: #7D7D7D;
 
 body {
   font-family: 'Avenir Next', sans-serif;
@@ -53,11 +53,6 @@ body {
   }
   .form-style;
   .button-styles;
-}
-
-// EDIT DOCUMENT PAGE
-.editor-page {
-  background-color: white;
 }
 
 // REVISION HISTORY PAGE STYLING
@@ -133,13 +128,7 @@ body {
   .list-item:hover {
     border: 1px solid #ddd;
   }
-  input {
-    width: 100%;
-    display: inline-block;
-    padding: 8px;
-    border: 1px solid @eggshell - #111;
-    font-size: 16px;
-  }
+  .input-style;
   button {
     width: 100%;
     padding: 8px 5px;
@@ -196,6 +185,21 @@ body {
   }
 }
 
+// INPUT STYLE
+.input-style {
+  input {
+    width: 94%;
+    display: inline-block;
+    padding: 8px 3%;
+    border: 1px solid @eggshell - #111;
+    font-size: 16px;
+  }
+  input:focus {
+    outline: none;
+    border: 1px solid @eggshell - #444;
+  }
+}
+
 // FORM STYLES
 .form-style {
   form {
@@ -224,20 +228,29 @@ body {
   }
 }
 
+// ALIGNMENT STYLES FOR EDITOR
 .align-left div {
   text-align: left;
 }
-
 .align-center div {
   text-align: center;
 }
-
 .alignRight div {
   text-align: right;
 }
-
 i {
   padding: 2px;
+}
+
+
+// EDIT DOCUMENT PAGE
+.editor-page {
+  background-color: white;
+  height: 100vh;
+}
+
+.editor-container {
+  height: 100%;
 }
 
 .toolbar {
@@ -346,5 +359,4 @@ i {
   height: 1000px;
   min-width: 250px;
   max-width: 500px;
-
 }

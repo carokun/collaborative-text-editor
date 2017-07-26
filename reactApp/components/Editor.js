@@ -194,7 +194,7 @@ class MyEditor extends React.Component {
   render() {
     let counter = 0;
     return (
-      <div className="document-container">
+      <div className="editor-container">
         <div className="toolbar">
           <select className="toolbar-selector toolbar-first" id="fontColor" onChange={() => this._onFontColorClick()}>
               {colors.map(color => (<option key={counter++} value={color}> {color} </option>))}
