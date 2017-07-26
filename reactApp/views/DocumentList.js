@@ -2,6 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import {EditorState, convertFromRaw} from 'draft-js';
 
+import '../assets/stylesheets/documentlist.less';
+import '../assets/stylesheets/editor.less';
+
 class DocumentList extends React.Component {
   constructor(props) {
     super(props);
@@ -69,8 +72,10 @@ class DocumentList extends React.Component {
           })
         }
         </div>
-        <input value={this.state.sharedDocID} type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
-        <button onClick={() => this.addSharedDocument()}>Add shared document</button>
+        <div className="document-share">
+          <input value={this.state.sharedDocID} type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
+          <button onClick={() => this.addSharedDocument()}>Add shared document</button>
+        </div>
       </div>
     );
   }

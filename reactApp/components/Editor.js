@@ -65,6 +65,12 @@ class MyEditor extends React.Component {
     if (type === 'align-right') {
       return 'alignRight';
     }
+    if (type === 'terminal') {
+      return 'terminal';
+    }
+    if (type === 'code') {
+      return 'code';
+    }
     return null;
   }
 
@@ -90,7 +96,6 @@ class MyEditor extends React.Component {
         this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
         this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()))
       }
-
     };
 
     const self = this;
@@ -113,6 +118,7 @@ class MyEditor extends React.Component {
       this.state.socket.on('highlight', (currentContent) => {
         this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
       })
+
 
       this.state.socket.on('curser', (start) => {
         console.log('here');
@@ -310,8 +316,12 @@ class MyEditor extends React.Component {
   render() {
     let counter = 0;
     return (
-      <div className="document-container">
+      <div className="editor-container">
+        <span className="fa fa-bars fa-2x document-return" onClick={this.props.documentReturnHandler}> </span>
+        <span className="document-title">{this.props.documentTitle}</span>
+        <span className="document-id">{'ID: ' + this.props.documentId}</span>
         <input
+          className="searchBar"
           onChange={this.changeRegex.bind(this)}
           type="text"
           value={this.state.searchInput}
@@ -322,10 +332,10 @@ class MyEditor extends React.Component {
           </select>
           <span className="toolbar-divider"> | </span>
           <select className="toolbar-selector" id="fontStyle" onChange={() => this._onFontStyleClick()}>
-              {fonts.map(font => (<option key={counter++} value={font}> {font} </option>))}
+              {fonts.map(font => (<option className="toolbar-selector-content" key={counter++} value={font}> {font} </option>))}
           </select>
           <select className="toolbar-selector" id="fontSize" onChange={() => this._onFontSizeClick()}>
-              {sizes.map(size => (<option key={counter++} value={size}> {size} </option>))}
+              {sizes.map(size => (<option className="toolbar-selector-content" key={counter++} value={size}> {size} </option>))}
           </select>
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'BOLD')}><i className="fa fa-bold fa-lg" aria-hidden="true"></i></button>
@@ -339,7 +349,8 @@ class MyEditor extends React.Component {
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-center')}><i className="fa fa-align-center fa-lg" aria-hidden="true"></i></button>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-right')}><i className="fa fa-align-right fa-lg" aria-hidden="true"></i></button>
           <span className="toolbar-divider"> | </span>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'CODE')}><i className="fa fa-code fa-lg" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'code')}><i className="fa fa-code fa-lg" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'terminal')}><i className="fa fa-terminal fa-lg" aria-hidden="true"></i></button>
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item toolbar-button" onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
           <button className="toolbar-item toolbar-button" onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
@@ -360,7 +371,7 @@ class MyEditor extends React.Component {
             </div>
           </div>
         </div>
-        <div className="document-footer">v1.0</div>
+        <div className="editor-footer">-v1.0</div>
       </div>
 
     )
