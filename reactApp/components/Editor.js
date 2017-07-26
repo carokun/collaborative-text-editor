@@ -205,6 +205,9 @@ class MyEditor extends React.Component {
       console.log('UNDERLINE!!');
       this._onClick('inline', 'UNDERLINE')
       return 'handled';
+    } else if (command === 'myeditor-terminal') {
+      this._onClick('block', 'terminal')
+      return 'handled';
     }
     return 'not-handled';
   }
@@ -235,14 +238,6 @@ class MyEditor extends React.Component {
 
       const pos = self.state.editorState.getSelection().getStartOffset();
       callback(pos, pos + 1);
-
-      // while ((matchArr = regex.exec(text)) !== null) {
-        // console.log(matchArr);
-        // start = matchArr.index;
-        // callback(start, start + matchArr[0].length);
-
-      // }
-
 
     }
 
