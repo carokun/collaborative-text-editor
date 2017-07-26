@@ -37,24 +37,7 @@ class MyEditor extends React.Component {
     this.onTab = (e) => this._onTab(e);
     this._onStyleClick = this._onStyleClick.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
-    this.onChange = (editorState) => {
-      let selectionState = editorState.getSelection();
-      let start = selectionState.getStartOffset();
-      let end = selectionState.getEndOffset();
-      console.log(start, end);
-      if (start - end === 0) {
-        this.setState({editorState: editorState})
-        this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
-      } else {
-        this.setState({editorState: editorState})
-        this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
-        const newState = this._onHighlight(editorState);
-        this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
-        this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()))
-      }
-      //when a user highlights something have it come up on everyone else's screen
 
-    };
     this._onHighlight = this._onHighlight.bind(this);
   }
 
@@ -84,6 +67,25 @@ class MyEditor extends React.Component {
 
 
   componentDidMount() {
+    this.onChange = (editorState) => {
+      let selectionState = editorState.getSelection();
+      let start = selectionState.getStartOffset();
+      let end = selectionState.getEndOffset();
+      console.log(start, end);
+      if (start - end === 0) {
+        this.setState({editorState: editorState})
+        this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+      } else {
+        this.setState({editorState: editorState})
+        this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+        const newState = this._onHighlight(editorState);
+        this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
+        this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()))
+      }
+      //when a user highlights something have it come up on everyone else's screen
+
+    };
+
     const self = this;
     axios.get('http://localhost:3000/document/' + this.props.id)
     .then(resp => {
@@ -113,7 +115,7 @@ class MyEditor extends React.Component {
     console.log('clearing');
     this.state.socket.removeListener('documentChange');
     clearInterval(this.state.interval);
-    this.setState({ interval: () => ''})
+    // this.setState({ interval: () => ''});
   }
 
   _onFontSizeClick() {
@@ -207,7 +209,7 @@ class MyEditor extends React.Component {
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'BOLD')}><i className="fa fa-bold fa-lg" aria-hidden="true"></i></button>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'ITALIC')}><i className="fa fa-italic fa-lg" aria-hidden="true"></i></button>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'UNDERLINE')}><i className="fa fa-underline fa-lg" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'UNDERLINE')}><i className="fa fa-underline fa-lg" aria-hidden="true"></i></button>
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'unordered-list-item')}><i className="fa fa-list-ul fa-lg" aria-hidden="true"></i></button>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'ordered-list-item')}><i className="fa fa-list-ol fa-lg" aria-hidden="true"></i></button>
