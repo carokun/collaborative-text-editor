@@ -19,6 +19,9 @@ const { editorBoxStyle,
         colors } = require('./stylingConsts');
 const { hasCommandModifier } = KeyBindingUtil;
 const { myKeyBindingFn } = require('./keyBindingFn');
+
+import { Map } from 'immutable';
+
 import io from 'socket.io-client'
 
 const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
@@ -36,9 +39,22 @@ class MyEditor extends React.Component {
     this._onStyleClick = this._onStyleClick.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.onChange = (editorState) => {
-      this.setState({editorState: editorState})
-      this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+      let selectionState = editorState.getSelection();
+      let start = selectionState.getStartOffset();
+      let end = selectionState.getEndOffset();
+      console.log(start, end);
+      if (start - end === 0) {
+        this.setState({editorState: editorState})
+        this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+      } else {
+        const newState = this._onHighlight(editorState);
+        this.setState({editorState: newState})
+        this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
+      }
+      //when a user highlights something have it come up on everyone else's screen
+      this.state.socket.emit('highlight', editorState.getSelection())
     };
+    this._onHighlight = this._onHighlight.bind(this);
   }
 
   _onClick(toggleType, style) {
@@ -64,25 +80,29 @@ class MyEditor extends React.Component {
     }
     return null;
   }
-
-  componentWillMount() {
-    const self = this;
-    axios.get('http://localhost:3000/document/' + this.props.id)
-    .then(resp => {
-      const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
-      self.onChange(parsed);
-      this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
-    })
-    .catch(err => {
-      console.log("ERROR:", err);
-    });
-  }
+// @this was breaking
+  // componentWillMount() {
+  //   const self = this;
+  //   axios.get('http://localhost:3000/document/' + this.props.id)
+  //   .then(resp => {
+  //     const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
+  //     self.onChange(parsed);
+  //     this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
+  //   })
+  //   .catch(err => {
+  //     console.log("ERROR:", err);
+  //   });
+  // }
 
   componentDidMount() {
     this.state.socket.on('connect', () => {
       console.log("connected on the client side");
       this.state.socket.on('documentChange', (currentContent) => {
-        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
+        this.setState({editorState: EditorState.moveSelectionToEnd(EditorState.createWithContent(convertFromRaw(currentContent)))});
+      })
+
+      this.state.socket.on('highlight', (selection) => {
+        //handle user highlighting something here
       })
     })
   }
@@ -112,7 +132,6 @@ class MyEditor extends React.Component {
     const nextContentState = arr.reduce((contentState, style) => {
         return Modifier.removeInlineStyle(contentState, selection, style)
       }, editorState.getCurrentContent());
-
     let nextEditorState = EditorState.push(
       editorState,
       nextContentState,
@@ -140,6 +159,10 @@ class MyEditor extends React.Component {
       const maxDepth = 4;
       this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
     }
+
+  _onHighlight(editorState) {
+     return RichUtils.toggleInlineStyle(editorState, 'highlight');
+ }
 
   handleKeyCommand(command: string): DraftHandleValue {
     if (command === 'myeditor-save') {
@@ -200,6 +223,7 @@ class MyEditor extends React.Component {
           onTab={this.onTab}
         />
         <button onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
+        <button onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
       </div>
 
     )
