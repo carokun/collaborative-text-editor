@@ -47,12 +47,15 @@ class DocumentPage extends React.Component {
     render() {
         return (
             <div className="editor-page">
-                <span className="fa fa-bars fa-2x document-return" onClick={() => this.props.history.push('/documentlist')}> </span>
-                <span>
-                  <span className="document-title">{this.state.title}</span>
-                  <span className="document-id">{'ID: ' + this.props.match.params.id}</span>
-                  <MyEditor id={this.props.match.params.id} editorState={this.state.editorState} saveDocument={this.saveDocument.bind(this)} history={this.props.history}/>
-                </span>
+                  <MyEditor
+                    id={this.props.match.params.id}
+                    editorState={this.state.editorState}
+                    saveDocument={this.saveDocument.bind(this)}
+                    history={this.props.history}
+                    documentReturnHandler={() => this.props.history.push('/documentlist')}
+                    documentTitle={this.state.title}
+                    documentId={this.props.match.params.id}
+                  />
             </div>
         )
     }
