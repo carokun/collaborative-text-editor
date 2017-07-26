@@ -53,11 +53,11 @@ class RevisionHistory extends React.Component {
       }
       else {
         while (currVersion[currIndex] !== viewedVersion[pastIndex] && currIndex < currVersion.length) {
-          changesArray.push(<div className="added-line">{currVersion[currIndex]}</div>);
+          changesArray.push(<div className="added-line">+ {currVersion[currIndex]}</div>);
           currIndex++;
         }
         while (currVersion[currIndex] !== viewedVersion[pastIndex] && pastIndex < viewedVersion.length) {
-          changesArray.push(<div className="removed-line">{viewedVersion[pastIndex]}</div>);
+          changesArray.push(<div className="removed-line">- {viewedVersion[pastIndex]}</div>);
           pastIndex++;
         }
       }
