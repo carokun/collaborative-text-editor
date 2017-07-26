@@ -290,8 +290,12 @@ class MyEditor extends React.Component {
   render() {
     let counter = 0;
     return (
-      <div className="document-container">
+      <div className="editor-container">
+        <span className="fa fa-bars fa-2x document-return" onClick={this.props.documentReturnHandler}> </span>
+        <span className="document-title">{this.props.documentTitle}</span>
+        <span className="document-id">{'ID: ' + this.props.documentId}</span>
         <input
+          className="searchBar"
           onChange={this.changeRegex.bind(this)}
           type="text"
           value={this.state.searchInput}
@@ -302,10 +306,10 @@ class MyEditor extends React.Component {
           </select>
           <span className="toolbar-divider"> | </span>
           <select className="toolbar-selector" id="fontStyle" onChange={() => this._onFontStyleClick()}>
-              {fonts.map(font => (<option key={counter++} value={font}> {font} </option>))}
+              {fonts.map(font => (<option className="toolbar-selector-content" key={counter++} value={font}> {font} </option>))}
           </select>
           <select className="toolbar-selector" id="fontSize" onChange={() => this._onFontSizeClick()}>
-              {sizes.map(size => (<option key={counter++} value={size}> {size} </option>))}
+              {sizes.map(size => (<option className="toolbar-selector-content" key={counter++} value={size}> {size} </option>))}
           </select>
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'BOLD')}><i className="fa fa-bold fa-lg" aria-hidden="true"></i></button>
@@ -340,7 +344,7 @@ class MyEditor extends React.Component {
             </div>
           </div>
         </div>
-        <div className="document-footer">v1.0</div>
+        <div className="editor-footer">-v1.0</div>
       </div>
 
     )
