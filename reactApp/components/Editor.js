@@ -10,14 +10,11 @@ import {RichUtils,
         convertFromRaw,
         getDefaultKeyBinding,
         KeyBindingUtil,
-<<<<<<< HEAD
         SelectionState,
-        Modifier } from 'draft-js';
-=======
         Modifier,
         CompositeDecorator } from 'draft-js';
->>>>>>> master
 const { blockRenderMap,
+        cursorBlockMap,
         styleMap,
         sizes,
         fonts,
@@ -191,8 +188,9 @@ class MyEditor extends React.Component {
    let contentState = editorState.getCurrentContent();
    let anchorKey = selectionState.getAnchorKey();
    console.log("anchor key is ", anchorKey)
+   console.log("blockMap! ", cursorBlockMap)
    let newSelectionState = SelectionState.createEmpty(anchorKey);
-   let newContentState = Modifier.replaceWithFragment(contentState, newSelectionState, 'cursor-block')
+   let newContentState = Modifier.replaceWithFragment(contentState, newSelectionState, cursorBlockMap)
    let nextEditorState = EditorState.push(
      editorState,
      newContentState,

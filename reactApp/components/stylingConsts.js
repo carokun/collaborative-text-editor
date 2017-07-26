@@ -32,9 +32,6 @@ const styleMap = {
 }
 
 const blockRenderMap = Map({
-  'cursor-block': {
-    element: 'div',
-  },
   'align-left': {
     element: 'div'
   },
@@ -46,7 +43,14 @@ const blockRenderMap = Map({
   }
 });
 
+const cursorBlockMap = Map({
+  'cursor-block': {
+    element: 'div',
+  },
+})
+
 module.exports = {
+  cursorBlockMap,
   blockRenderMap,
   styleMap,
   sizes,
