@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Editor, EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import moment from 'moment';
+import '../assets/stylesheets/revisionhistory.less';
 
 class RevisionHistory extends React.Component {
   constructor(props) {
@@ -93,33 +94,42 @@ class RevisionHistory extends React.Component {
     return (
       <div className="revision-history-page">
         <h2>"{this.state.title}" Revision History</h2>
-        <h3>View Version</h3>
+        <div className="content-wrapper">
+          <div className="left-side-wrapper">
+            <div className="revision-editor-wrapper">
+              <h3>View Version</h3>
+              <div className="revision-editor">
+              <Editor
+                editorState={this.state.editorState}
+                readOnly={true}
+              />
+              </div>
+            </div>
+            <div className="change-view-wrapper">
+              <h3>Changes</h3>
+              <div className="changes-view">
+                {
+                  this.state.displayedChanges.map((line) => (line))
+                }
+              </div>
+            </div>
+          </div>
 
-        <div className="revision-editor"><Editor
-          editorState={this.state.editorState}
-          readOnly={true}
-        />
+          <div className="history-list-wrapper">
+            <h3>History</h3>
+            <h5>Most Recent</h5>
+            <div className="history-list">
+              {
+                this.state.revisionhistory.map((prevEditorState, index) => {
+                  return <div onClick={() => this.modifyEditorDisplay(prevEditorState)}>{index + 1 + ')  ' + moment(prevEditorState.date).format('MMMM Do YYYY, h:mm:ss a')}</div>
+                }).reverse()
+              }
+            </div>
+            <h5>Least Recent</h5>
+            <button className="green-button" onClick={() => this.restore()}>Restore Version</button>
+            <button className="blue-button" onClick={() => this.props.history.push('/document/' + this.props.match.params.docId)}>Back to Doc</button>
+          </div>
         </div>
-
-        <h3>Changes</h3>
-        <div className="changes-view">
-          {
-            this.state.displayedChanges.map((line) => (line))
-          }
-        </div>
-
-        <h3>History</h3>
-        <h5>Least Recent</h5>
-        <div className="history-list">
-          {
-            this.state.revisionhistory.map((prevEditorState) => {
-              return <div onClick={() => this.modifyEditorDisplay(prevEditorState)}>{moment(prevEditorState.date).format('MMMM Do YYYY, h:mm:ss a')}</div>
-            })
-          }
-        </div>
-        <h5>Most Recent</h5>
-        <button className="blue-button" onClick={() => this.restore()}>Restore</button>
-        <button className="blue-button" onClick={() => this.props.history.push('/document/' + this.props.match.params.docId)}>Return</button>
       </div>
     )
   }

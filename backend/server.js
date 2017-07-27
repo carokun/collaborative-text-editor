@@ -16,7 +16,10 @@ const connect = process.env.MONGODB_URI;
 mongoose.connect(connect);
 
 const app = express();
+//now the server knows about the app
 const server = require('http').Server(app);
+
+//expecting an http server
 const io = require('socket.io')(server);
 
 app.use(bodyParser.json());

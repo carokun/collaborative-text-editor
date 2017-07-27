@@ -26,6 +26,7 @@ import copy from 'copy-to-clipboard';
 import io from 'socket.io-client';
 import Alert from 'react-s-alert';
 
+
 const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
 
@@ -44,6 +45,37 @@ class MyEditor extends React.Component {
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
 
     this._onHighlight = this._onHighlight.bind(this);
+
+    this.state.socket.on('connect', () => {
+      console.log("connected on the client side");
+
+      this.state.socket.emit('join', {doc: this.props.id});
+
+      this.state.socket.on('helloback', () => {
+        console.log('hello back');
+      })
+      this.state.socket.on('userJoined', () => {
+        console.log('user joined');
+      })
+      this.state.socket.on('documentChange', (currentContent) => {
+        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
+      })
+
+      this.state.socket.on('highlight', (currentContent) => {
+        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
+      })
+
+      this.state.socket.on('userLeft', () => {
+        console.log('user left');
+      })
+
+      this.state.socket.on('curser', ({start, anchorKey}) => {
+        console.log('here');
+        this.trackMouse(start, anchorKey);
+        // this.setState({editorState: EditorState.createWithContent(this.state.editorState.getCurrentContent(), compositeDecorator)});
+      })
+
+    })
   }
 
   _onClick(toggleType, style) {
@@ -86,10 +118,14 @@ class MyEditor extends React.Component {
       let selectionState = editorState.getSelection();
       let start = selectionState.getStartOffset();
       let end = selectionState.getEndOffset();
+      let anchorKey = selectionState.anchorKey;
       if (start - end === 0) {
+        // editorState.push(this.addEmoji())
         this.setState({editorState: editorState})
+
+        // this.addEmoji();
         this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
-        this.state.socket.emit('curser', start);
+        this.state.socket.emit('curser', {start, anchorKey});
         // this.trackMouse(start);
       } else {
         this.setState({editorState: editorState})
@@ -98,6 +134,7 @@ class MyEditor extends React.Component {
         this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
         this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()))
       }
+
     };
 
     const self = this;
@@ -105,36 +142,19 @@ class MyEditor extends React.Component {
     .then(resp => {
       const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
       self.onChange(parsed);
-      this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
+      this.setState({ interval: setInterval(() => this.props.autoSaveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
     })
     .catch(err => {
       console.log("ERROR:", err);
     });
 
-    this.state.socket.on('connect', () => {
-      console.log("connected on the client side");
-      this.state.socket.on('documentChange', (currentContent) => {
-        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
-      })
-
-      this.state.socket.on('highlight', (currentContent) => {
-        this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
-      })
-
-
-      this.state.socket.on('curser', (start) => {
-        console.log('here');
-        this.trackMouse(start);
-        // this.setState({editorState: EditorState.createWithContent(this.state.editorState.getCurrentContent(), compositeDecorator)});
-      })
-
-    })
   }
 
   componentWillUnmount() {
     console.log('clearing');
-    this.state.socket.removeListener('documentChange');
+    this.state.socket.disconnect();
     clearInterval(this.state.interval);
+    this.state.socket.emit('documentChange', convertToRaw(this.state.editorState.getCurrentContent()))
   }
 
   _onFontSizeClick() {
@@ -237,9 +257,10 @@ class MyEditor extends React.Component {
     const findWithRegex = function(regex, contentBlock, callback) {
       const text = contentBlock.getText();
       let matchArr, start;
-
-      const pos = self.state.editorState.getSelection().getStartOffset();
-      callback(pos, pos + 1);
+      while ((matchArr = regex.exec(text)) !== null) {
+        start = matchArr.index;
+        callback(start, start + matchArr[0].length);
+      }
 
     }
 
@@ -264,14 +285,15 @@ class MyEditor extends React.Component {
     this.setState({editorState: EditorState.createWithContent(currentContent, compositeDecorator)});
   }
 
-  trackMouse(pos) {
+
+  trackMouse(pos, anchorKey) {
     const self = this;
     const newRegex = new RegExp('test', 'g')
 
     const currentContent = this.state.editorState.getCurrentContent();
 
 
-    const styles = {
+    let styles = {
       handle: {
         borderLeft: '1px solid red',
         direction: 'ltr',
@@ -285,9 +307,12 @@ class MyEditor extends React.Component {
 
     const findWithRegex = function(regex, contentBlock, callback) {
       const text = contentBlock.getText();
+      const key = contentBlock.getKey();
       let matchArr, start;
 
-      callback(pos, pos + 1);
+      if (text.length > pos && key === anchorKey) {
+        callback(pos, pos + 1);
+      }
 
     }
     const HandleSpan = (props) => {
