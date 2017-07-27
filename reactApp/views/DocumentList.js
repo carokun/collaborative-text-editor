@@ -11,7 +11,8 @@ class DocumentList extends React.Component {
     this.state = {
       documents: [],
       sharedDocID: '',
-      createDocTitle: ''
+      createDocTitle: '',
+      searchInput: ''
     }
   }
 
@@ -58,23 +59,79 @@ class DocumentList extends React.Component {
       console.log('err', err);
     })
   }
+  signOutUser() {
+    this.props.history.push('/');
+    axios.get('http://localhost:3000/logout')
+    .then(res => {
+      if(res.data.success) {
+        console.log('logged out');
+      }
+    })
+  }
+
+  filterDocuments() {
+    axios.get('http://localhost:3000/documents')
+    .then(resp => {
+      const docs = resp.data;
+      const filteredDocs = [];
+      docs.forEach(doc => {
+        const text = convertFromRaw(JSON.parse(doc.text)).getPlainText();
+        const title = doc.title;
+        if (title.indexOf(this.state.searchInput) !== -1 || text.indexOf(this.state.searchInput) !== -1) {
+          filteredDocs.push(doc);
+        }
+      })
+      this.setState({
+        documents: filteredDocs,
+        searchInput: ''
+      });
+    })
+    .catch(err => {
+      console.log("ERROR: Cannot retrieve documents using axios request ", err);
+    });
+  }
+
+  showAll() {
+    axios.get('http://localhost:3000/documents')
+    .then(resp => {
+      this.setState({
+        documents: resp.data
+      });
+    })
+    .catch(err => {
+      console.log("ERROR: Cannot retrieve documents using axios request ", err);
+    });
+  }
 
   render() {
     return (
       <div className="document-list-page">
-        <h2>Documents Portal</h2>
-        <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
-        <button onClick={() => this.createNewDocument()}>Create Document</button>
+        <div className="document-list-header">
+          <h2>Documents</h2>
+          <button className="log-out" onClick={() => this.signOutUser()}>Log Out</button>
+          <div className="document-list-options">
+            <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
+            <button onClick={() => this.createNewDocument()}><i className="fa fa-file-text" aria-hidden="true"></i></button>
+            <input value={this.state.sharedDocID} type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
+            <button onClick={() => this.addSharedDocument()}><i className="fa fa-share-square-o" aria-hidden="true"></i></button>
+            <input value={this.state.searchInput} type="text" placeholder="Search your documents" onChange={(e) => this.setState({searchInput: e.target.value})}/>
+            <button onClick={() => this.filterDocuments()}><i className="fa fa-share-square-o" aria-hidden="true"></i></button>
+            <button onClick={() => this.showAll()} style={{fontSize: '12px'}}>Show All</button>
+          </div>
+        </div>
         <div className='list'>
         {
           this.state.documents.map((docObject) => {
-            return (<div key={docObject._id} className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}><div className="list-header">{docObject.title}</div>{convertFromRaw(JSON.parse(docObject.text)).getPlainText()}</div>)
+            return (
+              <div key={docObject._id} className="list-item" onClick={() => this.props.history.push('/document/' + docObject._id)}>
+                <div className="list-header">{docObject.title}
+                </div>{
+                  convertFromRaw(JSON.parse(docObject.text)).getPlainText().length > 120 ? convertFromRaw(JSON.parse(docObject.text)).getPlainText().match(/^.{120}\w*/) + ' ...' : convertFromRaw(JSON.parse(docObject.text)).getPlainText()
+                }
+              </div>
+            )
           })
         }
-        </div>
-        <div className="document-share">
-          <input value={this.state.sharedDocID} type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
-          <button onClick={() => this.addSharedDocument()}>Add shared document</button>
         </div>
       </div>
     );

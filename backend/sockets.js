@@ -14,6 +14,12 @@ module.exports = {
           }
           socket.broadcast.emit('highlight', currentState);
       });
+      socket.on('curser', compositeDecorator => {
+          if (!compositeDecorator) {
+            return socket.emit('errorMessage', 'No compositeDecorator!');
+          }
+          socket.broadcast.emit('curser', compositeDecorator);
+      });
     })
   }
 }
