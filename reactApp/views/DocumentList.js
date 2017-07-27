@@ -61,6 +61,12 @@ class DocumentList extends React.Component {
   }
   signOutUser() {
     this.props.history.push('/');
+    axios.get('http://localhost:3000/logout')
+    .then(res => {
+      if(res.data.success) {
+        console.log('logged out');
+      }
+    })
   }
 
   filterDocuments() {
