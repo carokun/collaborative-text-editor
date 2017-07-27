@@ -20,6 +20,21 @@
     background-color: white;
     h2 {
       margin: 20px 0 10px 0;
+      display: inline-block;
+    }
+    .log-out {
+      width: 80px;
+      background-color: @lightgreen - #111;
+      margin-right: 10px;
+      color: white;
+      font-size: 14px;
+      float: right;
+    }
+    .log-out:hover {
+      background-color: @lightgreen - #444;
+    }
+    .log-out:active {
+      background-color: @lightgreen - #666;
     }
   }
   .document-list-options {
@@ -27,19 +42,24 @@
   }
   .document-list-options input {
     flex: 3;
-    height: 20px;
+    height: 12px;
     border-radius: 5px 0 0 5px;
+    font-size: 12px;
   }
   .document-list-options button {
     flex: 1;
-    margin: 0;
+    margin: 0 10px 0 0;
+    padding: 3px;
     border-radius: 0 5px 5px 0;
+    color: white;
   }
   .document-header {
     height: 20%;
     min-height: 165px;
   }
   .list {
+    overflow: scroll;
+    height: 80vh;
     padding: 0px 40px;
     display: flex;
     flex-wrap: wrap;
@@ -52,7 +72,8 @@
     border: 1px solid white;
     box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.05);
     border-radius: 2px;
-    width: 200px;
+    flex: 1;
+    min-width: 200px;
     margin: 5px;
     height: 200px;
     font-size: 14px;
