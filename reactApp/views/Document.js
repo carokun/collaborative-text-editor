@@ -53,6 +53,21 @@ class DocumentPage extends React.Component {
       });
     }
 
+    autoSaveDocument(newState) {
+      axios.post('http://localhost:3000/saveDocument', {
+        text: newState,
+        id: this.props.match.params.id
+      })
+      .then(resp => {
+        if (resp.status === 200) {
+          console.log('success');
+        }
+      })
+      .catch(err => {
+        console.log("ERROR: Cannot retrieve document using axios request ", err);
+      });
+    }
+
     render() {
         return (
             <div className="editor-page">
@@ -60,6 +75,7 @@ class DocumentPage extends React.Component {
                     id={this.props.match.params.id}
                     editorState={this.state.editorState}
                     saveDocument={this.saveDocument.bind(this)}
+                    autoSaveDocument={this.autoSaveDocument.bind(this)}
                     history={this.props.history}
                     documentReturnHandler={() => this.props.history.push('/documentlist')}
                     documentTitle={this.state.title}

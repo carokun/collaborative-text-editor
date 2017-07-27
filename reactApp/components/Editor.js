@@ -142,7 +142,7 @@ class MyEditor extends React.Component {
     .then(resp => {
       const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
       self.onChange(parsed);
-      this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
+      this.setState({ interval: setInterval(() => this.props.autoSaveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
     })
     .catch(err => {
       console.log("ERROR:", err);
