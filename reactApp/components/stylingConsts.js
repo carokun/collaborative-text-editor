@@ -6,9 +6,6 @@ const sizes = ['10', '12', '14', '16', '20', '24', '36', '72'];
 
 const styleMap = {
   highlight: { backgroundColor: "yellow" },
-
-    // custom
-  // terminal: { backgroundColor: "black", color: "#08D50E", padding: 5, 'font-family': 'Courier' },
     // fonts
   TimesNewRoman: { fontFamily: "Times New Roman" },
   Courier: { fontFamily: "Courier New" },
@@ -48,6 +45,24 @@ const blockRenderMap = Map({
   },
   'code': {
     element: 'div'
+  },
+  'h1': {
+    element: 'h1'
+  },
+  'h2': {
+    element: 'h2'
+  },
+  'h3': {
+    element: 'h3'
+  },
+  'h4': {
+    element: 'h4'
+  },
+  'h5': {
+    element: 'h5'
+  },
+  'h6': {
+    element: 'h6'
   }
 });
 
