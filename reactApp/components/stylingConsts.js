@@ -1,9 +1,12 @@
 // INLINE STYLING CONSTANTS
 import { Map } from 'immutable';
+
 const fonts = ["TimesNewRoman", "Courier", "Helvetica"];
 const colors = ['black', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
 const sizes = ['10', '12', '14', '16', '20', '24', '36', '72'];
 const paragraphs = ['none', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+
+// custom style map, INLINE
 const styleMap = {
   highlight: { backgroundColor: "yellow" },
     // fonts
@@ -30,6 +33,7 @@ const styleMap = {
   72: { fontSize: 72 },
 }
 
+// custom block map, BLOCK
 const blockRenderMap = Map({
   'align-left': {
     element: 'div'
