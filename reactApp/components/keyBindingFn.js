@@ -10,6 +10,8 @@ function myKeyBindingFn(e: SyntheticKeyboardEvent): string {
     return 'myeditor-italic'
   } else if (e.keyCode === 85 /* `U` key */ && hasCommandModifier(e)) {
     return 'myeditor-underline'
+  } else if (e.keyCode === 84 /* `T` key */ && hasCommandModifier(e)) {
+    return 'myeditor-terminal'
   }
   return getDefaultKeyBinding(e);
 }

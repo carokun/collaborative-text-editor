@@ -190,6 +190,7 @@ class MyEditor extends React.Component {
 
   handleKeyCommand(command: string): DraftHandleValue {
     if (command === 'myeditor-save') {
+      this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))
       console.log('SAVED!!')
       return 'handled';
     } else if (command === 'myeditor-bold') {
@@ -203,6 +204,9 @@ class MyEditor extends React.Component {
     } else if (command === 'myeditor-underline') {
       console.log('UNDERLINE!!');
       this._onClick('inline', 'UNDERLINE')
+      return 'handled';
+    } else if (command === 'myeditor-terminal') {
+      this._onClick('block', 'terminal')
       return 'handled';
     }
     return 'not-handled';
@@ -234,14 +238,6 @@ class MyEditor extends React.Component {
 
       const pos = self.state.editorState.getSelection().getStartOffset();
       callback(pos, pos + 1);
-
-      // while ((matchArr = regex.exec(text)) !== null) {
-        // console.log(matchArr);
-        // start = matchArr.index;
-        // callback(start, start + matchArr[0].length);
-
-      // }
-
 
     }
 
