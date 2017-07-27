@@ -1,0 +1,84 @@
+// BUTTON STYLES
+.button-styles {
+  .green-button {
+    transition: 0.4s;
+    background-color: @lightgreen;
+    color: white;
+  }
+  .blue-button {
+    transition: 0.4s;
+    background-color: @pastelblue;
+    color: white;
+  }
+  .red-button {
+    transition: 0.4s;
+    background-color: @red + #444;
+    color: white;
+  }
+  .red-button:hover {
+    background-color: @red + #222;
+  }
+  .green-button:hover {
+    background-color: @lightgreen - #111;
+  }
+  .blue-button:hover {
+    background-color: @pastelblue - #111;
+  }
+  .red-button:hover:active {
+    background-color: @red;
+  }
+  .green-button:active {
+    background-color: @lightgreen - #333;
+  }
+  .blue-button:active {
+    background-color: @pastelblue - #333;
+  }
+  button {
+    width: 100%;
+    padding: 8px 5px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 3px;
+    font-size: 16px;
+    background-color: @pastelblue;
+    color: white;
+    transition: 0.4s;
+  }
+  button:hover {
+    background-color: @pastelblue - #111;
+  }
+  button:focus {
+    outline: none;
+  }
+  button:active {
+    background-color: @pastelblue - #222;
+  }
+}
+
+// FORM STYLES
+.form-style {
+  form {
+    width: 100%;
+    font-size: 16px;
+    width: 400px;
+    p {
+      margin: 8px 0px 0px 0px;
+      width: 100%;
+      display: inline-block;
+    }
+    input {
+      width: 94%;
+      display: inline-block;
+      padding: 8px 3%;
+      border: 1px solid @eggshell - #111;
+      font-size: 16px;
+    }
+    input:focus {
+      outline: none;
+      border: 1px solid @eggshell - #444;
+    }
+    button {
+      width: 100%;
+    }
+  }
+}
