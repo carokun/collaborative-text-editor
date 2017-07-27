@@ -1,0 +1,77 @@
+@import 'colors.less';
+@import (reference) 'general.less';
+
+.revision-history-page {
+  height: 88vh;
+  overflow: hidden;
+  border: 1px solid @lightgray;
+  margin: 4vh 6vw; 
+  padding: 2vh;
+  background-color: @eggshell + #111;
+  &:extend(.button-styles all);
+  .content-wrapper {
+    display: flex;
+  }
+  .left-side-wrapper {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    padding-right: 5%;
+  }
+  .revision-editor {
+    overflow: scroll;
+    height: 150px;
+    background-color: white;
+    padding: 40px;
+    border: 1px solid @eggshell - #111;
+    transition: 0.3s;
+    border-radius: 1px;
+    min-width: 300px;
+    max-width: 500px;
+  }
+  .revision-editor:hover {
+    border: 1px solid @eggshell - #444;
+  }
+  .history-list {
+    overflow: scroll;
+    height: 40vh;
+    border: 1px solid  @eggshell - #111;
+  }
+  .history-list div {
+    background-color: @eggshell - #100;
+    border-bottom: 1px solid @lightgray;
+    border-top: 1px solid @lightgray;
+    padding: 6px 15px;
+    transition: 1s;
+    text-align: center;
+    font-size: 12px;
+  }
+  .history-list div:hover {
+    background-color: @eggshell - #211;
+  }
+  .history-list button {
+    font-size: 13px;
+  }
+  .changes-view {
+    max-width: 500px;
+    height: 160px;
+    overflow: scroll;
+    font-size: 14px;
+    background-color: white;
+    padding: 20px 0px;
+    border: 1px solid @eggshell - #111;
+    .added-line {
+      padding: 0px 20px;
+      background-color: @lightgreen + #111;
+      color: @lightgreen - #999;
+    }
+    .removed-line {
+      padding: 0px 20px;
+      background-color: @red + #999;
+      color: @red - #333;
+    }
+    .not-changed-line {
+      padding: 0px 20px;
+    }
+  }
+}

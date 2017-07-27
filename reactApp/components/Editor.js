@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import 'draft-js/dist/Draft.css';
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/flip.css';
 import {RichUtils,
         Editor,
         EditorState,
@@ -19,11 +21,11 @@ const { blockRenderMap,
         colors } = require('./stylingConsts');
 const { hasCommandModifier } = KeyBindingUtil;
 const { myKeyBindingFn } = require('./keyBindingFn');
-
 import { Map } from 'immutable';
+import copy from 'copy-to-clipboard';
+import io from 'socket.io-client';
+import Alert from 'react-s-alert';
 
-import io from 'socket.io-client'
-import bluebird from 'bluebird';
 
 const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
@@ -340,15 +342,28 @@ class MyEditor extends React.Component {
       <div className="editor-container">
         <span className="fa fa-bars fa-2x document-return" onClick={this.props.documentReturnHandler}> </span>
         <span className="document-title">{this.props.documentTitle}</span>
-        <span className="document-id">{'ID: ' + this.props.documentId}</span>
-        <input
-          className="searchBar"
-          onChange={this.changeRegex.bind(this)}
-          type="text"
-          value={this.state.searchInput}
-        />
+        <div className="search">
+          <span>Search</span>
+          <input
+            className="search-input"
+            onChange={this.changeRegex.bind(this)}
+            type="text"
+            value={this.state.searchInput}
+          />
+        </div>
         <div className="toolbar">
-          <select className="toolbar-selector toolbar-first" id="fontColor" onChange={() => this._onFontColorClick()}>
+          <span className="toolbar-item" onClick={() => {
+            console.log('hi');
+            copy(this.props.documentId);
+            Alert.info("document id copied to clipboard!", {
+              position: 'top',
+              effect: 'flip',
+              timeout: 10000,
+              offset: 100
+            })
+          }}><i className="fa fa-clipboard fa-lg" aria-hidden></i></span>
+          <span className="toolbar-divider"> | </span>
+          <select className="toolbar-selector" id="fontColor" onChange={() => this._onFontColorClick()}>
               {colors.map(color => (<option key={counter++} value={color}> {color} </option>))}
           </select>
           <span className="toolbar-divider"> | </span>
@@ -393,6 +408,7 @@ class MyEditor extends React.Component {
           </div>
         </div>
         <div className="editor-footer">-v1.0</div>
+        <Alert stack={{limit: 2}} />
       </div>
 
     )

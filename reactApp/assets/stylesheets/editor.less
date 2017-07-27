@@ -1,10 +1,4 @@
-@eggshell: #F7FAFA;
-@darkblue: #00003B;
-@lightgreen: #C1EAAE;
-@pastelblue: #A5CCCC;
-@red: #CC3026;
-@lightgray: #EDEDED;
-@gray: #BCBCBC;
+@import 'colors.less';
 
 .editor-container {
   height: 100vh;
@@ -19,7 +13,8 @@
     min-height: 40px;
   }
   .toolbar-item {
-    color: @gray;
+    color: @gray - #444;
+    font-size: 13px;
     background: none;
     border: none;
     transition: 0.2s;
@@ -50,9 +45,6 @@
     margin: 0px 10px;
     color: @lightgray;
   }
-  .toolbar-first {
-    margin-left: 10px;
-  }
   .toolbar-button {
     margin-left: 1px;
     margin-right: 1px;
@@ -82,9 +74,38 @@
   }
   .editor-footer {
     background-color: #FDFDFD;
-    // background-color: red;
     height: 3%;
     min-height: 25px;
     border-top: 1px solid @lightgray;
+  }
+  .search {
+    display: inline-block;
+    float: right;
+    border: 1px solid @gray;
+    border-radius: 4px;
+    font-size: 13px;
+    margin: 15px 7% 0 0;
+    span {
+      padding: 5px;
+      border-right: 1px solid @gray;
+      display: inline-block;
+      transition: 0.3s;
+    }
+    .search-input {
+      display: inline-block;
+      outline: none;
+      border: none;
+      padding: 3px;
+      font-size: 13px;
+    }
+    .search-input:focus {
+      outline: none;
+      border: 1px solid @eggshell - #444;
+    }
+  }
+  .search:hover {
+    span {
+      background-color: @lightgreen;
+    }
   }
 }

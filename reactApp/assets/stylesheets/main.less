@@ -1,10 +1,4 @@
-@eggshell: #F7FAFA;
-@darkblue: #00003B;
-@lightgreen: #C1EAAE;
-@pastelblue: #A5CCCC;
-@red: #CC3026;
-@lightgray: #EDEDED;
-@gray: #BCBCBC;
+@import 'colors.less';
 
 body {
   font-family: 'Avenir Next', sans-serif;
@@ -78,63 +72,6 @@ body {
     background-color: @pastelblue - #222;
   }
 
-}
-
-// REVISION HISTORY PAGE STYLING
-.revision-history-page {
-  padding: 50px;
-  .button-styles;
-  .revision-editor {
-    background-color: white;
-    padding: 40px;
-    border: 1px solid @eggshell - #111;
-    transition: 0.5s;
-    border-radius: 1px;
-  }
-  .revision-editor:hover {
-    border: 1px solid @eggshell - #444;
-  }
-  .history-list {
-    overflow: scroll;
-    height: 30vh;
-    padding: 0px 10px;
-    border: 1px solid  @eggshell - #111;
-  }
-  .history-list div {
-    background-color: @red + #787;
-    color: white;
-    margin-top: 14px;
-    border-radius: 5px;
-    padding: 5px 15px;
-    transition: 1s;
-    text-align: center;
-  }
-  .history-list div:hover {
-    background-color: @red + #9A9;
-  }
-  button {
-    width: 48%;
-    margin: 1%;
-  }
-  .changes-view {
-    font-size: 14px;
-    background-color: white;
-    padding: 20px 0px;
-    border: 1px solid @eggshell - #111;
-    .added-line {
-      padding: 0px 20px;
-      background-color: @lightgreen + #111;
-      color: @lightgreen - #999;
-    }
-    .removed-line {
-      padding: 0px 20px;
-      background-color: @red + #999;
-      color: @red - #333;
-    }
-    .not-changed-line {
-      padding: 0px 20px;
-    }
-  }
 }
 
 // BUTTON STYLES
