@@ -3,7 +3,7 @@ import { Map } from 'immutable';
 const fonts = ["TimesNewRoman", "Courier", "Helvetica"];
 const colors = ['black', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
 const sizes = ['10', '12', '14', '16', '20', '24', '36', '72'];
-
+const paragraphs = ['none', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 const styleMap = {
   highlight: { backgroundColor: "yellow" },
     // fonts
@@ -63,6 +63,9 @@ const blockRenderMap = Map({
   },
   'h6': {
     element: 'h6'
+  },
+  'none': {
+    element: 'div'
   }
 });
 
@@ -71,5 +74,6 @@ module.exports = {
   styleMap,
   sizes,
   fonts,
-  colors
+  colors,
+  paragraphs
 }
