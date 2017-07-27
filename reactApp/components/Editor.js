@@ -317,12 +317,15 @@ class MyEditor extends React.Component {
       <div className="editor-container">
         <span className="fa fa-bars fa-2x document-return" onClick={this.props.documentReturnHandler}> </span>
         <span className="document-title">{this.props.documentTitle}</span>
-        <input
-          className="searchBar"
-          onChange={this.changeRegex.bind(this)}
-          type="text"
-          value={this.state.searchInput}
-        />
+        <div className="search">
+          <span>Search</span>
+          <input
+            className="search-input"
+            onChange={this.changeRegex.bind(this)}
+            type="text"
+            value={this.state.searchInput}
+          />
+        </div>
         <div className="toolbar">
           <span className="toolbar-item" onClick={() => {
             console.log('hi');
