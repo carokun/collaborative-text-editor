@@ -152,6 +152,7 @@ class MyEditor extends React.Component {
     console.log('clearing');
     this.state.socket.disconnect();
     clearInterval(this.state.interval);
+    this.state.socket.emit('documentChange', convertToRaw(this.state.editorState.getCurrentContent()))
   }
 
   _onFontSizeClick() {
