@@ -59,6 +59,9 @@ class DocumentList extends React.Component {
       console.log('err', err);
     })
   }
+  signOutUser() {
+    this.props.history.push('/');
+  }
 
   filterDocuments() {
     axios.get('http://localhost:3000/documents')
@@ -99,6 +102,7 @@ class DocumentList extends React.Component {
       <div className="document-list-page">
         <div className="document-list-header">
           <h2>Documents</h2>
+          <button className="log-out" onClick={() => this.signOutUser()}>Log Out</button>
           <div className="document-list-options">
             <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
             <button onClick={() => this.createNewDocument()}><i className="fa fa-file-text" aria-hidden="true"></i></button>
