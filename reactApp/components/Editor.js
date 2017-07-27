@@ -317,12 +317,17 @@ class MyEditor extends React.Component {
       <div className="editor-container">
         <span className="fa fa-bars fa-2x document-return" onClick={this.props.documentReturnHandler}> </span>
         <span className="document-title">{this.props.documentTitle}</span>
-        <input
-          className="searchBar"
-          onChange={this.changeRegex.bind(this)}
-          type="text"
-          value={this.state.searchInput}
-        />
+        <span className="headerBar">
+          <button className="toolbar-item toolbar-button" onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
+          <button className="toolbar-item toolbar-button" onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
+          <span className="toolbar-divider"> | </span>
+          <input
+            onChange={this.changeRegex.bind(this)}
+            type="text"
+            value={this.state.searchInput}
+          />
+          <i className="fa fa-search" aria-hidden="true"></i>
+        </span>
         <div className="toolbar">
           <span className="toolbar-item" onClick={() => {
             console.log('hi');
@@ -333,7 +338,7 @@ class MyEditor extends React.Component {
               timeout: 10000,
               offset: 100
             })
-          }}><i className="fa fa-clipboard fa-lg" aria-hidden></i></span>
+          }}><i className="fa fa-clipboard fa-lg" aria-hidden="true"></i></span>
           <span className="toolbar-divider"> | </span>
           <select className="toolbar-selector" id="fontColor" onChange={() => this._onFontColorClick()}>
               {colors.map(color => (<option key={counter++} value={color}> {color} </option>))}
@@ -359,9 +364,6 @@ class MyEditor extends React.Component {
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'code')}><i className="fa fa-code fa-lg" aria-hidden="true"></i></button>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'terminal')}><i className="fa fa-terminal fa-lg" aria-hidden="true"></i></button>
-          <span className="toolbar-divider"> | </span>
-          <button className="toolbar-item toolbar-button" onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
-          <button className="toolbar-item toolbar-button" onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
         </div>
         <div className="document-editor">
           <div className="editor-padding">

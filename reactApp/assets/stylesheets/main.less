@@ -58,9 +58,6 @@ body {
 // EDIT DOCUMENT PAGE
 .editor-page {
   background-color: white;
-  .document-id {
-    float: right;
-  }
   .document-title {
     font-size: 24px;
     background-color: white;
@@ -73,7 +70,6 @@ body {
     height: 32px;
     transition: 0.3s;
   }
-
   .document-return:hover {
     background-color: @pastelblue - #222;
   }
@@ -243,14 +239,13 @@ body {
 .terminal div::before {
   content: '~ $ ';
 }
-
 i {
   padding: 2px;
 }
 .code div {
   font-family: 'Courier';
 }
-
-.searchBar {
+.headerBar {
   float: right;
+  margin-right: 15px;
 }
