@@ -1,8 +1,11 @@
 import React from 'react';
 import MyEditor from '../components/Editor';
 import axios from 'axios';
+import Alert from 'react-s-alert';
 import { Link } from 'react-router-dom';
 import { Editor, EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/flip.css';
 
 
 class DocumentPage extends React.Component {
@@ -37,6 +40,12 @@ class DocumentPage extends React.Component {
       .then(resp => {
         if (resp.status === 200) {
           console.log('success');
+          Alert.info("document has been saved!", {
+            position: 'top',
+            effect: 'flip',
+            timeout: 10000,
+            offset: 100
+          })
         }
       })
       .catch(err => {
@@ -56,6 +65,7 @@ class DocumentPage extends React.Component {
                     documentTitle={this.state.title}
                     documentId={this.props.match.params.id}
                   />
+                  <Alert stack={{limit: 1}} />
             </div>
         )
     }
