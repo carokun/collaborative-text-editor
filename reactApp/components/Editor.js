@@ -16,7 +16,8 @@ const { blockRenderMap,
         styleMap,
         sizes,
         fonts,
-        colors } = require('./stylingConsts');
+        colors,
+        highlights } = require('./stylingConsts');
 const { hasCommandModifier } = KeyBindingUtil;
 const { myKeyBindingFn } = require('./keyBindingFn');
 
@@ -35,7 +36,8 @@ class MyEditor extends React.Component {
       editorState: EditorState.createEmpty(),
       interval: () => '',
       searchInput: '',
-      changingRegex: false
+      changingRegex: false,
+      idIndex: 0,
     };
     this.onTab = (e) => this._onTab(e);
     this._onStyleClick = this._onStyleClick.bind(this);
@@ -76,15 +78,19 @@ class MyEditor extends React.Component {
 
 
   componentDidMount() {
+
     this.onChange = (editorState) => {
+
       if (this.state.changingRegex) {
         this.setState({changingRegex: false});
         return;
       }
-      let selectionState = editorState.getSelection();
-      let start = selectionState.getStartOffset();
-      let end = selectionState.getEndOffset();
-      if (start - end === 0) {
+      const selection = editorState.getSelection();
+      let prevSelection = null;
+      let start = selection.getStartOffset();
+      let end = selection.getEndOffset();
+      let contentState = editorState.getCurrentContent();
+      if (start === end) {
         this.setState({editorState: editorState})
         this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
         this.state.socket.emit('curser', start);
@@ -92,11 +98,13 @@ class MyEditor extends React.Component {
       } else {
         this.setState({editorState: editorState})
         this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
+        prevSelection = selection;
         const newState = this._onHighlight(editorState);
         this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
         this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()))
       }
     };
+
 
     const self = this;
     axios.get('http://localhost:3000/document/' + this.props.id)
@@ -119,12 +127,17 @@ class MyEditor extends React.Component {
         this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
       })
 
-
-      this.state.socket.on('curser', (start) => {
-        console.log('here');
-        this.trackMouse(start);
-        // this.setState({editorState: EditorState.createWithContent(this.state.editorState.getCurrentContent(), compositeDecorator)});
+      this.state.socket.on('newColor', (i) => {
+        let index = i%6;
+        this.setState({ idIndex: index })
+        console.log("color is:", highlights[index])
       })
+
+      // this.state.socket.on('curser', (start) => {
+      //   console.log('here');
+      //   this.trackMouse(start);
+      //   // this.setState({editorState: EditorState.createWithContent(this.state.editorState.getCurrentContent(), compositeDecorator)});
+      // })
 
     })
   }
@@ -185,7 +198,8 @@ class MyEditor extends React.Component {
     }
 
   _onHighlight(editorState) {
-     return RichUtils.toggleInlineStyle(editorState, 'highlight');
+    console.log('highlighting in ', highlights[this.state.idIndex])
+     return RichUtils.toggleInlineStyle(editorState, highlights[this.state.idIndex]);
  }
 
   handleKeyCommand(command: string): DraftHandleValue {
@@ -194,15 +208,12 @@ class MyEditor extends React.Component {
       console.log('SAVED!!')
       return 'handled';
     } else if (command === 'myeditor-bold') {
-      console.log('BOLD!!')
       this._onClick('inline', 'BOLD')
       return 'handled';
     } else if (command === 'myeditor-italic') {
-      console.log('ITALIC!!')
       this._onClick('inline', 'ITALIC')
       return 'handled';
     } else if (command === 'myeditor-underline') {
-      console.log('UNDERLINE!!');
       this._onClick('inline', 'UNDERLINE')
       return 'handled';
     } else if (command === 'myeditor-terminal') {

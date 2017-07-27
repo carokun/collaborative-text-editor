@@ -3,10 +3,15 @@ import { Map } from 'immutable';
 const fonts = ["TimesNewRoman", "Courier", "Helvetica"];
 const colors = ['black', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
 const sizes = ['10', '12', '14', '16', '20', '24', '36', '72'];
+const highlights = ['lightpink', 'lightorange', 'lightyellow', 'lightgreen', 'lightblue', 'lightpurple']
 
 const styleMap = {
-  highlight: { backgroundColor: "yellow" },
-
+  lightpink: { backgroundColor: "lightpink" },
+  lightyellow: {backgroundColor: 'lightyellow'},
+  lightorange: {backgroundColor: 'orange'},
+  lightgreen: {backgroundColor: 'lightgreen'},
+  lightblue: {backgroundColor: 'lightblue'},
+  lightpurple: {backgroundColor: 'purple'},
     // custom
   // terminal: { backgroundColor: "black", color: "#08D50E", padding: 5, 'font-family': 'Courier' },
     // fonts
@@ -56,5 +61,6 @@ module.exports = {
   styleMap,
   sizes,
   fonts,
-  colors
+  colors,
+  highlights,
 }

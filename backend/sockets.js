@@ -1,7 +1,12 @@
+// const { highlights } = require('../reactApp/components/stylingConsts');
+
 module.exports = {
   sockets: function(io) {
+    var i = 0;
     io.on('connection', socket => {
       console.log('connected');
+      i++
+      socket.emit('newColor', i)
       socket.on('documentChange', currentState => {
           if (!currentState) {
             return socket.emit('errorMessage', 'No document!');
