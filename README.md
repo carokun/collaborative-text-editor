@@ -67,7 +67,7 @@ There is a search bar on the top right of the screen that allows users to search
 
 To demo the collaborative features of our app click play below or navigate to [Installation Instructions](#installation-instructions) and download the repo!
 
-
+![ezgif com-video-to-gif](https://user-images.githubusercontent.com/23001355/28731442-c9152f12-7388-11e7-83b0-c29743ec24eb.gif)
 
 ### Revision History
 
