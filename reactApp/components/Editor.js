@@ -359,11 +359,13 @@ class MyEditor extends React.Component {
           <button className="toolbar-item toolbar-button" onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
           <span className="toolbar-divider"> | </span>
           <input
+            className='search'
             onChange={this.changeRegex.bind(this)}
             type="text"
             value={this.state.searchInput}
+            placeholder="Search document"
           />
-          <i className="fa fa-search" aria-hidden="true"></i>
+          <i className="search-icon fa fa-search" aria-hidden="true"></i>
         </span>
         <div className="toolbar">
           <span className="toolbar-item" onClick={() => {

@@ -109,12 +109,18 @@ class DocumentList extends React.Component {
         <div className="document-list-header">
           <h2>Documents</h2>
           <button className="log-out" onClick={() => this.signOutUser()}>Log Out</button>
+          <div className="labels">
+            <h5>Create new document</h5>
+            <h5>Add shared document</h5>
+            <h5>Filter documents</h5>
+            <div className="space"></div>
+          </div>
           <div className="document-list-options">
             <input value={this.state.createDocTitle} type="text" placeholder="Enter new document title" onChange={(e) => this.setState({createDocTitle: e.target.value})}/>
             <button onClick={() => this.createNewDocument()}><i className="fa fa-file-text" aria-hidden="true"></i></button>
             <input value={this.state.sharedDocID} type="text" placeholder="Enter id of document" onChange={(e) => this.setState({sharedDocID: e.target.value})}/>
             <button onClick={() => this.addSharedDocument()}><i className="fa fa-share-square-o" aria-hidden="true"></i></button>
-            <input value={this.state.searchInput} type="text" placeholder="Search your documents" onChange={(e) => this.setState({searchInput: e.target.value})}/>
+            <input value={this.state.searchInput} type="text" placeholder="Search keywords" onChange={(e) => this.setState({searchInput: e.target.value})}/>
             <button onClick={() => this.filterDocuments()}><i className="fa fa-share-square-o" aria-hidden="true"></i></button>
             <button onClick={() => this.showAll()} style={{fontSize: '12px'}}>Show All</button>
           </div>
