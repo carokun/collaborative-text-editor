@@ -5,7 +5,7 @@ module.exports = {
     io.on('connection', socket => {
       console.log('connected');
       socket.on('join', ({doc}) => {
-        if (io.sockets.adapter.rooms[doc] 
+        if (io.sockets.adapter.rooms[doc]
             && io.sockets.adapter.rooms[doc].length >= 6) {
           socket.emit('roomFull');
         }
@@ -19,7 +19,6 @@ module.exports = {
           if (!documentsToColors.hasOwnProperty(doc)) {
             documentsToColors[doc] = [...colors];
           }
-          console.log("DOCUMENT TO COLORS: ", documentsToColors);
           // Assign next available color
           assignedColor = documentsToColors[doc].pop();
           const colorIndex = io.sockets.adapter.rooms[doc].length;
@@ -40,11 +39,11 @@ module.exports = {
           }
           socket.broadcast.to(socket.oneRoom).emit('highlight', currentState);
       });
-      socket.on('curser', compositeDecorator => {
+      socket.on('cursor', compositeDecorator => {
           if (!compositeDecorator) {
             return socket.emit('errorMessage', 'No compositeDecorator!');
           }
-          socket.broadcast.to(socket.oneRoom).emit('curser', compositeDecorator);
+          socket.broadcast.to(socket.oneRoom).emit('cursor', compositeDecorator);
       });
       socket.on('unmounting', (color) => {
         console.log("unmounting component");

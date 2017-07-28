@@ -1,22 +1,21 @@
-// INLINE STYLING CONSTANTS
+// INLINE STYLING CONSTANTS & FUNCTIONS --- imported to Editor.js
 import { Map } from 'immutable';
-
+import { DefaultDraftBlockRenderMap } from 'draft-js'
+// arrays for selectors in toolbar
 const fonts = ["TimesNewRoman", "Courier", "Helvetica"];
 const colors = ['black', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
 const sizes = ['10', '12', '14', '16', '20', '24', '36', '72'];
 const paragraphs = ['none', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
-// custom style map, INLINE
+// custom inline style map
 const styleMap = {
+    // highlight colors
   highlightred: { backgroundColor: '#FEA8AC'},
   highlightcyan: { backgroundColor: '#9DFFEC'},
   highlightgreen: { backgroundColor: '#C9FF9A'},
   highlightblue: { backgroundColor: '#9EDFFE'},
   highlightpurple: { backgroundColor: '#D8A5FE'},
   highlightyellow: { backgroundColor: "#FFFF70" },
-
-  // custom
-  // terminal: { backgroundColor: "black", color: "#08D50E", padding: 5, 'font-family': 'Courier' },
     // fonts
   TimesNewRoman: { fontFamily: "Times New Roman" },
   Courier: { fontFamily: "Courier New" },
@@ -41,7 +40,7 @@ const styleMap = {
   72: { fontSize: 72 },
 }
 
-// custom block map, BLOCK
+// custom block render map
 const blockRenderMap = Map({
   'align-left': {
     element: 'div'
@@ -81,8 +80,33 @@ const blockRenderMap = Map({
   }
 });
 
+// custom block render map function
+const blockRenderMapFn = function(contentBlock) {
+  const type = contentBlock.getType();
+  if (type === 'align-left') {
+    return 'align-left';
+  }
+  if (type === 'align-center') {
+    return 'align-center';
+  }
+  if (type === 'align-right') {
+    return 'alignRight';
+  }
+  if (type === 'terminal') {
+    return 'terminal';
+  }
+  if (type === 'code') {
+    return 'code';
+  }
+  return null;
+}
+
+const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
+
+
 module.exports = {
-  blockRenderMap,
+  blockRenderMapFn,
+  extendedBlockRenderMap,
   styleMap,
   sizes,
   fonts,
