@@ -1,5 +1,5 @@
 # NodeBook
-A collborative text editor made by coders for coders.
+A collaborative text editor with easy to edit and share documents.
 **Created July, 2017**
 
 ## Team
@@ -9,6 +9,7 @@ A collborative text editor made by coders for coders.
 - [Andrew Ong](https://github.com/crestwood204)
 
 ## About
+NodeBook is a desktop app that allows for sharing documents and live collaboration. The text editor has numerous styles and fonts built in as well as search capabilities and access to revision history. 
 
 ## Installation Instructions:
 #### Prerequisites:
@@ -21,6 +22,7 @@ Requires Node.js
    - You can launch multiple windows to test the collaborative functionality
 
 ## Built With
+- Electron
 - Frontend
   - React.js
   - LESS
