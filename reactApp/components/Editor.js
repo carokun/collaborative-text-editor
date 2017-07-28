@@ -425,7 +425,6 @@ class MyEditor extends React.Component {
         <div className="editor-footer">-v1.0</div>
         <Alert stack={{limit: 2}} />
       </div>
-
     )
   }
 }

@@ -1,7 +1,8 @@
 {
-  "name": "electron-react-quick-start",
+  "name": "node-book",
+  "productName": "NodeBook",
   "version": "1.0.0",
-  "description": "A minimal Electron application with React and Express",
+  "description": "A collaborative-text-editor desktop application",
   "main": "main.js",
   "scripts": {
     "dev": "concurrently -k \"npm run devWebpack\" \"npm run devApp\" \"npm run devServer\"",
@@ -9,7 +10,7 @@
     "devApp": "electron main.js --dev",
     "devServer": "nodemon --watch backend backend/server.js",
     "webpack": "webpack",
-    "prodWebpack": "webpack -p",
+    "prodWebpack": "webpack --config webpack.prod.config.js",
     "start": "electron main.js",
     "server": "node backend/server.js"
   },
@@ -24,7 +25,8 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "concurrently": "^3.5.0",
-    "electron": "~1.6.2",
+    "electron": "^1.6.11",
+    "electron-packager": "^8.7.2",
     "eslint": "^3.0.1",
     "eslint-plugin-react": "^5.2.2",
     "loglevel": "^1.4.1",

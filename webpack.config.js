@@ -36,4 +36,5 @@ module.exports = {
   },
   devtool: 'source-map',
   target: 'electron',
+  plugins: []
 };
