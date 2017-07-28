@@ -60,9 +60,7 @@ There is a search bar on the top right of the screen that allows users to search
 ![screen shot 2017-07-28 at 10 03 23 am](https://user-images.githubusercontent.com/23001355/28730139-bb46c440-7383-11e7-9d2e-4391eae871e1.png)
 
 ### Revision History
+
 To see all of your past versions of a given document, navigate to the revision history page. There will be list of every saved version, sorted by date, on the right side of the screen. Click on one of the dates to see the old state of your document as well as add and remove differences between your old and current document.
 ![screen shot 2017-07-28 at 10 25 27 am](https://user-images.githubusercontent.com/22362476/28729339-ffb98c28-7380-11e7-92f1-8210d346b6c9.png)
 
-
-(insert images here)
-(To insert images: go to issues, create an issue, paste an image, copy the markdown image link, go back to README.md, paste link)
