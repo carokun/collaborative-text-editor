@@ -387,7 +387,7 @@ class MyEditor extends React.Component {
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-center')}><i className="fa fa-align-center fa-lg" aria-hidden="true"></i></button>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'align-right')}><i className="fa fa-align-right fa-lg" aria-hidden="true"></i></button>
           <span className="toolbar-divider"> | </span>
-          <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'code')}><i className="fa fa-code fa-lg" aria-hidden="true"></i></button>
+          <button className="toolbar-item" onClick={this._onClick.bind(this, 'blockx', 'code')}><i className="fa fa-code fa-lg" aria-hidden="true"></i></button>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'terminal')}><i className="fa fa-terminal fa-lg" aria-hidden="true"></i></button>
         </div>
         <div className="document-editor">
