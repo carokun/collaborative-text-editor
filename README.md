@@ -65,7 +65,7 @@ There is a search bar on the top right of the screen that allows users to search
 
 ![screen shot 2017-07-28 at 10 03 23 am](https://user-images.githubusercontent.com/23001355/28730139-bb46c440-7383-11e7-9d2e-4391eae871e1.png)
 
-To demo the collaborative features of our app click play below or navigate to [Installation Instructions](#installation-instructions) and download the repo!
+We also implemented live collaboration for shared documents using sockets. A preview of the collaborative features is shown below, to see more navigate to [Installation Instructions](#installation-instructions) and download the repo!
 
 ![ezgif com-video-to-gif](https://user-images.githubusercontent.com/23001355/28731442-c9152f12-7388-11e7-83b0-c29743ec24eb.gif)
 
