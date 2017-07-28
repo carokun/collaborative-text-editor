@@ -20,7 +20,7 @@
     margin: 10px 0px 5px 0px;
   }
   .toolbar-item:hover {
-    color: @gray - #222;
+    color: @gray;
   }
   .toolbar-item:focus {
     outline: none;
@@ -45,8 +45,16 @@
     color: @lightgray;
   }
   .toolbar-button {
+    border: 1px solid @lightgray;
+    border-radius: 5px;
+    padding: 5px 15px;
     margin-left: 1px;
     margin-right: 1px;
+    transition: 0.2s;
+  }
+  .toolbar-button:hover {
+    background-color: @lightgreen;
+    color: white;
   }
   .document-editor {
     background-color: #FDFDFD;
@@ -80,31 +88,26 @@
   .search {
     display: inline-block;
     float: right;
-    border: 1px solid @gray;
-    border-radius: 4px;
+    border: 1px solid @lightgray;
+    border-left: none;
+    border-radius: 0 5px 5px 0;
     font-size: 13px;
-    margin: 15px 7% 0 0;
-    span {
-      padding: 5px;
-      border-right: 1px solid @gray;
-      display: inline-block;
-      transition: 0.3s;
-    }
-    .search-input {
-      display: inline-block;
-      outline: none;
-      border: none;
-      padding: 3px;
-      font-size: 13px;
-    }
-    .search-input:focus {
-      outline: none;
-      border: 1px solid @eggshell - #444;
-    }
+    margin: 9px 0 0 0;
+    padding: 5px;
   }
-  .search:hover {
-    span {
-      background-color: @lightgreen;
-    }
+  .search:focus {
+    outline: none
+  }
+  .search-icon {
+    color: @gray;
+    margin-top: 5px;
+    padding: 5px 9px;
+    border: 1px solid @lightgray;
+    border-radius: 5px 0 0 5px;
+    transition: 0.2s;
+  }
+  .search-icon:hover {
+    color: white;
+    background-color: @lightgreen;
   }
 }

@@ -383,8 +383,13 @@ class MyEditor extends React.Component {
             Revision History
           </button>
           <span className="toolbar-divider"> | </span>
-          <input onChange={this.changeRegex.bind(this)} type="text" value={this.state.searchInput}/>
-          <i className="fa fa-search" aria-hidden="true"></i>
+          <input
+            className='search'
+            onChange={this.changeRegex.bind(this)}
+            type="text"
+            value={this.state.searchInput}
+            placeholder="Search document"/>
+          <i className="search-icon fa fa-search" aria-hidden="true"></i>
         </span>
 
         <div className="toolbar">

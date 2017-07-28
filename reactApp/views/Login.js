@@ -33,7 +33,8 @@ class Login extends React.Component {
     return (
       <div className="login-page">
         <div className="login-wrapper">
-        <h2>Login</h2>
+        <img src='./img/nodebook-logo.svg'/>
+        <h2>NodeBook</h2>
           <form action="/login" method="post" onSubmit={(event) => this.onSubmit(event)}>
             <p>Username</p>
             <input type="text" name="username" value={this.state.username} onChange={(e) => this.setState({username: e.target.value})}/>
