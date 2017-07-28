@@ -39,7 +39,8 @@ class MyEditor extends React.Component {
       editorState: EditorState.createEmpty(),
       interval: () => '',
       searchInput: '',
-      changingRegex: false
+      changingRegex: false,
+      color: ''
     };
     this.onTab = (e) => this._onTab(e);
     this._onStyleClick = this._onStyleClick.bind(this);
@@ -56,7 +57,13 @@ class MyEditor extends React.Component {
         console.log('hello back');
       })
       this.state.socket.on('userJoined', () => {
-        console.log('user joined');
+        console.log('user joined with color '+ this.state.color);
+      })
+      this.state.socket.on('colorAssigned', (color) => {
+        console.log("ASSIGNED COLOR: ", color);
+        this.setState({
+          color: color
+        })
       })
       this.state.socket.on('documentChange', (currentContent) => {
         this.setState({editorState: EditorState.createWithContent(convertFromRaw(currentContent))});
@@ -70,9 +77,9 @@ class MyEditor extends React.Component {
         console.log('user left');
       })
 
-      this.state.socket.on('curser', ({start, anchorKey}) => {
+      this.state.socket.on('curser', ({start, anchorKey, color}) => {
         console.log('here');
-        this.trackMouse(start, anchorKey);
+        this.trackMouse(start, anchorKey, color);
         // this.setState({editorState: EditorState.createWithContent(this.state.editorState.getCurrentContent(), compositeDecorator)});
       })
 
@@ -123,19 +130,21 @@ class MyEditor extends React.Component {
       if (start - end === 0) {
         // editorState.push(this.addEmoji())
         this.setState({editorState: editorState})
-
         // this.addEmoji();
         this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
-        this.state.socket.emit('curser', {start, anchorKey});
+        const newState = this._onHighlight(editorState);
+        this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
+        this.state.socket.emit('curser', {start, anchorKey, color: this.state.color});
         // this.trackMouse(start);
       } else {
         this.setState({editorState: editorState})
         this.state.socket.emit('documentChange', convertToRaw(editorState.getCurrentContent()))
         const newState = this._onHighlight(editorState);
         this.state.socket.emit('documentChange', convertToRaw(newState.getCurrentContent()))
-        this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()))
+        // console.log("COLOR: ", this.state.color);
+        // const newState = RichUtils.toggleInlineStyle(this.state.editorState, 'highlight' + this.state.color);
+        // this.state.socket.emit('highlight', convertToRaw(newState.getCurrentContent()));
       }
-
     };
 
     const self = this;
@@ -153,9 +162,9 @@ class MyEditor extends React.Component {
 
   componentWillUnmount() {
     console.log('clearing');
-    this.state.socket.disconnect();
     clearInterval(this.state.interval);
-    this.state.socket.emit('documentChange', convertToRaw(this.state.editorState.getCurrentContent()))
+    this.state.socket.emit('unmounting', this.state.color);
+    this.state.socket.disconnect();
   }
 
   _onFontSizeClick() {
@@ -208,7 +217,7 @@ class MyEditor extends React.Component {
     }
 
   _onHighlight(editorState) {
-     return RichUtils.toggleInlineStyle(editorState, 'highlight');
+     return RichUtils.toggleInlineStyle(editorState, 'highlight' + this.state.color);
  }
 
   handleKeyCommand(command: string): DraftHandleValue {
@@ -287,14 +296,15 @@ class MyEditor extends React.Component {
   }
 
 
-  trackMouse(pos, anchorKey) {
+  trackMouse(pos, anchorKey, color) {
     const self = this;
     const newRegex = new RegExp('test', 'g')
 
     const currentContent = this.state.editorState.getCurrentContent();
+
     let styles = {
       handle: {
-        borderLeft: '1px solid red',
+        borderLeft: '1px solid ' + color,
         direction: 'ltr',
         unicodeBidi: 'bidi-override',
       }

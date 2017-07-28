@@ -8,7 +8,15 @@ const paragraphs = ['none', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
 // custom style map, INLINE
 const styleMap = {
-  highlight: { backgroundColor: "yellow" },
+  highlightred: { backgroundColor: '#FEA8AC'},
+  highlightcyan: { backgroundColor: '#9DFFEC'},
+  highlightgreen: { backgroundColor: '#C9FF9A'},
+  highlightblue: { backgroundColor: '#9EDFFE'},
+  highlightpurple: { backgroundColor: '#D8A5FE'},
+  highlightyellow: { backgroundColor: "#FFFF70" },
+
+  // custom
+  // terminal: { backgroundColor: "black", color: "#08D50E", padding: 5, 'font-family': 'Courier' },
     // fonts
   TimesNewRoman: { fontFamily: "Times New Roman" },
   Courier: { fontFamily: "Courier New" },
