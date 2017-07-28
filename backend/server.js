@@ -41,7 +41,9 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-//ADD LOCALSTRATEGY TO THE PASSPORT MIDDLEWARE
+/*
+ * Add local strategy to the passport middleware
+ */
 passport.use(new LocalStrategy(function(username, password, done) {
     //SEARCH FOR A USER WITH THE GIVEN USERNAME
     User.findOne({ username: username }, function (err, user) {

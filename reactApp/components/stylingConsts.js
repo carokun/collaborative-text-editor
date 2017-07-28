@@ -5,9 +5,14 @@ const colors = ['black', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', '
 const sizes = ['10', '12', '14', '16', '20', '24', '36', '72'];
 
 const styleMap = {
-  highlight: { backgroundColor: "yellow" },
+  highlightred: { backgroundColor: '#FEA8AC'},
+  highlightcyan: { backgroundColor: '#9DFFEC'},
+  highlightgreen: { backgroundColor: '#C9FF9A'},
+  highlightblue: { backgroundColor: '#9EDFFE'},
+  highlightpurple: { backgroundColor: '#D8A5FE'},
+  highlightyellow: { backgroundColor: "#FFFF70" },
 
-    // custom
+  // custom
   // terminal: { backgroundColor: "black", color: "#08D50E", padding: 5, 'font-family': 'Courier' },
     // fonts
   TimesNewRoman: { fontFamily: "Times New Roman" },
