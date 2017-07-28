@@ -1,14 +1,14 @@
 // INLINE STYLING CONSTANTS
 import { Map } from 'immutable';
+
 const fonts = ["TimesNewRoman", "Courier", "Helvetica"];
 const colors = ['black', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
 const sizes = ['10', '12', '14', '16', '20', '24', '36', '72'];
+const paragraphs = ['none', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
+// custom style map, INLINE
 const styleMap = {
   highlight: { backgroundColor: "yellow" },
-
-    // custom
-  // terminal: { backgroundColor: "black", color: "#08D50E", padding: 5, 'font-family': 'Courier' },
     // fonts
   TimesNewRoman: { fontFamily: "Times New Roman" },
   Courier: { fontFamily: "Courier New" },
@@ -33,6 +33,7 @@ const styleMap = {
   72: { fontSize: 72 },
 }
 
+// custom block map, BLOCK
 const blockRenderMap = Map({
   'align-left': {
     element: 'div'
@@ -48,6 +49,27 @@ const blockRenderMap = Map({
   },
   'code': {
     element: 'div'
+  },
+  'h1': {
+    element: 'h1'
+  },
+  'h2': {
+    element: 'h2'
+  },
+  'h3': {
+    element: 'h3'
+  },
+  'h4': {
+    element: 'h4'
+  },
+  'h5': {
+    element: 'h5'
+  },
+  'h6': {
+    element: 'h6'
+  },
+  'none': {
+    element: 'div'
   }
 });
 
@@ -56,5 +78,6 @@ module.exports = {
   styleMap,
   sizes,
   fonts,
-  colors
+  colors,
+  paragraphs
 }

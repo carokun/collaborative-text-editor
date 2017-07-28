@@ -18,7 +18,8 @@ const { blockRenderMap,
         styleMap,
         sizes,
         fonts,
-        colors } = require('./stylingConsts');
+        colors,
+        paragraphs } = require('./stylingConsts');
 const { hasCommandModifier } = KeyBindingUtil;
 const { myKeyBindingFn } = require('./keyBindingFn');
 import { Map } from 'immutable';
@@ -291,8 +292,6 @@ class MyEditor extends React.Component {
     const newRegex = new RegExp('test', 'g')
 
     const currentContent = this.state.editorState.getCurrentContent();
-
-
     let styles = {
       handle: {
         borderLeft: '1px solid red',
@@ -300,11 +299,9 @@ class MyEditor extends React.Component {
         unicodeBidi: 'bidi-override',
       }
     };
-
     const handleStrategy = function(contentBlock, callback, contentState) {
       findWithRegex(newRegex, contentBlock, callback);
     }
-
     const findWithRegex = function(regex, contentBlock, callback) {
       const text = contentBlock.getText();
       const key = contentBlock.getKey();
@@ -313,7 +310,6 @@ class MyEditor extends React.Component {
       if (text.length > pos && key === anchorKey) {
         callback(pos, pos + 1);
       }
-
     }
     const HandleSpan = (props) => {
       return (
@@ -334,6 +330,12 @@ class MyEditor extends React.Component {
     this.setState({changeRegex: true});
 
     this.setState({editorState: EditorState.createWithContent(currentContent, compositeDecorator)});
+  }
+
+  _onpStyleClick() {
+    let e = document.getElementById('pStyle');
+    let style = e.options[e.selectedIndex].value;
+    this._onClick('block', style);
   }
 
   render() {
@@ -374,6 +376,10 @@ class MyEditor extends React.Component {
           </select>
           <select className="toolbar-selector" id="fontSize" onChange={() => this._onFontSizeClick()}>
               {sizes.map(size => (<option className="toolbar-selector-content" key={counter++} value={size}> {size} </option>))}
+          </select>
+          <span className="toolbar-divider"> | </span>
+          <select className="toolbar-selector" id="pStyle" onChange={() => this._onpStyleClick()}>
+              {paragraphs.map(p => (<option className="toolbar-selector-content" key={counter++} value={p}> {p} </option>))}
           </select>
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'BOLD')}><i className="fa fa-bold fa-lg" aria-hidden="true"></i></button>
