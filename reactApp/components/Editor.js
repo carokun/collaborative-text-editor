@@ -18,7 +18,8 @@ const { blockRenderMap,
         styleMap,
         sizes,
         fonts,
-        colors } = require('./stylingConsts');
+        colors,
+        paragraphs } = require('./stylingConsts');
 const { hasCommandModifier } = KeyBindingUtil;
 const { myKeyBindingFn } = require('./keyBindingFn');
 import { Map } from 'immutable';
@@ -151,7 +152,7 @@ class MyEditor extends React.Component {
     .then(resp => {
       const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
       self.onChange(parsed);
-      this.setState({ interval: setInterval(() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
+      this.setState({ interval: setInterval(() => this.props.autoSaveDocument(convertToRaw(this.state.editorState.getCurrentContent())), 30000)})
     })
     .catch(err => {
       console.log("ERROR:", err);
@@ -308,11 +309,9 @@ class MyEditor extends React.Component {
         unicodeBidi: 'bidi-override',
       }
     };
-
     const handleStrategy = function(contentBlock, callback, contentState) {
       findWithRegex(newRegex, contentBlock, callback);
     }
-
     const findWithRegex = function(regex, contentBlock, callback) {
       const text = contentBlock.getText();
       const key = contentBlock.getKey();
@@ -321,7 +320,6 @@ class MyEditor extends React.Component {
       if (text.length > pos && key === anchorKey) {
         callback(pos, pos + 1);
       }
-
     }
     const HandleSpan = (props) => {
       return (
@@ -344,21 +342,29 @@ class MyEditor extends React.Component {
     this.setState({editorState: EditorState.createWithContent(currentContent, compositeDecorator)});
   }
 
+  _onpStyleClick() {
+    let e = document.getElementById('pStyle');
+    let style = e.options[e.selectedIndex].value;
+    this._onClick('block', style);
+  }
+
   render() {
     let counter = 0;
     return (
       <div className="editor-container">
         <span className="fa fa-bars fa-2x document-return" onClick={this.props.documentReturnHandler}> </span>
         <span className="document-title">{this.props.documentTitle}</span>
-        <div className="search">
-          <span>Search</span>
+        <span className="headerBar">
+          <button className="toolbar-item toolbar-button" onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
+          <button className="toolbar-item toolbar-button" onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
+          <span className="toolbar-divider"> | </span>
           <input
-            className="search-input"
             onChange={this.changeRegex.bind(this)}
             type="text"
             value={this.state.searchInput}
           />
-        </div>
+          <i className="fa fa-search" aria-hidden="true"></i>
+        </span>
         <div className="toolbar">
           <span className="toolbar-item" onClick={() => {
             console.log('hi');
@@ -369,7 +375,7 @@ class MyEditor extends React.Component {
               timeout: 10000,
               offset: 100
             })
-          }}><i className="fa fa-clipboard fa-lg" aria-hidden></i></span>
+          }}><i className="fa fa-clipboard fa-lg" aria-hidden="true"></i></span>
           <span className="toolbar-divider"> | </span>
           <select className="toolbar-selector" id="fontColor" onChange={() => this._onFontColorClick()}>
               {colors.map(color => (<option key={counter++} value={color}> {color} </option>))}
@@ -380,6 +386,10 @@ class MyEditor extends React.Component {
           </select>
           <select className="toolbar-selector" id="fontSize" onChange={() => this._onFontSizeClick()}>
               {sizes.map(size => (<option className="toolbar-selector-content" key={counter++} value={size}> {size} </option>))}
+          </select>
+          <span className="toolbar-divider"> | </span>
+          <select className="toolbar-selector" id="pStyle" onChange={() => this._onpStyleClick()}>
+              {paragraphs.map(p => (<option className="toolbar-selector-content" key={counter++} value={p}> {p} </option>))}
           </select>
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'inline', 'BOLD')}><i className="fa fa-bold fa-lg" aria-hidden="true"></i></button>
@@ -395,9 +405,6 @@ class MyEditor extends React.Component {
           <span className="toolbar-divider"> | </span>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'code')}><i className="fa fa-code fa-lg" aria-hidden="true"></i></button>
           <button className="toolbar-item" onClick={this._onClick.bind(this, 'block', 'terminal')}><i className="fa fa-terminal fa-lg" aria-hidden="true"></i></button>
-          <span className="toolbar-divider"> | </span>
-          <button className="toolbar-item toolbar-button" onClick={() => this.props.saveDocument(convertToRaw(this.state.editorState.getCurrentContent()))}>Save</button>
-          <button className="toolbar-item toolbar-button" onClick={() => this.props.history.push('/revisionhistory/' + this.props.id)}>Revision History</button>
         </div>
         <div className="document-editor">
           <div className="editor-padding">
