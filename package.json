@@ -1,5 +1,6 @@
 {
-  "name": "electron-react-quick-start",
+  "name": "NodeBook",
+  "prodName": "NodeBook",
   "version": "1.0.0",
   "description": "A minimal Electron application with React and Express",
   "main": "main.js",
