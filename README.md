@@ -2,6 +2,12 @@
 A collaborative text editor with easy to edit and share documents.
 **Created July, 2017**
 
+## Table of Contents
+- [About](#about)
+- [Installation Instructions](#installation-instructions)
+- [Built With](#built-with)
+- [Features](#features)
+
 ## Team
 - [Caroline Okun](https://github.com/carokun)
 - [Teresa Liu](https://github.com/teresaliu20)
