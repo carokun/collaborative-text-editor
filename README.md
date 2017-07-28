@@ -44,6 +44,8 @@ Requires Node.js
 ### Login and Register Page
 When you first open the app you will be prompted with a login screen. For first time users, navigate to the register page and input your creditials before logging in!
 
+<img width="1276" alt="screen shot 2017-07-28 at 12 09 13 pm" src="https://user-images.githubusercontent.com/23001355/28732706-b91898ba-738d-11e7-82bf-21e3b97c549b.png">
+
 ### Documents List
 Your account will open to a preview of all your existing documents which are stored in MongoDB between sessions.
 
