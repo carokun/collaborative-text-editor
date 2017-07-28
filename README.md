@@ -34,8 +34,12 @@ Requires Node.js
 
 ## Features
 
-#### Documents View
+#### Login and Register Page
+
+#### Documents List
 ![screen shot 2017-07-28 at 10 25 07 am](https://user-images.githubusercontent.com/23001355/28729742-5ab769c8-7382-11e7-99e4-fa7df3958d60.png)
+
+#### Document View
 
 #### Revision History
 ![screen shot 2017-07-28 at 10 25 27 am](https://user-images.githubusercontent.com/22362476/28729339-ffb98c28-7380-11e7-92f1-8210d346b6c9.png)
