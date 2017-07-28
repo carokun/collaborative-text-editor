@@ -44,6 +44,16 @@ To search through the documents by title or content, type into the search bar on
 
 ### Document View
 
+
+![screen shot 2017-07-28 at 10 03 23 am](https://user-images.githubusercontent.com/23001355/28730139-bb46c440-7383-11e7-9d2e-4391eae871e1.png)
+
+![screen shot 2017-07-28 at 10 03 08 am](https://user-images.githubusercontent.com/23001355/28730128-b24877b2-7383-11e7-809b-231c83df0ed0.png)
+
+![screen shot 2017-07-28 at 10 06 39 am](https://user-images.githubusercontent.com/23001355/28730148-c79e9fec-7383-11e7-8a15-05a4a9501119.png)
+
+![screen shot 2017-07-28 at 10 25 07 am](https://user-images.githubusercontent.com/23001355/28730181-d83510a2-7383-11e7-8e6d-08251b68e8d0.png)
+
+
 ### Revision History
 ![screen shot 2017-07-28 at 10 25 27 am](https://user-images.githubusercontent.com/22362476/28729339-ffb98c28-7380-11e7-92f1-8210d346b6c9.png)
 
