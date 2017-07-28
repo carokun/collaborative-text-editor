@@ -17,7 +17,7 @@ class DocumentList extends React.Component {
   }
 
   componentWillMount() {
-    axios.get('http://localhost:3000/documents')
+    axios.get('https://morning-badlands-13664.herokuapp.com//documents')
     .then(resp => {
       this.setState({
         documents: resp.data
@@ -29,7 +29,7 @@ class DocumentList extends React.Component {
   }
 
   addSharedDocument() {
-    axios.post('http://localhost:3000/addSharedDocument', {
+    axios.post('https://morning-badlands-13664.herokuapp.com//addSharedDocument', {
       docID: this.state.sharedDocID
     })
     .then(resp => {
@@ -44,7 +44,7 @@ class DocumentList extends React.Component {
   }
 
   createNewDocument() {
-    axios.post('http://localhost:3000/createNewDocument', {
+    axios.post('https://morning-badlands-13664.herokuapp.com//createNewDocument', {
       title: this.state.createDocTitle
     })
     .then(resp => {
@@ -61,7 +61,7 @@ class DocumentList extends React.Component {
   }
   signOutUser() {
     this.props.history.push('/');
-    axios.get('http://localhost:3000/logout')
+    axios.get('https://morning-badlands-13664.herokuapp.com//logout')
     .then(res => {
       if(res.data.success) {
         console.log('logged out');
@@ -70,7 +70,7 @@ class DocumentList extends React.Component {
   }
 
   filterDocuments() {
-    axios.get('http://localhost:3000/documents')
+    axios.get('https://morning-badlands-13664.herokuapp.com//documents')
     .then(resp => {
       const docs = resp.data;
       const filteredDocs = [];
@@ -92,7 +92,7 @@ class DocumentList extends React.Component {
   }
 
   showAll() {
-    axios.get('http://localhost:3000/documents')
+    axios.get('https://morning-badlands-13664.herokuapp.com//documents')
     .then(resp => {
       this.setState({
         documents: resp.data

@@ -17,7 +17,7 @@ class RevisionHistory extends React.Component {
   }
 
   componentWillMount() {
-    axios.get('http://localhost:3000/document/' + this.props.match.params.docId)
+    axios.get('https://morning-badlands-13664.herokuapp.com//document/' + this.props.match.params.docId)
     .then(resp => {
       this.setState({
         revisionhistory: resp.data.revisionhistory,
@@ -78,7 +78,7 @@ class RevisionHistory extends React.Component {
   }
 
   restore() {
-    axios.post('http://localhost:3000/restore', {
+    axios.post('https://morning-badlands-13664.herokuapp.com//restore', {
       id: this.props.match.params.docId,
       prevState: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()))
     })

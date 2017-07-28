@@ -14,7 +14,7 @@ class Register extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    axios.post("http://localhost:3000/register", {username: this.state.username, password: this.state.password, repeatPassword: this.state.repeatPassword})
+    axios.post("https://morning-badlands-13664.herokuapp.com//register", {username: this.state.username, password: this.state.password, repeatPassword: this.state.repeatPassword})
     .then(resp => {
       if(resp.status === 200) {
         console.log('success', resp);

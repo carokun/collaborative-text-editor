@@ -37,7 +37,7 @@ class MyEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      socket: io('http://localhost:3000'),
+      socket: io('https://morning-badlands-13664.herokuapp.com/'),
       editorState: EditorState.createEmpty(),
       interval: () => '',
       searchInput: '',
@@ -130,7 +130,7 @@ class MyEditor extends React.Component {
 
     // autosave and update document
     const self = this;
-    axios.get('http://localhost:3000/document/' + this.props.id)
+    axios.get('https://morning-badlands-13664.herokuapp.com//document/' + this.props.id)
     .then(resp => {
       const parsed = EditorState.createWithContent(convertFromRaw(JSON.parse(resp.data.text)));
       self.onChange(parsed);

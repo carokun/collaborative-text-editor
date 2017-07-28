@@ -16,7 +16,7 @@ class DocumentPage extends React.Component {
         }
     }
     componentWillMount() {
-      axios.get('http://localhost:3000/document/' + this.props.match.params.id)
+      axios.get('https://morning-badlands-13664.herokuapp.com//document/' + this.props.match.params.id)
       .then(resp => {
         console.log(this.props.match.params.id);
         this.setState({
@@ -29,7 +29,7 @@ class DocumentPage extends React.Component {
     }
 
     saveDocument(newState) {
-      axios.post('http://localhost:3000/saveDocument', {
+      axios.post('https://morning-badlands-13664.herokuapp.com//saveDocument', {
         text: newState,
         id: this.props.match.params.id,
         newRevision: {
@@ -54,7 +54,7 @@ class DocumentPage extends React.Component {
     }
 
     autoSaveDocument(newState) {
-      axios.post('http://localhost:3000/saveDocument', {
+      axios.post('https://morning-badlands-13664.herokuapp.com//saveDocument', {
         text: newState,
         id: this.props.match.params.id
       })
